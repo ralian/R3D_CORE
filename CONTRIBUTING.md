@@ -1,6 +1,6 @@
 # CONTRIBUTING
 
-Please follow the relevant checklists and guidelines when contributing to R3D_CORE (or just Core for short.) This is not the code of conduct. Please also read and follow that when working with our community.
+Please follow the relevant checklists and guidelines when contributing to R3D_CORE (or just Core for short.)
 
 ## Opening an Issue
 
@@ -27,7 +27,7 @@ Before you open an issue:
      - We understand some issues only show up on heavily loaded servers, sometimes with many mods loaded. We will still process issues that have more mods loaded, but loading only core will make the process far easier.
    - Make sure to include all 4 generated logfiles from your profile dir even if you don't think they are important: the `console.log`, `crash.log`, `error.log`, `script.log`.
    - If the bug is network related, you may want to attach logs from the dedicated server as well as the client.
-   - Some kind of crashes do not show up in the log! If this is the case, still include the logs to be sure - but give us a description of what you were doing on the client/server when the crash happened. Fortunately these cases are rare.
+   - Some kinds of crashes do not show up in the log! If this is the case, still include the logs to be sure - but give us a description of what you were doing on the client/server when the crash happened. Fortunately, these cases are rare.
 4. If you read all the prior steps, you can probably submit now! If you don't hear back in 24h, asking us about it on Discord is fine.
 
 ## What belongs in R3D_CORE?
@@ -49,4 +49,12 @@ In open sourcing the project on github, we also aim to keep all of the files wit
 
 ## Opening a PR
 
-#todo
+We are not too strict about format of commit messages or squashing down to one commit before merging, but please follow these guidelines when opening a PR:
+
+- _Name your branch properly_: Generally your branch should be named `<your username>/<feature name>`. An example would be `adam/aerodynamics`.
+- Use concise yet descriptive commit messages.
+- Follow the general coding style when writing scripts. There are no hard guidelines, but tend to follow our layout and the layout in the existing gamescripts.
+- TAG (prepend) all relevant files, config entries, and script elements (classes and enums) with `R3D_`, unless you have a good reason to use a different tag. The default tag `SCR_` seen in the existing game scripts is only to indicate that a component from the game has been scripted by BI, and should _never_ be used in R3D_CORE.
+- Test, test, test! For changes to scripts, please test the change on a dedicated client/server combo. We will publish documentation on doing this soon.
+- Please do not push git tags (distinct from the tagging referred to earlier), even if you know your change is a hotfix which will get its own version number. We will tag the version ourselves.
+- Similarly, do not modify the changelog or any meta files (like this one) unless you have consulted us first. 
