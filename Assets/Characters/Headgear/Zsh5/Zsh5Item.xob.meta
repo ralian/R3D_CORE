@@ -1,0 +1,53 @@
+MetaFileClass {
+ Name "{1A37699916B6CCFC}Assets/Characters/Headgear/Zsh5/Zsh5Item.xob"
+ Configurations {
+  FBXResourceClass PC {
+   MaterialAssigns {
+    MaterialAssignClass "{5E4C571DC6D52EA0}" {
+     SourceMaterial "soldier_pilot_helmet"
+     AssignedMaterial "{D7B451A6FD2ED27D}Assets/Characters/Headgear/Zsh5/data/soldier_pilot_helmet.emat"
+    }
+    MaterialAssignClass "{5E4C571DC6D52EDC}" {
+     SourceMaterial "soldier_pilot_flora_vsr"
+     AssignedMaterial "{543C96050885F671}Assets/Characters/Headgear/Zsh5/data/soldier_pilot_flora_vsr.emat"
+    }
+    MaterialAssignClass "{5E4C571DC6D52EDF}" {
+     SourceMaterial "pilotglass"
+     AssignedMaterial "{E6A2054F3326E499}Assets/Characters/Headgear/Zsh5/data/pilotglass.emat"
+    }
+   }
+   MeshParams {
+    MeshParam Object {
+    }
+   }
+   GeometryParams {
+    GeometryParam UBX_HelmetGeo {
+     LayerPreset "Character"
+     SurfaceProperties {
+      "{EB67C7AAFE4FAD87}Common/Materials/Game/Fabric/fabric_3mm_min.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{5E4C571DC52C3051}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5E4C571DC52C3337}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5E4C571DC52C3353}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5E4C571DC52C3373}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5E4C571DC52C3395}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}
