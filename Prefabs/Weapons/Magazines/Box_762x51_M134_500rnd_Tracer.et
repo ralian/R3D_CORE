@@ -1,0 +1,37 @@
+GenericEntity : "{4068585808DF8DF2}Prefabs/Weapons/Magazines/Box_127x99_M2_100rnd_Tracer.et" {
+ ID "527AEA68B72A2D4C"
+ components {
+  AICombatPropertiesComponent "{59CE86D96C332DDF}" {
+   UsedAgainst 3
+   IndirectlyUsedAgainst 1
+  }
+  InventoryItemComponent "{51EED12B803954CC}" {
+   Attributes SCR_ItemAttributeCollection "{51EED12B86960275}" {
+    ItemDisplayName UIInfo "{51FEE38527BFEA5B}" {
+     Name "#AR-Magazine_M134Tracer_Name"
+     Description "#AR-Magazine_M134Tracer_Description"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
+     Weight 5
+    }
+   }
+  }
+  MagazineComponent "{CA6BE4D6B4DAFD69}" {
+   MagazineWell MagazineWellM134 "{476AE746EC5FBEE9}" {
+   }
+   UIInfo MagazineUIInfo "{57126733AA401586}" {
+    Name "M134 Tracer Magazine"
+    m_sAmmoCaliber "#AR-AmmunitionID_762x51mm"
+   }
+   ItemModel "{E1D9125A7EB3BD1C}Assets/Weapons/Magazines/M2/Magazine_100rnd_M2.xob"
+   MaxAmmo 500
+   AmmoConfig "{B8E44303CAA469D0}Configs/Ammo/Ammo_M134.conf"
+   AmmoMapping {
+    0
+   }
+  }
+  MeshObject "{CA6BE4D6A23F8EF0}" {
+   Object "{2482E01261AB2FB5}Assets/Weapons/Magazines/PM/Magazine_8rnd_PM.xob"
+  }
+ }
+}

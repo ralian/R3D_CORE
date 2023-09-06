@@ -1,0 +1,29 @@
+GenericEntity : "{E045E14D186D580F}Prefabs/Weapons/Magazines/Box_762x54_PK_100rnd_Base.et" {
+ ID "CA6BE4D6BB2D1077"
+ components {
+  InventoryItemComponent "{51EED12B803954CC}" {
+   Attributes SCR_ItemAttributeCollection "{51EED12B86960275}" {
+    ItemDisplayName UIInfo "{51FEE38527BFEA5B}" {
+     Description "#AR-Magazine_PKMBallTracer_Description"
+    }
+   }
+  }
+  MagazineComponent "{CA6BE4D6B4DAFD69}" {
+   MagazineWell MagazineWellFlarePod "{05B3A6C898CC88E4}" {
+   }
+   UIInfo MagazineUIInfo "{57126733AA401586}" {
+    Name "#AR-Magazine_PKM_Name"
+    m_sAmmoType "#AR-AmmoType_PK_FMJTracer"
+    m_eAmmoTypeFlags 3
+   }
+   MaxAmmo 60
+   AmmoConfig "{333355B66B47D1C4}Configs/Ammo/Ammo_Flare.conf"
+   AmmoMapping {
+    0
+   }
+  }
+  MeshObject "{CA6BE4D6A23F8EF0}" {
+   Object "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
+  }
+ }
+}

@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{80F1F513A1D6D4D6}Assets/Weapons/HeavyWeapons/Minigun/data/ctrl_3_BCR.edds"
+ NMOMap "{B8294E8178A18648}Assets/Weapons/HeavyWeapons/Minigun/data/ctrl_3_NMO.edds"
+}

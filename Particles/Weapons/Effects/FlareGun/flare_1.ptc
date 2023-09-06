@@ -1,0 +1,105 @@
+EffectDef {
+ Emitters {
+  EmitterDef glow {
+   ConeAngle 360 0 0
+   MaxNum 1
+   BirthRate 1
+   LocalTransform 1
+   LodMin 0
+   LodMax 1
+   Material "{73B9016942BA1998}Particles/_Materials/Fire/Explosion_Base_01.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 0.4
+   RandomAngle 1
+   Velocity 0
+   VelocityRND 0
+   AnimFPS 1
+   Lifetime 10
+   LifetimeRND 0
+   Color {
+    0.224 0.886 0.886 0.886
+   }
+   Alpha {
+    0 1 0.003 1 0.011 0.831 0.018 1 0.027 1 0.029 0.837 0.032 1 0.067 1 0.075 0.873 0.078 1 0.333 1 0.335 0.753 0.348 1 0.466 1 0.997 1 1 0
+   }
+   EmittingTime 10
+   Repeat 0
+   AlphaMast {
+    0 0.982 0.251 1 0.254 0.735 0.256 1 0.309 0.994 0.312 0.229 0.314 1 0.745 1 0.748 0.608 0.755 1
+   }
+  }
+  EmitterDef sparks {
+   ConeAngle 360 0 60
+   MaxNum 300
+   BirthRate 70
+   Offset -0.01 -0.01 -0.01
+   LocalTransform 1
+   LodMin 0
+   LodMax 1
+   Material "{2DF4058A4066E031}Particles/_Materials/Fire/Base_Sparks_07.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   StretchMultiplier 1.007
+   SizeMultiplier 0.015
+   ScaleX 0.4
+   ScaleY 0.394
+   Velocity 4
+   VelocityRND 3
+   GravityMultiply 1
+   AnimOnce 1
+   AnimFPS 60
+   Lifetime 0.5
+   LifetimeRND 0.1
+   Color {
+    0.004 0.934 0.934 0.934
+   }
+   Alpha {
+    0 1 0.404 1 1 0
+   }
+   EmittingTime 10
+   Repeat 0
+   BRateMast {
+    0 0 0.003 0 0.193 1 0.711 1 0.787 0 0.931 0 1 0
+   }
+  }
+  EmitterDef smoke {
+   ConeAngle 360 0 5
+   MaxNum 555
+   BirthRate 85
+   Offset -0.01 0.15 -0.01
+   LodMin 0
+   LodMax 1
+   Material "{442703F925ADC2EE}Particles/_Materials/Gas/Smoke_Explosion_02_forImpacts.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 2
+   SizeRND 0.5
+   RotMultiplier 6.3
+   RotRND 85.2
+   RandomRotDir 1
+   RandomAngle 1
+   Velocity 3
+   VelocityRND 0.5
+   AirResistance 0.1
+   AirResistanceRND 0.03
+   WindInfluence 0.1
+   GravityMultiply 0.007
+   AnimOnce 1
+   AnimFPS 25
+   Lifetime 5
+   LifetimeRND 2
+   Color {
+    0.002 0.994 0.994 0.994
+   }
+   Alpha {
+    0 1 0.404 1 0.641 1 1 0
+   }
+   Size {
+    0 0.12 0.152 0.289 0.374 0.639 1 1
+   }
+   EmittingTime 10
+   Repeat 0
+   VelocityMast {
+    0 0.331 0.158 1 0.542 0.988 0.732 0.5 0.813 0.187 1 0
+   }
+  }
+ }
+}

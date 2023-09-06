@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{B305E32C006B3B48}Prefabs/Weapons/HeavyWeapons/HMG_M134.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

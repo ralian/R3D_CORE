@@ -1,0 +1,7 @@
+MatPBRBasic {
+ Color 0.051 0.051 0.051 1
+ ZWrite 0
+ Sort translucent
+ BlendMode AlphaBlend
+ AllowUserAlphaBias 1
+}

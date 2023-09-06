@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{E6A2054F3326E499}Assets/Characters/Headgear/Zsh5/data/pilotglass.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,141 @@
+EffectDef {
+ Version 1
+ Emitters {
+  EmitterDef glow {
+   ShapeType Ellipse
+   ConeAngle 360 0 0
+   MaxNum 3
+   BirthRate 5
+   BirthRateRND 1
+   Offset 0 0.05 0
+   LocalTransform 1
+   LodMin 0
+   LodMax 1
+   Material "{73B9016942BA1998}Particles/_Materials/Fire/Explosion_Base_01.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 0.4
+   RandomAngle 1
+   Velocity 0
+   VelocityRND 0
+   AnimFPS 1
+   Lifetime 10
+   LifetimeRND 3
+   Color {
+    0.091 1 0.371 0.401 0.161 0.994 0.246 0.317 0.254 0.97 0.814 0.82 0.311 0.97 0.204 0.198 0.375 0.958 0.88 0.88 0.418 0.958 0.156 0.156 0.476 0.952 0.868 0.862 0.553 0.946 0.192 0.168 0.603 0.952 0.796 0.88 0.659 0.958 0.329 0.144 0.704 0.958 0.832 0.832 0.743 0.958 0.192 0.204 0.804 0.958 0.395 0.359 0.846 0.952 0.174 0.162 0.903 0.94 0.814 0.814 0.996 0.94 0.329 0.132
+   }
+   Alpha {
+    0 1 0.003 1 0.011 0.831 0.018 1 0.027 1 0.029 0.837 0.032 1 0.067 1 0.075 0.873 0.078 1 0.333 1 0.335 0.753 0.348 1 0.466 1 0.997 1 1 0
+   }
+   Size {
+    0.002 0.138 0.205 0.275 0.539 0.317 0.992 0.168
+   }
+   EmittingTime 900
+   Repeat 0
+   AlphaMast {
+    0 0.982 0.251 1 0.254 0.735 0.256 1 0.309 0.994 0.312 0.229 0.314 1 0.745 1 0.748 0.608 0.755 1
+   }
+   SizeMast {
+    0 1
+   }
+   EnableLight 1
+   MaxLV 8.434
+   LightColorMast {
+    0 1 0.419 0.21
+   }
+   LightIntensityMast {
+    0 0 0.006 0.814 0.896 0.689 1 0
+   }
+  }
+  EmitterDef sparks {
+   ConeAngle 360 0 60
+   MaxNum 300
+   BirthRate 70
+   Offset -0.01 -0.01 -0.01
+   LocalTransform 1
+   LodMin 0
+   LodMax 1
+   Material "{2DF4058A4066E031}Particles/_Materials/Fire/Base_Sparks_07.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   StretchMultiplier 1.007
+   SizeMultiplier 0.015
+   ScaleX 0.4
+   ScaleY 0.394
+   Velocity 4
+   VelocityRND 3
+   GravityMultiply 4.333
+   GravityMultiplyRND -1.159
+   AnimOnce 1
+   AnimFPS 60
+   Lifetime 0.5
+   LifetimeRND 0.1
+   Color {
+    0.004 0.934 0.934 0.934
+   }
+   Alpha {
+    0 1 0.404 1 1 0
+   }
+   EmittingTime 10
+   Repeat 0
+   BRateMast {
+    0 0 0.003 0 0.193 1 0.711 1 0.787 0 0.931 0 1 0
+   }
+  }
+  EmitterDef smoke {
+   ShapeType Ellipse
+   ConeAngle 360 0 5
+   MaxNum 555
+   BirthRate 40
+   BirthRateRND 3
+   Offset -0.01 0.15 -0.01
+   LodMin 0
+   LodMax 1
+   Material "{442703F925ADC2EE}Particles/_Materials/Gas/Smoke_Explosion_02_forImpacts.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 2
+   SizeRND 0.5
+   RotMultiplier 6.3
+   RotRND 85.2
+   RandomRotDir 1
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 1.5
+   VelocityRND 0.4
+   AirResistance 0.825
+   AirResistanceRND 2.276
+   WindInfluence 0.538
+   ParentVelRelToAir 0.858
+   GravityMultiply 0.01
+   GravityMultiplyRND 0.01
+   EnableCollisions 1
+   CollisionDistThresh 1.9
+   Friction 0.913
+   AnimOnce 1
+   AnimFPS 25
+   Lifetime 8
+   LifetimeRND 4
+   Color {
+    0.001 0.311 0.323 0.293
+   }
+   Alpha {
+    0 0.054 0.164 0.186 0.478 0.461 1 0.826
+   }
+   RotationSpeed {
+    0.001 0.126
+   }
+   Size {
+    0 0.12 0.104 0.677 0.288 0.904 1 0.874
+   }
+   EmittingTime 800
+   Repeat 0
+   AirResistanceMast {
+    0 0.407
+   }
+   VelocityMast {
+    0 0 0.171 0.012 0.546 0.006 0.727 0.006 0.818 0.006 1 0
+   }
+  }
+ }
+ LightOffset 0 0 0
+ LightClipEV -6
+ LightRadius 35
+}

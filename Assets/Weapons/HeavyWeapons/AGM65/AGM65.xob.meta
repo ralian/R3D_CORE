@@ -1,0 +1,72 @@
+MetaFileClass {
+ Name "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{5E481AF293A90B33}" {
+     SourceMaterial "texture"
+     AssignedMaterial "{B8549D6CCE31A20F}Assets/Weapons/HeavyWeapons/AGM65/data/texture.emat"
+    }
+    MaterialAssignClass "{5E481AF293A90B2B}" {
+     SourceMaterial "glass"
+     AssignedMaterial "{F314A460298E1CD3}Assets/Weapons/HeavyWeapons/AGM65/data/glass.emat"
+    }
+   }
+   MeshParams {
+    MeshParam AGM65 {
+    }
+   }
+   GeometryParams {
+    GeometryParam UCX_Geometry_Body {
+     LayerPreset "Prop"
+     SurfaceProperties {
+      "{EDB153DC99889624}Common/Materials/Game/Metal/metal_3mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UCX_Geometry_Fin_01 {
+     SurfaceProperties {
+      "{EDB153DC99889624}Common/Materials/Game/Metal/metal_3mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UCX_Geometry_Fin_02 {
+     SurfaceProperties {
+      "{EDB153DC99889624}Common/Materials/Game/Metal/metal_3mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UTM_FireGeometry {
+     LayerPreset "FireView"
+     SurfaceProperties {
+      "{EDB153DC99889624}Common/Materials/Game/Metal/metal_3mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{5E481AF293BB4E26}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5E481AF293BB71AE}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5E481AF293BB7008}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5E481AF293BB7072}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5E481AF293BB70B6}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

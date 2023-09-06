@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{3E18D5FB09C27C22}Prefabs/Weapons/HeavyWeapons/Minigun/HMG_M2HB_pintle_inherited.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{7CF75D7287E9787E}Prefabs/Characters/HeadGear/Helmet_SP4/Helmet_H1060.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

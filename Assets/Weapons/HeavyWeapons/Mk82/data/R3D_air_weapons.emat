@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{9DD196B1BBAD9213}Assets/Weapons/HeavyWeapons/Mk82/data/R3D_air_weapons_BCR.edds"
+ NMOMap "{A5092D2362DAC08D}Assets/Weapons/HeavyWeapons/Mk82/data/R3D_air_weapons_NMO.edds"
+}

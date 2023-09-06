@@ -1,0 +1,11 @@
+MatPBRBasicGlass {
+ Cull none
+ AlphaTest 0.372
+ AlphaMul 1.579
+ BCRMap "{BD35040F8B8A9AE5}Assets/Items/Equipment/RoadFlare/Data/R3D_Flare_Cap_BCR.edds"
+ OpacityMap "{BD35040F8B8A9AE5}Assets/Items/Equipment/RoadFlare/Data/R3D_Flare_Cap_BCR.edds"
+ NMOMap "{85EDBF9D52FDC87B}Assets/Items/Equipment/RoadFlare/Data/R3D_Flare_Cap_NMO.edds"
+ FresnelPower 0.876
+ FresnelBias 0.057
+ Backscatterig 0.43
+}

@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{1C9D94213D33DA1F}Assets/Characters/Headgear/SP4/data/Du_HGU_56.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

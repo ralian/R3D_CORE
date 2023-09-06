@@ -1,0 +1,6 @@
+MatPBRBasic {
+ SpecularMul 0.578
+ RoughnessScale 2.084
+ BCRMap "{F95ADDE88606A73C}Assets/Characters/Headgear/H1060/data/H1060_BCR.edds"
+ NMOMap "{C182667A5F71F5A2}Assets/Characters/Headgear/H1060/data/H1060_NMO.edds"
+}

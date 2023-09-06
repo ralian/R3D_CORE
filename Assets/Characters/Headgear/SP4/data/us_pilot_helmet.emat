@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{CE6305AC2BC2567C}Assets/Characters/Headgear/SP4/data/us_pilot_helmet_BCR.edds"
+ NMOMap "{F6BBBE3EF2B504E2}Assets/Characters/Headgear/SP4/data/us_pilot_helmet_NMO.edds"
+}

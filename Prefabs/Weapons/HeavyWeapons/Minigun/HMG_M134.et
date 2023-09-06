@@ -1,0 +1,53 @@
+GenericEntity : "{BB35A8E1403CDE4B}Prefabs/Weapons/HeavyWeapons/HMG_M2HB.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames {
+    "{3E28601CBE736F22}Sounds/Weapons/HeavyWeapons/Minigun/Weapons_HeavyWeapons_M134_Shot_02.acp" "{6616B1A0537FC180}Sounds/Vehicles/Wheeled/M151A2/Vehicles_M151A2_Turret.acp" "{EC7E8631CBC17F15}Sounds/Weapons/HeavyWeapons/M2/Weapons_HeavyWeapons_M2_Handling.acp"
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{FA76CF72C1E217AB}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Base.xob"
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     FireModes {
+      BaseFireMode "{B80A64F4A8EF8333}" {
+       MaxSalvo 5
+       RoundsPerMinute 1000
+      }
+     }
+     MagazineWell MagazineWellM134 "{572AF6B736F67437}" {
+     }
+     WeaponAimModifiers {
+      SwayWeaponAimModifier "{521AE9A27BDC1E6F}" {
+       IsEnabled 0
+      }
+      RecoilWeaponAimModifier "{5902EAE4D117F16B}" {
+       IsEnabled 0
+      }
+     }
+     CustomAnimationAttributes ItemAnimationAttributes "{5B34632C2BC83D3F}" {
+     }
+     ReloadDuration 8
+     MagazinePosition InventoryStorageSlot "{B80A64F4C834E9CB}" {
+      Offset -0.0051 0.232 -0.0362
+     }
+     MagazineTemplate "{FF49212FC1CE54F8}Prefabs/Weapons/Magazines/Box_762x51_M134_500rnd_Tracer.et"
+    }
+    WeaponAnimationComponent "{5B34632F298C08B4}" {
+     AnimGraph "{5C41727F96285D4E}Assets/Weapons/MachineGuns/workspaces/M249.agr"
+     AnimInstance "{38B2B88A95DCEA4A}Assets/Weapons/HeavyWeapons/Minigun/anims/workspaces/minigun_weapon.asi"
+     AlwaysActive 1
+     AnimInjection AnimationAttachmentInfo "{5B34632CB6BAF444}" {
+      AnimGraph "{6791BE2144ADC6A3}Assets/Weapons/HeavyWeapons/workspaces/M2HB_m998.agr"
+      AnimInstance "{90F5E30119FE8312}Assets/Weapons/HeavyWeapons/workspaces/M2HB_Player_tripod.asi"
+      BindingName "Weapon"
+     }
+     BindWithInjection 1
+    }
+   }
+  }
+ }
+}

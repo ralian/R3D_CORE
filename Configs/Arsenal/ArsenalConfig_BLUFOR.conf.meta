@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{B901923EAEC7E104}Configs/Arsenal/ArsenalConfig_BLUFOR.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass XBOX_ONE : PC {
+  }
+  CONFResourceClass XBOX_SERIES : PC {
+  }
+  CONFResourceClass PS4 : PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

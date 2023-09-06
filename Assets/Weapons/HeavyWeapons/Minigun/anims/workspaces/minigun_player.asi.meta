@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{C3EC29BB0DDD8EA6}Assets/Weapons/HeavyWeapons/Minigun/anims/workspaces/minigun_player.asi"
+ Configurations {
+  AnimSetInstanceResourceClass PC {
+  }
+  AnimSetInstanceResourceClass XBOX_ONE : PC {
+  }
+  AnimSetInstanceResourceClass XBOX_SERIES : PC {
+  }
+  AnimSetInstanceResourceClass PS4 : PC {
+  }
+  AnimSetInstanceResourceClass HEADLESS : PC {
+  }
+ }
+}

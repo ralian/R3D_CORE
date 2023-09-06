@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

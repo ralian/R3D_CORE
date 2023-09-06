@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{436C1F3FFF279A74}Assets/Items/Equipment/RoadFlare/Data/R3D_Flare_BCR.edds"
+ NMOMap "{7BB4A4AD2650C8EA}Assets/Items/Equipment/RoadFlare/Data/R3D_Flare_NMO.edds"
+}

@@ -1,0 +1,12 @@
+MatPBRBasicGlass {
+ Color 0.01 0 0.023 1
+ DisableInteriorProbes 1
+ RoughnessScale 0.127
+ MetalnessScale 0.727
+ BCRMap "{5CB07CC35B75AD07}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_BCR.edds"
+ OpacityMap "{5CB07CC35B75AD07}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_BCR.edds"
+ NMOMap "{6468C7518202FF99}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_NMO.edds"
+ FresnelPower 0.355
+ FresnelBias 0.259
+ RefractionIntensity 0.115
+}

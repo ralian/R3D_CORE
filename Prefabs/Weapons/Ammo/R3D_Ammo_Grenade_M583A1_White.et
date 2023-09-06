@@ -1,0 +1,28 @@
+Projectile : "{5375FA7CB1F68573}Prefabs/Weapons/Ammo/Ammo_Grenade_HE_M406.et" {
+ ID "50C6F9656AEFBE8C"
+ components {
+  TimerTriggerComponent "{5DFE1061D8ECF5E8}" {
+   PROJECTILE_EFFECTS {
+    SpawnParticleEffect "{5DFE1061D441E4CE}" {
+     TriggerOnce 1
+     ParticleEffect "{68566FB2277AD4C2}Particles/Weapons/Effects/FlareGun/RoadFlare.ptc"
+     UseSoundEvent 0
+     TriggerName "Trigger"
+     StopSoundWithParticles 1
+     SoundStopOffset 5000
+    }
+    SubmunitionDamageEffect "{5DFE1597DCD5D43D}" {
+     Prefab "{E94B83E19733DD35}Prefabs/Weapons/Grenades/R3D_RoadFlare.et"
+    }
+   }
+  }
+  InventoryItemComponent "{52627A12350994B6}" {
+   Attributes SCR_ItemAttributeCollection "{52627A1234AD20A4}" {
+    ItemDisplayName UIInfo "{527A967B78025827}" {
+     Name "40mm M583A1_White"
+     Description "40mm M583A1_White"
+    }
+   }
+  }
+ }
+}

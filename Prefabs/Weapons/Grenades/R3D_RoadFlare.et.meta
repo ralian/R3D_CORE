@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{E94B83E19733DD35}Prefabs/Weapons/Grenades/R3D_RoadFlare.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

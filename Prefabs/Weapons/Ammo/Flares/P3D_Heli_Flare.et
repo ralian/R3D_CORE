@@ -1,0 +1,96 @@
+Projectile : "{C0BDA86B5AA5648C}Prefabs/Weapons/Core/Ammo_Rocket_Base.et" {
+ ID "DA5C6308000CDEF2"
+ components {
+  CollisionTriggerComponent "{59D28BCE37FE4FD8}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{59D28BCE37FE4FC0}" {
+     EffectPrefab "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et"
+     ParticleEffect "{40C8AD1204EC2629}Particles/Weapon/Smoke_PKM.ptc"
+     SoundEvent "SOUND_EXPLOSION"
+    }
+   }
+   SafetyDistance 1
+  }
+  InventoryItemComponent "{526E87778842822F}" {
+   Attributes SCR_ItemAttributeCollection "{526E87778ACB229F}" {
+    ItemDisplayName UIInfo "{526E8777859BAACF}" {
+     Name "#AR-Magazine_PG7VM_Name"
+     Description "#AR-Magazine_PG7VM_Description"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{59D28BCE37FE4FCD}" {
+     Weight 2
+     SizeSetupStrategy Volume
+     ItemVolume 1200
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{59D28BCE37FE4FF1}" {
+      CameraPreset Top
+      CameraDistanceToItem 2.3
+      ItemRenderRotation 0 270 0
+      FOV 10
+     }
+    }
+    m_SlotType SLOT_BACKPACK
+   }
+  }
+  MagazineComponent "{50F6614BB5D5B0A8}" {
+   MagazineWell MagazineWellFlarePod "{59D28BCE37FE4FFA}" {
+   }
+   UIInfo MagazineUIInfo "{560AE4EBFA0176D4}" {
+    Name "#AR-Magazine_PG7VM_Name"
+    Description "#AR-Magazine_PG7VM_Description"
+    m_sAmmoCaliber "#AR-AmmunitionID_70mm"
+    m_sAmmoType "#AR-AmmoType_PG7VM"
+    m_eAmmoTypeFlags 18
+   }
+   ItemModel "{CA305BDAD273478A}Assets/Weapons/Magazines/RPG7/Rocket_PG7VM_item.xob"
+  }
+  MeshObject "{851AA4A2AE0A56BF}" {
+   Object "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
+  }
+  MissileMoveComponent "{0EF36690881261EF}" {
+   InitSpeed 1
+   InitSpeedVariation 1
+   ParentSpeedMultiplier 0.001
+   DispersionMultiplier 0.1
+   Mass 4
+   TimeToLive 60
+   ProjectileEffects {
+    BaseDamageEffect "{56829D01651CE9A7}" {
+     DamageValue 1
+    }
+    AIHitEffect "{59D28BCE37FE4FE1}" {
+    }
+   }
+   ThrustInitTime 0.02
+   ThrustTime 0.55
+   ThrustForce 150
+   ForwardAirFriction 0.35
+   SideAirFriction 0
+   AlignTorque 0.8
+   DistanceEnableGravitation 0.055
+  }
+  RigidBody "{59D28BCE37FE4FE6}" {
+   LayerPreset "Projectile"
+   Mass 2.6
+   ModelGeometry 1
+  }
+  RocketTraceEffectComponent "{59D28BCE37FE4FEB}" {
+   ParticleEffect "{02FEABB4165055F3}Particles/Weapons/Effects/FlareGun/flare_1.ptc"
+  }
+  SlotManagerComponent "{59EB6D8DF597F6B4}" {
+   Slots {
+    InventoryStorageSlot Light1 {
+     Offset 0 0 0.013
+     Prefab "{542FDBEB90AB657E}Prefabs/Weapons/Ammo/Lights/FlareLight.et"
+    }
+   }
+  }
+  ActionsManagerComponent "{50F6614BA1D6E54A}" {
+   additionalActions {
+   }
+  }
+ }
+ ProjectileModel "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
+ CartridgeModel "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
+}

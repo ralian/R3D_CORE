@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{0B73FDFD1AE64A13}Prefabs/Weapons/Ammo/Ammo_Grenade_M583A1_White.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

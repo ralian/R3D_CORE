@@ -1,0 +1,213 @@
+EffectDef {
+ Emitters {
+  EmitterDef Glow {
+   Offset 0 0.1 0
+   Material "{6E033C070B32B17C}Particles/_Materials/Fire/Explosion_Base_03.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 0
+   SizeRND 1
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 1
+   VelocityRND 2
+   VelAffect 0.854
+   AirResistance 5
+   AirResistanceRND 5
+   AnimOnce 1
+   AnimFPS 75
+   Lifetime 0
+   LifetimeRND 0.2
+   Alpha {
+    0 0.539 0.019 1 0.212 1 0.426 1 1 0
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef Sparks {
+   ConeAngle 360 0 180
+   MaxNum 30
+   BirthRate 1000
+   Offset 0 0.1 0
+   Material "{2DF4058A4066E031}Particles/_Materials/Fire/Base_Sparks_07.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   StretchMultiplier 1.004
+   SizeMultiplier 0.01
+   SizeRND 1
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 1
+   VelocityRND 40
+   VelAffect 0.854
+   AirResistance 20
+   AirResistanceRND 5
+   WindInfluence 0.268
+   GravityMultiply 0.606
+   GravityMultiplyRND 1.111
+   Restitution 1
+   AnimOnce 1
+   AnimFPS 75
+   Lifetime 0.1
+   LifetimeRND 0.3
+   Alpha {
+    0 1 0.451 1 1 0
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef Bebra1_0 {
+   MaxNum 1
+   BirthRate 1
+   Offset 0 0.5 0
+   Material "{FC9AEB448DEBAE4A}Particles/_Materials/Gas/Smoke_Explosion_01.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 2
+   SizeRND 1
+   BillboardingType LockedAxis
+   RandomUFlip 1
+   Velocity 2
+   VelocityRND 0
+   VelAffect 0.854
+   AirResistance 5
+   AirResistanceRND 5
+   AnimOnce 1
+   AnimFPS 80
+   LifetimeByAnim 1
+   Lifetime 0
+   LifetimeRND 0.2
+   Alpha {
+    0 0.539 0.019 1 0.212 1 1 0
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef Bebra1_0_cloned {
+   MaxNum 2
+   BirthRate 555
+   Offset 0 0.25 0
+   Material "{6CF6075043D54BE3}Particles/_Materials/Gas/Whisp_01_Anim.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 0
+   SizeRND 2
+   BillboardingType LockedAxis
+   RandomUFlip 1
+   Velocity 8
+   VelocityRND 3
+   VelAffect 0.854
+   AirResistance 5
+   AirResistanceRND 5
+   AnimOnce 1
+   AnimFPS 80
+   LifetimeByAnim 1
+   Lifetime 0
+   LifetimeRND 0.2
+   Color {
+    0 0.352 0.352 0.352 1 1 1 1
+   }
+   Alpha {
+    0 0.539 0.019 1 0.212 1 1 0
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef Bebra2_90 {
+   MaxNum 1
+   BirthRate 55
+   Offset -0.3 0.4 0
+   Angles 35 90 0
+   Material "{FC9AEB448DEBAE4A}Particles/_Materials/Gas/Smoke_Explosion_01.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 1.5
+   SizeRND 1
+   BillboardingType LockedAxis
+   RandomUFlip 1
+   Velocity 1
+   VelocityRND 2
+   VelAffect 0.854
+   AirResistance 5
+   AirResistanceRND 5
+   AnimOnce 1
+   AnimFPS 80
+   LifetimeByAnim 1
+   Lifetime 0
+   LifetimeRND 0.2
+   Alpha {
+    0 0.539 0.019 1 0.212 1 1 0
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef Smoke_1 {
+   ConeAngle 360 5 66
+   MaxNum 4
+   BirthRate 200.9
+   Offset 0 0.1 0
+   Material "{61247CAB58EF0D6D}Particles/_Materials/Gas/Smoke_Explosion_02.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 1
+   SizeRND 1.5
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 4
+   VelocityRND 8
+   VelAffect 0.854
+   AirResistance 15.879
+   AirResistanceRND 5
+   WindInfluence 0.121
+   GravityMultiply -0.101
+   GravityMultiplyRND -0.101
+   AnimOnce 1
+   AnimFPS 45
+   Lifetime 1
+   LifetimeRND 3
+   Alpha {
+    0.002 1 0.512 0.739 1 0
+   }
+   Size {
+    0 0.509 0.205 0.8 1 1
+   }
+   EmittingTime 0.1
+   Repeat 0
+   AirResistanceMast {
+    0 1 1 0
+   }
+  }
+  EmitterDef Smoke_2 {
+   ConeAngle 360 170 180
+   MaxNum 8
+   BirthRate 555
+   Offset 0 0.1 0
+   Material "{442703F925ADC2EE}Particles/_Materials/Gas/Smoke_Explosion_02_forImpacts.emat"
+   Prefab "{29FBEC1991810EEF}system/wbdata/ParticleEditor/defaultPrefab.et"
+   SizeMultiplier 1
+   SizeRND 1
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 4
+   VelocityRND 8
+   VelAffect 0.854
+   AirResistance 12.337
+   AirResistanceRND 5
+   WindInfluence 0.121
+   GravityMultiply -0.101
+   GravityMultiplyRND -0.101
+   AnimOnce 1
+   AnimFPS 25
+   Lifetime 1
+   LifetimeRND 3
+   Color {
+    0.001 1 1 1 1 0 0 0
+   }
+   Alpha {
+    0 0.539 0.019 1 0.212 1 1 0
+   }
+   Size {
+    0 0.758 0.14 0.861 1 1
+   }
+   EmittingTime 0.1
+   Repeat 0
+   AirResistanceMast {
+    0 1 1 0
+   }
+  }
+ }
+}

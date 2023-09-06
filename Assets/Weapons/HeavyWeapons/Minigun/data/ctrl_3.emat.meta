@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{01752ED83159A50A}Assets/Weapons/HeavyWeapons/Minigun/data/ctrl_3.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

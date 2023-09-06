@@ -1,0 +1,75 @@
+ZEL_PilotHelmet : "{17F335BF60DD2550}Prefabs/Characters/Core/Headgear_Base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  SignalsManagerComponent "{5E3634080AD8F890}" {
+  }
+  SoundComponent "{567C833AB81F2FD7}" {
+   Filenames {
+    "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp" "{0737072109E39224}Sounds/Items/_SharedData/Drop/Items_Drop_Helmet.acp" "{5409F2998421DA59}Sounds/Items/Equipment/Radios/Items_Radio_Inspection_Actions.acp"
+   }
+   SoundPoints {
+    SoundPointInfo Radio {
+     PivotID "Head"
+    }
+   }
+  }
+  BaseRadioComponent "{5CAA0253CC58E92D}" {
+   "Encryption key" "coldBorscht"
+   "Turned on" 1
+   Transceivers {
+    BaseTransceiver "{5CAA0253C17A67EF}" {
+    }
+    IntercomTransceiver "{5CAA0253C45D2D17}" {
+    }
+    BaseTransceiver "{5CAA02534378559C}" {
+    }
+   }
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{5CA835ED186A9616}" {
+    ItemDisplayName UIInfo "{5CA835ED186A961D}" {
+     Name "Zsh-5"
+     Description "Russian Pilot Zsh-5 Helmet"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5CA835ED186A961E}" {
+     Weight 1.3
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 2500
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5CA835ED186A9618}" {
+      CameraOrbitAngles -25 25 0
+      CameraDistanceToItem 2
+      FOV 10
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
+  }
+  SCR_RadioComponent "{5CAA02535B5F4B10}" {
+   m_eAnimVariable R148
+   m_iRadioCategory MANPACK
+   m_iRadioType R107M
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType LoadoutHeadCoverArea "{5CA835ED186A9606}" {
+   }
+   WornModel "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
+   ItemModel "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
+   SoundInt 120
+  }
+  ActionsManagerComponent "{5112706CD4157AC9}" {
+   ActionContexts {
+    UserActionContext "{5112706CD4157AF3}" {
+     Position PointInfo "{5112706CD4157AF0}" {
+      Offset 0 0.1 0
+     }
+    }
+   }
+  }
+ }
+ coords 6460.802 162.201 6448.847
+}

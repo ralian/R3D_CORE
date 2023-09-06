@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{7C73F799EBAB30B6}Assets/Characters/Headgear/SP4/data/Visor.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

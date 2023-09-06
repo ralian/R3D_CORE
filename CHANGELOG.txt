@@ -1,0 +1,103 @@
+v1.1.4
+Fixed: Camera handler NULL check
+
+
+
+v1.1.3
+Added: Aerodynamics changes for initial A-10 release
+Fixed: Script crash related to pilot helmets on server
+
+
+
+v1.1.2
+Added: Better model for US Army Pilot helmet by Dustypeeks
+Added: H1060 headset unit
+
+
+
+v1.1.1
+-Hotfix: Small script hiccup which only compiled inside workbench
+
+
+
+v1.1.0
+-Hotfix: Small script hiccup which only compiled inside workbench
+
+
+
+v1.1.0
+-Added: Road Flare (in all arsenals)
+-Added: Temporary fueling system; to be removed with vanilla fueling system
+-Fixed: Both pilot helmets now in arsenal configs (Thanks Kex)
+-Added: Initial Aerodynamics system for airplanes
+-Added: Initial Radar/Missile guidance system
+-Misc. script warning/error fixes
+
+
+
+v1.0.10
+-Fix accidental override of Eden world :)
+
+
+
+v1.0.9
+-Fix script refactor for 0.98
+-Parametrize helicopter rotor warp
+-Improve minigun audio
+
+
+
+v1.0.8
+-Fix for audio muting for entire server when pilot helmet attached
+
+
+
+v1.0.7
+-Major particle effect update
+-Updated HeliBase to include startup signal for exhaust effect
+-Added pilot helmet sound dampening
+-Rotated pilot helmet meshes 180 degrees
+-Added Pilot Helmets to Arsenal
+-Fixed helicopter destruction audio rpt spam
+
+
+
+v1.0.6
+-Fixed SP4 LOD1-3 not parented to armeture
+-Added Radio Encryption Key
+-Added Zsh-5 Russian pilot helmet
+
+
+
+v1.0.5
+-Added SP4 helmet
+
+
+
+v1.0.4
+-Script cleanup in R3D_Heliblades.c
+-Added mounted minigun variant
+
+
+
+v1.0.3
+-Change loaded magazines to not show when loaded to M134
+
+
+
+v1.0.2
+-Material instance component now optional
+-Animation fixes on M134
+-Fixed IK targets on M134
+-Improved audio for M134
+
+
+
+v1.0.1
+-Minigun caliber is now corrected to 7.62x51
+-Increased capacity of mingun magazines
+
+
+
+v1.0.0
+-Initial commit of R3D_CORE

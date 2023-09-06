@@ -1,0 +1,16 @@
+SCR_EditorModeEntity : "{E56F54E533ACE527}Prefabs/Editor/Modes/EditorModeBase.et" {
+ ID "518A34314C7CB324"
+ components {
+  SCR_CampaignBuildingPlacingEditorComponent "{5A0ACCCCDF0C0F65}" {
+   m_Registries {
+    SCR_PlaceableEntitiesRegistry "{5DFC28F891141C1D}" {
+     m_sAddon "R3D_CORE"
+     m_sSourceDirectory "{360BA89939C859D3}PrefabsEditable/Auto/Compositions/Slotted"
+     m_Prefabs {
+      "{864D7832251356A6}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/E_FuelStorage_S_US_01.et" "{C2D040BB21F15A1F}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/E_FuelStorage_S_USSR_01.et"
+     }
+    }
+   }
+  }
+ }
+}

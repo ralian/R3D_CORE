@@ -1,0 +1,24 @@
+GenericEntity : "{0E5AF358EE0ACBFA}Prefabs/Compositions/Slotted/SlotFlatSmall/FuelStorage_S_US_01.et" {
+ ID "5282DCB5DFC8538F"
+ components {
+  SCR_EditableEntityComponent "{5A6A905919F93BC0}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    m_aAuthoredLabels + {
+     29 23
+    }
+    m_EntityBudgetCost {
+     SCR_EntityBudgetValue "{5DFC28FEA02F8E5F}" {
+      m_BudgetType CAMPAIGN
+      m_Value 350
+     }
+    }
+    m_EntityChildrenBudgetCost {
+     SCR_EntityBudgetValue "{5DFC28FFFD1BE8A5}" {
+      m_BudgetType SYSTEMS
+      m_Value 4
+     }
+    }
+   }
+  }
+ }
+}

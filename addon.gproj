@@ -1,0 +1,20 @@
+GameProject {
+ ID "R3D_CORE"
+ GUID "5AAF6D5352E5FCAB"
+ TITLE "Project Redline - Core"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

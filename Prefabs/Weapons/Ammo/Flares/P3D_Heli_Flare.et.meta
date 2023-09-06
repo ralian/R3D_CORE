@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{3A110FC5534BC798}Prefabs/Weapons/Ammo/Flares/P3D_Heli_Flare.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

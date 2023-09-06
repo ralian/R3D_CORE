@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{333355B66B47D1C4}Configs/Ammo/Ammo_Flare.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass XBOX_ONE : PC {
+  }
+  CONFResourceClass XBOX_SERIES : PC {
+  }
+  CONFResourceClass PS4 : PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

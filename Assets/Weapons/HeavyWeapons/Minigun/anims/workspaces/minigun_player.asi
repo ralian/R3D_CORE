@@ -1,0 +1,5 @@
+AnimSetInstanceSource {
+ Template "{4EB3147FA1ED89BD}Assets/Weapons/MachineGuns/workspaces/M249.ast"
+ RBF AnimSetInstanceSourceRBFArray "{5AAC1BE38121AE29}" {
+ }
+}

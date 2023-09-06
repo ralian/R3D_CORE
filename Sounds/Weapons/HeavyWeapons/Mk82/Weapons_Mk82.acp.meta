@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{AD413A735B124BCD}Sounds/Weapons/HeavyWeapons/Mk82/Weapons_Mk82.acp"
+ Configurations {
+  AudioProjectResourceClass PC {
+  }
+  AudioProjectResourceClass XBOX_ONE : PC {
+  }
+  AudioProjectResourceClass XBOX_SERIES : PC {
+  }
+  AudioProjectResourceClass PS4 : PC {
+  }
+  AudioProjectResourceClass HEADLESS : PC {
+  }
+ }
+}

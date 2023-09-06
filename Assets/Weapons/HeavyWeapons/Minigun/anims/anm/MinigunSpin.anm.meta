@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{B5D47FBEC0E211AB}Assets/Weapons/HeavyWeapons/Minigun/anims/anm/MinigunSpin.anm"
+ Configurations {
+  FBXAnimResourceClass PC {
+  }
+  FBXAnimResourceClass XBOX_ONE : PC {
+  }
+  FBXAnimResourceClass XBOX_SERIES : PC {
+  }
+  FBXAnimResourceClass PS4 : PC {
+  }
+  FBXAnimResourceClass HEADLESS : PC {
+  }
+ }
+}

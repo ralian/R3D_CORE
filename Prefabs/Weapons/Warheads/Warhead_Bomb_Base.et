@@ -1,0 +1,63 @@
+GenericEntity : "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et" {
+ ID "9D9BE68EA2672F76"
+ components {
+  SoundComponent "{D092A75ECEFAE456}" {
+   Filenames {
+    "{87E0968F67279DFE}Sounds/Weapons/Explosives/_SharedData/Weapons_Explosives_ATMine_Generic.acp"
+   }
+  }
+  BaseTriggerComponent "{55129E81CBAA1390}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{5E3E3536F71D4036}" {
+     ExplosionDamageEffects {
+      ExplosionImpulseEffect "{5E3E3536CAF353D3}" : "{3BE7AB8C8BD42E9B}Prefabs/Weapons/Core/Damage/BlastDamageEffect.conf" {
+       PerformTraces 0
+      }
+      ExplosionFragmentationEffect "{5E3E3536C922A31D}" : "{D865ECB9F1A819E9}Prefabs/Weapons/Core/Damage/FragmentationDamageEffect.conf" {
+       GurneyConstant 2370
+      }
+      BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" : "{ACBA86677A85EA46}Prefabs/Weapons/Core/Damage/IncendiaryDamageEffect.conf" {
+       DamageValue 60
+       PerformTraces 0
+      }
+     }
+    }
+    SpawnDistanceParticleEffect "{5E3E353673DF0347}" {
+     AttachToParent 1
+     ShouldReplicate 0
+     SubEffects {
+      SCR_MineDistanceParticleEffect "{5E3E35367835A7E1}" {
+       ParticleEffect "{6B8EFE20AD228A9B}Particles/Weapon/Explosion_M15_AT_Mine_LOD2.ptc"
+       MinDist 0
+       SubEffects {
+        SubDistanceParticleEffect "{5CE2E9B5884ABD07}" {
+         ModuloSpawned 7
+         ParticleEffect "{8105B9A5EA395C54}Particles/Weapon/Explosion_M15_AT_Mine.ptc"
+        }
+        SubDistanceParticleEffect "{5CE2E9B588E94F52}" {
+         ModuloSpawned 3
+         ParticleEffect "{F29047B9B0C5BB0B}Particles/Weapon/Explosion_M15_AT_Mine_LOD1.ptc"
+        }
+       }
+      }
+      SCR_MineDistanceParticleEffect "{5E3E353656EEC0C8}" {
+       ParticleEffect "{F29047B9B0C5BB0B}Particles/Weapon/Explosion_M15_AT_Mine_LOD1.ptc"
+       MinDist 7
+       SubEffects {
+        SubDistanceParticleEffect "{5CE2E9B5B29D7EEB}" {
+         ModuloSpawned 6
+         ParticleEffect "{8105B9A5EA395C54}Particles/Weapon/Explosion_M15_AT_Mine.ptc"
+        }
+       }
+      }
+      SCR_MineDistanceParticleEffect "{5E3E35365813A44F}" {
+       ParticleEffect "{8105B9A5EA395C54}Particles/Weapon/Explosion_M15_AT_Mine.ptc"
+       MinDist 14
+      }
+     }
+    }
+   }
+   TriggerOffset -0.05
+  }
+ }
+}

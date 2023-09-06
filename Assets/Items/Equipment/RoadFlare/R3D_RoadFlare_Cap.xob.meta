@@ -1,0 +1,45 @@
+MetaFileClass {
+ Name "{B954FDF52FA31CD9}Assets/Items/Equipment/RoadFlare/R3D_RoadFlare_Cap.xob"
+ Configurations {
+  FBXResourceClass PC {
+   MaterialAssigns {
+    MaterialAssignClass "{5DFC11362CCACD2E}" {
+     SourceMaterial "Material"
+     AssignedMaterial "{7DF046EBB262990C}Assets/Items/Equipment/RoadFlare/Data/R3D_RoadFlare_Cap.emat"
+    }
+   }
+   MeshParams {
+    MeshParam Cap {
+    }
+   }
+   GeometryParams {
+    GeometryParam UBX_Flare {
+     LayerPreset "Prop"
+     SurfaceProperties {
+      "{AC1A1CDEE58FEE27}Common/Materials/Game/paper.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{5DFC11362CC50897}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5DFC11362CC50B0B}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5DFC11362CC50B56}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5DFC11362CC50B4F}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5DFC11362CC50B67}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

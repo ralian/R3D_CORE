@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{6D9E4422174C351A}Sounds/Weapons/Grenades/Weapons_Smoke.acp"
+ Configurations {
+  AudioProjectResourceClass PC {
+  }
+  AudioProjectResourceClass XBOX_ONE : PC {
+  }
+  AudioProjectResourceClass XBOX_SERIES : PC {
+  }
+  AudioProjectResourceClass PS4 : PC {
+  }
+  AudioProjectResourceClass HEADLESS : PC {
+  }
+ }
+}

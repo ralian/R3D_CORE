@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{5CB07CC35B75AD07}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_BCR.edds"
+ NMOMap "{6468C7518202FF99}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_NMO.edds"
+}

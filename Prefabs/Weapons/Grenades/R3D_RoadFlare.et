@@ -1,0 +1,137 @@
+GenericEntity : "{0DCE9A9A4F31BE1C}Prefabs/Weapons/Core/SmokeGrenade_Base.et" {
+ ID "51FC8327BE43FED2"
+ components {
+  WeaponSoundComponent "{57227A5D228316FB}" {
+   Filenames {
+    "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp" "{6BE8D45ED5ADD202}Sounds/Weapons/Grenades/_SharedData/Weapons_Grenade_Impacts_RDG2.acp" "{27E5FEBCE92BE40B}Sounds/Weapons/_SharedData/Melee/Weapons_Melee.acp" "{CC0E5A1324E761C1}Sounds/Items/_SharedData/Drop/Items_Drop_Generic.acp" "{B24CD5945953ADA5}Sounds/Weapons/Grenades/SmokeGrenades/Weapons_SmokeGrenade_RGD2_Unpin.acp" "{982B12014C97FEF7}Sounds/Weapons/Grenades/SmokeGrenades/Weapons_SmokeGrenade_SmokeLoop.acp"
+   }
+  }
+  TimerTriggerComponent "{5934C8C5C9FDF999}" {
+   PROJECTILE_EFFECTS {
+    SpawnParticleEffect "{5CAADB9AD0C61F3F}" {
+     ParticleEffect "{68566FB2277AD4C2}Particles/Weapons/Effects/FlareGun/RoadFlare.ptc"
+     SoundStopOffset 5000
+    }
+    SpawnPrefabEffect "{5DFD532FC00CCF58}" {
+     AttachToParent 1
+    }
+   }
+   TIMER 0
+  }
+  GrenadeMoveComponent "{1F80A73ADE35BFF1}" {
+   InitSpeed 30
+   Mass 0.397
+   BallisticTableConfig "{900E362C5B4A1B69}Configs/Weapons/AIBallisiticTables/AIBT_Smoke_RDG2.conf"
+   SingleSafety 1
+  }
+  InventoryItemComponent "{51FAA3E3CF6F087A}" {
+   Attributes SCR_ItemAttributeCollection "{51FAA3E3C2D19BD4}" {
+    ItemDisplayName WeaponUIInfo "{5DFD3852A85D18A1}" {
+     Name "Road Flare"
+     Description "Single use, 15 minute burn"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5DFD3852A85D18A6}" {
+     Weight 0.43
+     SizeSetupStrategy Manual
+     ItemDimensions 10 10 10
+     ItemVolume 200
+    }
+    ItemAnimationAttributes ItemAnimationAttributes "{5284A988FFFB3DAC}" {
+     AnimationIKPose "{DF96CCB6ADFD8139}Assets/Weapons/Grenades/RDG2/anims/anm/p_rdg2_ik.anm"
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{52D2D341931DB0B8}" {
+      CameraPreset Left
+      CameraOrbitAngles -25 25 0
+      CameraDistanceToItem 1.2
+      FOV 10
+     }
+    }
+   }
+  }
+  MeshObject "{51EC93F29BA5F234}" {
+   Object "{C05DCB34CA38F109}Assets/Items/Equipment/RoadFlare/R3D_RoadFlare.xob"
+  }
+  Hierarchy "{5DFD3852A85D18AE}" {
+  }
+  RigidBody "{0F2AA6AEC948C9D6}" {
+   Mass 0.397
+  }
+  SCR_WeaponAttachmentsStorageComponent "{5DFD3852A85D18D3}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{5DFD3852A85D18D2}" {
+    ItemDisplayName WeaponUIInfo "{5DFD3852A85D18D5}" {
+     Name "#AR-Weapon_RDG2_Name"
+     Description "#AR-Weapon_RDG2_Description"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5DFD3852A85D18D7}" {
+     Weight 0.43
+     SizeSetupStrategy Volume
+     ItemVolume 200
+    }
+    ItemAnimationAttributes ItemAnimationAttributes "{5DFD3852A85D18D9}" {
+     IkSettings {
+      ItemIKSettings "{5DFD3852A85D18DB}" {
+       MovementSpeedRange 0 3
+      }
+      ItemIKSettings "{5DFD3852A85D18DA}" {
+       Lowered 1
+       InAds 0
+       OutAds 0
+      }
+      ItemIKSettings "{5DFD3852A85D18DD}" {
+       Jumping 1
+       InAds 0
+       OutAds 0
+      }
+     }
+     AnimationInstance "{4FCBEA45CAEBC9C0}anims/workspaces/player/player_main_1h.asi"
+     AnimInstanceBlendDuration 0.3
+     ExcludeBonesBlend {
+      "RightHandProp"
+     }
+     AnimationIKPose "{DF96CCB6ADFD8139}Assets/Weapons/Grenades/RDG2/anims/anm/p_rdg2_ik.anm"
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5DFD3852A85D18DF}" {
+      CameraDistanceToItem 1
+      FOV 8
+     }
+    }
+    m_Size SLOT_1x1
+   }
+   StoragePurpose 32
+  }
+  WeaponComponent "{6D23670EA18BF513}" {
+   components {
+    BaseItemAnimationComponent "{5DFD3852A85D18C2}" {
+     AnimGraph "{55A20911FA0F2BC0}Assets/Weapons/Grenades/workspaces/Grenade_RGD2.agr"
+     AnimInstance "{EC8525C4EF9B04A6}Assets/Weapons/Grenades/workspaces/Grenade_RDG2.asi"
+     AnimInjection AnimationAttachmentInfo "{5DFD3852A85D18C7}" {
+      AnimGraph "{55A20911FA0F2BC0}Assets/Weapons/Grenades/workspaces/Grenade_RGD2.agr"
+      AnimInstance "{8024781CF8E3A916}Assets/Weapons/Grenades/workspaces/Player_RDG2.asi"
+      BindingName "Grenade"
+     }
+     BindWithInjection 1
+     MeshVisibilityConfigurations {
+      MeshesVisibilitySwitchConfig "{5DFD3852A85D18C9}" {
+       Event "HidePin"
+       Meshes {
+        "RDG2_topPin"
+       }
+      }
+     }
+    }
+   }
+   WeaponType None
+   SoundInt 1000100
+   UIInfo GrenadeUIInfo "{172367262E10E042}" {
+    Name "Road Flare"
+    Description "Single use, 15 minute burn"
+    m_MagIndicator SCR_MagazineIndicatorConfiguration "{5874D63FFD3D5993}" : "{CB5EE05B7C8C1244}Configs/WeaponInfo/MagazineIndicators/smoke_rgd2.conf" {
+    }
+    m_bShowAmmoTypeText 0
+   }
+  }
+ }
+}

@@ -1,0 +1,248 @@
+EffectDef {
+ Emitters {
+  EmitterDef smoke_small_fast {
+   ConeAngle 360 0 0
+   MaxNum 2
+   BirthRate 1000
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0.1
+   Angles -90 0 0
+   LocalTransform 0
+   LodMin 0
+   LodMax 1
+   Material "{C6F4DCD7DC66D027}Particles/_Materials/Gas/Smoke_Weapons_01.emat"
+   SizeMultiplier 0.6
+   SizeRND 0.6
+   CenterY 0
+   RotMultiplier 50
+   RandomRotDir 1
+   RandomAngle 1
+   RandomUFlip 1
+   Velocity 0
+   VelocityRND 1
+   VelAffect 0.35
+   AirResistance 3
+   AirResistanceRND 1
+   WindInfluence 0.167
+   GravityMultiply 0.01
+   GravityMultiplyRND 0
+   AnimOnce 1
+   AnimFPS 150
+   RandomFrame 0
+   Lifetime 0.2
+   LifetimeRND 0
+   Color {
+    0 1 1 1 1 1 1 1
+   }
+   Alpha {
+    0 0.7 1 0
+   }
+   RotationSpeed {
+    0 1 1 0
+   }
+   Size {
+    0 0.5 1 1
+   }
+   EmittingTime 0.1
+   Repeat 0
+  }
+  EmitterDef hot {
+   ConeAngle 360 0 0
+   MaxNum 50
+   BirthRate 20
+   BirthRateRND 0
+   BirthRateVel 1
+   Offset 0 0 0
+   Angles -90 0 0
+   LocalTransform 1
+   LodMin 0
+   LodMax 0
+   Material "{239FB3ED3B942A0B}Particles/_Materials/Gas/Smoke_Weapons_02.emat"
+   SizeMultiplier 0.2
+   SizeRND 0.2
+   CenterY 0
+   RotMultiplier 50
+   RandomRotDir 1
+   RandomAngle 1
+   Velocity 0
+   VelocityRND 0
+   VelAffect 0
+   AirResistance 0
+   AirResistanceRND 0
+   WindInfluence 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   AnimOnce 1
+   AnimFPS 30
+   LifetimeByAnim 0
+   RandomFrame 0
+   Lifetime 0.25
+   LifetimeRND 0.1
+   Color {
+    0 1 1 1 1 1 1 1
+   }
+   Alpha {
+    0 1 0.338 0.319 1 0
+   }
+   RotationSpeed {
+    0 1 1 0
+   }
+   Size {
+    0 1 1 1
+   }
+   EmittingTime 0.5
+   Repeat 0
+   AlphaMast {
+    0 1 1 0
+   }
+  }
+  EmitterDef hot_cloned {
+   ConeAngle 360 0 0
+   MaxNum 4
+   BirthRate 555
+   BirthRateRND 0
+   BirthRateVel 1
+   Offset 0 0 0
+   Angles -90 0 0
+   LocalTransform 1
+   LodMin 0
+   LodMax 0
+   Material "{239FB3ED3B942A0B}Particles/_Materials/Gas/Smoke_Weapons_02.emat"
+   SizeMultiplier 1
+   SizeRND 1
+   CenterY 0
+   RotMultiplier 50
+   RandomRotDir 1
+   RandomAngle 1
+   Velocity 0
+   VelocityRND 0
+   VelAffect 0
+   AirResistance 0
+   AirResistanceRND 0
+   WindInfluence 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   AnimOnce 1
+   AnimFPS 60
+   LifetimeByAnim 1
+   RandomFrame 0
+   Lifetime 0.25
+   LifetimeRND 0.1
+   Color {
+    0 1 1 1 1 1 1 1
+   }
+   Alpha {
+    0 1 0.338 0.319 1 0
+   }
+   RotationSpeed {
+    0 1 1 0
+   }
+   Size {
+    0 1 1 1
+   }
+   EmittingTime 0.1
+   Repeat 0
+   AlphaMast {
+    0 1 1 0
+   }
+  }
+  EmitterDef hot_cloned_cloned {
+   MaxNum 50
+   BirthRate 12
+   BirthRateRND 0
+   BirthRateVel 1
+   Offset 0 0 0
+   LodMin 0
+   LodMax 0
+   Material "{C6F4DCD7DC66D027}Particles/_Materials/Gas/Smoke_Weapons_01.emat"
+   SizeMultiplier 0.5
+   SizeRND 0.4
+   CenterY 0
+   RotMultiplier 50
+   RandomRotDir 1
+   RandomAngle 1
+   Velocity 0.1
+   VelocityRND 0
+   VelAffect 1
+   AirResistance 3
+   AirResistanceRND 1
+   WindInfluence 0.054
+   GravityMultiply -0.1
+   AnimOnce 1
+   AnimFPS 35
+   RandomFrame 1
+   Lifetime 1.5
+   LifetimeRND 0.5
+   Color {
+    0 1 1 1 1 1 1 1
+   }
+   Alpha {
+    0 1 0.355 0.679 1 0
+   }
+   RotationSpeed {
+    0 1 1 0
+   }
+   Size {
+    0 0 1 0.885
+   }
+   EmittingTime 4
+   Repeat 0
+   AlphaMast {
+    0 0 0.147 1 0.713 0.37 1 0
+   }
+  }
+  EmitterDef smoke_top_cloned_cloned_cloned {
+   ConeAngle 360 0 10
+   MaxNum 45
+   BirthRate 64
+   BirthRateRND 15
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles -90 0 0
+   LocalTransform 0
+   LodMin 0
+   LodMax 1
+   Material "{C6F4DCD7DC66D027}Particles/_Materials/Gas/Smoke_Weapons_01.emat"
+   SizeMultiplier 2
+   SizeRND 2
+   CenterX 0
+   CenterY -0.8
+   RotMultiplier 0
+   RandomRotDir 1
+   VelAngle 0
+   RandomUFlip 1
+   Velocity 9
+   VelocityRND 7
+   VelAffect 1
+   AirResistance 6
+   AirResistanceRND 1
+   WindInfluence 0.166
+   GravityMultiply 0.01
+   GravityMultiplyRND 0
+   AnimOnce 1
+   AnimFPS 120
+   LifetimeByAnim 0
+   RandomFrame 1
+   Lifetime 1
+   LifetimeRND 2
+   Color {
+    0 1 1 1 1 1 1 1
+   }
+   Alpha {
+    0 1 1 0
+   }
+   RotationSpeed {
+    0 1 1 1
+   }
+   Size {
+    0 0.109 1 1
+   }
+   EmittingTime 0.1
+   Repeat 0
+   VelocityMast {
+    0 1 1 0
+   }
+  }
+ }
+}

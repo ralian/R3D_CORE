@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{F1F0E84188F9BDA0}Sounds/Weapons/HeavyWeapons/M2/smokeL.acp"
+ Configurations {
+  AudioProjectResourceClass PC {
+  }
+  AudioProjectResourceClass XBOX_ONE : PC {
+  }
+  AudioProjectResourceClass XBOX_SERIES : PC {
+  }
+  AudioProjectResourceClass PS4 : PC {
+  }
+  AudioProjectResourceClass HEADLESS : PC {
+  }
+ }
+}

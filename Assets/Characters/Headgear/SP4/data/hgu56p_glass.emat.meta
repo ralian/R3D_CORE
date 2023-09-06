@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{1654B4A579E3BDD2}Assets/Weapons/Attachments/Optics/PSO1/Data/hgu56p_glass.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

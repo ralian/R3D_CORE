@@ -1,0 +1,55 @@
+MetaFileClass {
+ Name "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{5E2E285B134CD5D4}" {
+     SourceMaterial "R3D_air_weapons"
+     AssignedMaterial "{7EA4452D27348D9F}Assets/Weapons/HeavyWeapons/Mk82/data/R3D_air_weapons.emat"
+    }
+   }
+   MeshParams {
+    MeshParam Mk82 {
+    }
+   }
+   GeometryParams {
+    GeometryParam UCX_Main {
+     LayerPreset "Prop"
+     SurfaceProperties {
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UCX_Fire {
+     LayerPreset "FireView"
+     SurfaceProperties {
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   COMAutocenter 1
+   Common TXOCommonClass "{5E2E285B1341C7D2}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5E2E285B1341C542}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5E2E285B1341C522}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5E2E285B1341C5E9}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5E2E285B1341DA52}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

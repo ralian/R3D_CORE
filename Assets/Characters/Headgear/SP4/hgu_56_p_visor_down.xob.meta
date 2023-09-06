@@ -1,0 +1,60 @@
+MetaFileClass {
+ Name "{2FE63B538BE14753}Assets/Characters/Headgear/SP4/hgu_56_p_visor_down.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{5E097269A07FB1C2}" {
+     SourceMaterial "Du_HGU_56"
+     AssignedMaterial "{1C9D94213D33DA1F}Assets/Characters/Headgear/SP4/data/Du_HGU_56.emat"
+    }
+    MaterialAssignClass "{5E097269A07FB1E5}" {
+     SourceMaterial "Visor"
+     AssignedMaterial "{1654B4A579E3BDD2}Assets/Characters/Headgear/SP4/data/hgu56p_glass.emat"
+    }
+   }
+   MeshParams {
+    MeshParam HGU56P {
+    }
+   }
+   GeometryParams {
+    GeometryParam UTM_FireView {
+     LayerPreset "FireView"
+     SurfaceProperties {
+      "{CF50027087BA3402}Common/Materials/Game/Core/hard_aramid_7.3mm.gamemat"
+      "{1AE7CAD77E3B62D7}Common/Materials/Game/plexiglass.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UTM_VisorFire {
+     LayerPreset "FireGeo"
+     SurfaceProperties {
+      "{CF50027087BA3402}Common/Materials/Game/Core/hard_aramid_7.3mm.gamemat"
+      "{1AE7CAD77E3B62D7}Common/Materials/Game/plexiglass.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{5E097269A0479749}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5E097269A047D922}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5E097269A047D9DA}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5E097269A047DA26}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5E097269A047DA87}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

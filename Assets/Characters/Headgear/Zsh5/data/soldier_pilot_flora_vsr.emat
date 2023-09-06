@@ -1,0 +1,11 @@
+MatPBRBasic {
+ SpecularMul 0.38
+ RoughnessScale 1.194
+ MetalnessScale 0.078
+ AOScale 0.651
+ DielectricReflectance 0.03
+ CavityFromAO 0.109
+ BCRMap "{97F29FD753261603}Assets/Characters/Headgear/Zsh5/data/Zsh5_Helmet_BCR.edds"
+ NormalPower 1.333
+ NMOMap "{AF2A24458A51449D}Assets/Characters/Headgear/Zsh5/data/Zsh5_Helmet_NMO.edds"
+}

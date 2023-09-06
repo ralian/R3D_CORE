@@ -1,0 +1,58 @@
+GenericEntity : "{62B2ADC4243454F9}Prefabs/Props/Civilian/Jerrycan_01.et" {
+ ID "527C8824F3732100"
+ components {
+  SCR_PlaceableInventoryItemComponent "{5DEF5AF1D7B457CD}" {
+   Attributes SCR_ItemAttributeCollection "{5DEF5AF1DA1A24F5}" {
+    ItemDisplayName UIInfo "{5DEF5AF1DEA10A48}" {
+     Name "Jerry Can"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5DEF5AF1A25B27E1}" {
+     Weight 20
+     SizeSetupStrategy Manual
+     ItemDimensions 1 1 1
+     ItemVolume 5000
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5DEF5AF9E130760C}" {
+      CameraPreset Right
+      CameraDistanceToItem 0.6
+     }
+    }
+    CommonItemType "NONE"
+    m_Size SLOT_3x3
+    m_SlotType SLOT_LOADOUT_STORAGE
+   }
+  }
+  ActionsManagerComponent "{5DEF5AF285AD5A70}" {
+   ActionContexts {
+    UserActionContext "{5DEF5AF284259524}" {
+     ContextName "handle"
+     Position PointInfo "{5DEF5AF28EBE018F}" {
+      Offset 0 0.5 0
+     }
+    }
+   }
+   additionalActions {
+    R3D_FuelVehicleAction "{5DEF5AF298E4D5DB}" {
+     ParentContextList {
+      "handle"
+     }
+     UIInfo UIInfo "{5DEF5AF260153FAB}" {
+      Name "Fuel Vehicle"
+     }
+     Duration 15
+     remove_after_use 1
+    }
+    SCR_PickUpItemAction "{5DEF5AF151B39460}" {
+     ParentContextList {
+      "handle"
+     }
+     UIInfo UIInfo "{5DEF5AF158204E32}" {
+      Name "Pickup"
+     }
+     Duration 1
+    }
+   }
+  }
+ }
+}

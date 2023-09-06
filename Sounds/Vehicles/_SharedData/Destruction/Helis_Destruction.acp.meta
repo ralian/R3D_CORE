@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{00BC771D6DAA2348}Sounds/Vehicles/_SharedData/Destruction/Helis_Destruction.acp"
+ Configurations {
+  AudioProjectResourceClass PC {
+  }
+  AudioProjectResourceClass XBOX_ONE : PC {
+  }
+  AudioProjectResourceClass XBOX_SERIES : PC {
+  }
+  AudioProjectResourceClass PS4 : PC {
+  }
+  AudioProjectResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,113 @@
+GenericEntity : "{F54F6C453A8CB478}Prefabs/Weapons/Core/MachineGun_Base.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{59EB6D963DF32B49}" {
+   Filenames {
+    "{F1F0E84188F9BDA0}Sounds/Weapons/HeavyWeapons/M2/smokeL.acp"
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
+  }
+  SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
+   Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {
+    ItemDisplayName WeaponUIInfo "{5222CB07E1D123E9}" {
+     Name "#AR-Weapon_PKMT_Name"
+     Description "#AR-Weapon_PKMT_Description"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{59EB6D963DF32B79}" {
+     Weight 11.7
+     SizeSetupStrategy Volume
+     ItemVolume 3000
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5534BB9B9A3E369E}" {
+      CameraPreset Right
+      CameraDistanceToItem 1.1
+     }
+    }
+   }
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    SightsComponent "{BB23A637957CFFF8}" {
+     SightsPosition PointInfo "{BB23A63796688E69}" {
+      PivotID "eye"
+     }
+    }
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     components {
+      CaseEjectingEffectComponent "{5122AAD190FCA21D}" {
+       Enabled 1
+       ParticleEffect "{40C8AD1204EC2629}Particles/Weapon/Smoke_PKM.ptc"
+       EffectPosition EntitySlotInfo "{513A938439231378}" {
+        PivotID "barrel_muzzle"
+        Angles -90 0 0
+       }
+       HasSound 0
+      }
+      SCR_MuzzleEffectComponent "{C9B3271BB22CDB68}" {
+       ParticleEffect "{A0CCFED3034A6B8D}Particles/Weapon/Muzzle_PKMT.ptc"
+       EffectPosition EntitySlotInfo "{C9B3271BB85B5D32}" {
+        Angles -90 0 0
+       }
+      }
+     }
+     MuzzleEndPositions {
+      PointInfo "{59F559D3D9DB1C43}" {
+       Offset 1 -0.7 -1
+       Angles -20 90 0
+      }
+     }
+     ProjectileSpawnPositions {
+      PointInfo "{50F64C476EC435CA}" {
+       Offset 0 0 -0.01
+       Angles 0 0 -0.961
+      }
+      PointInfo "{59F559D33376DB1D}" {
+       Offset 1 -0.7 -0.8
+       Angles -20 90 -0.961
+      }
+     }
+     FireModes {
+      BaseFireMode "{B80A64F4A8EF8333}" {
+       MaxBurst -1
+       BurstType Interruptable
+       MaxSalvo -1
+       RoundsPerMinute 300
+      }
+     }
+     MagazineWell MagazineWellFlarePod "{59EB6D963DF32B9B}" {
+     }
+     BulletInitSpeedCoef 1.036
+     DispersionDiameter 0.4
+     DispersionRange 500
+     UIInfo MuzzleUIInfo "{2FBBA72C906C627E}" {
+      Name "Flare Launcher"
+      Description "Flare Launcher"
+     }
+     MagazinePosition InventoryStorageSlot "{B80A64F4C834E9CB}" {
+      PivotID ""
+      Offset 0.18 -0.13 0.15
+     }
+     MagazineTemplate "{3D895B38FE6943B0}Prefabs/Weapons/Magazines/FlareMag.et"
+    }
+    AttachmentSlotComponent "{59EB6D963DF32B9E}" {
+     AttachmentSlot InventoryStorageSlot optics {
+      PivotID "slot_optics"
+      ChildPivotID "snap_weapon"
+      Enabled 0
+     }
+    }
+   }
+   WeaponType None
+   SoundInt 1040300
+   UIInfo WeaponUIInfo "{CC3BA6A2C42F09F4}" {
+    Name "Flare Launcher"
+    Description "Flare Launcher"
+    Icon "{BA7F7A47422ABC71}UI/Textures/WeaponIcons/weapon_PKMT.edds"
+   }
+   WeaponSlotType "hmg"
+  }
+ }
+}

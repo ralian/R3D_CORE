@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{B8E44303CAA469D0}Configs/Ammo/Ammo_M134.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass XBOX_ONE : PC {
+  }
+  CONFResourceClass XBOX_SERIES : PC {
+  }
+  CONFResourceClass PS4 : PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

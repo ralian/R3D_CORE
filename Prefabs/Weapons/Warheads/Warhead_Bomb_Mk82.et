@@ -1,0 +1,39 @@
+GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et" {
+ ID "9D9BE68EA2672F76"
+ components {
+  SoundComponent "{D092A75ECEFAE456}" {
+   Filenames {
+    "{AD413A735B124BCD}Sounds/Weapons/HeavyWeapons/Mk82/Weapons_Mk82.acp"
+   }
+  }
+  BaseTriggerComponent "{55129E81CBAA1390}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{5E3E3536F71D4036}" {
+     ExplosionDamageEffects {
+      ExplosionImpulseEffect "{5E3E3536CAF353D3}" {
+       ExplosionImpulseMultiplier 1
+      }
+      ExplosionFragmentationEffect "{5E3E3536C922A31D}" {
+       DamageValue 30
+       DamageFragmentCount 1000
+       CaseWeight 93000
+      }
+      BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" {
+       DamageValue 200
+      }
+     }
+     ChargeWeight 87000
+     TntEquivalent 230
+    }
+    SpawnDistanceParticleEffect "{5E3E353673DF0347}" {
+     SubEffects {
+      SCR_MineDistanceParticleEffect "{5E3E35365813A44F}" {
+       ParticleEffect "{AD5DE75242B5E4DA}Particles/Weapons/HeavyWeapons/Mk82/Explosion_Mk82.ptc"
+      }
+     }
+    }
+   }
+   TriggerOffset -0.5
+  }
+ }
+}

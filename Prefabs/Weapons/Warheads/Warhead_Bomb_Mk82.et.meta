@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

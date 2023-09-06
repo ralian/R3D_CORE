@@ -1,0 +1,6 @@
+MatPBRBasic {
+ BlendMode AlphaBlend
+ AllowUserAlphaBias 1
+ BCRMap "{676600361391EFC2}Assets/Characters/Headgear/SP4/Du_HGU_56_BCR.edds"
+ NMOMap "{5FBEBBA4CAE6BD5C}Assets/Characters/Headgear/SP4/Du_HGU_56_NMO.edds"
+}

@@ -1,0 +1,184 @@
+MetaFileClass {
+ Name "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{5CAA025FDF821762}" {
+     SourceMaterial "soldier_pilot_helmet"
+     AssignedMaterial "{D7B451A6FD2ED27D}Assets/Characters/Headgear/Zsh5/data/soldier_pilot_helmet.emat"
+    }
+    MaterialAssignClass "{5CAA025FDF821793}" {
+     SourceMaterial "soldier_pilot_flora_vsr"
+     AssignedMaterial "{543C96050885F671}Assets/Characters/Headgear/Zsh5/data/soldier_pilot_flora_vsr.emat"
+    }
+    MaterialAssignClass "{5CAA025FDF82179B}" {
+     SourceMaterial "pilotglass"
+     AssignedMaterial "{E6A2054F3326E499}Assets/Characters/Headgear/Zsh5/data/pilotglass.emat"
+    }
+    MaterialAssignClass "{5CAA025FDF821780}" {
+     SourceMaterial "DefaultGeneratedMaterial"
+     AssignedMaterial "{0B3CF8DEAA516C3C}Assets/Characters/Headgear/Zsh5/data/DefaultGeneratedMaterial.emat"
+    }
+   }
+   MeshParams {
+    MeshParam Object {
+    }
+    MeshParam aiming_axis {
+    }
+    MeshParam aimpoint {
+    }
+    MeshParam camera {
+    }
+    MeshParam footstepl {
+    }
+    MeshParam footstepr {
+    }
+    MeshParam granat {
+    }
+    MeshParam granat2 {
+    }
+    MeshParam head {
+    }
+    MeshParam "head.001" {
+    }
+    MeshParam "head.002" {
+    }
+    MeshParam head_axis {
+    }
+    MeshParam lankle {
+    }
+    MeshParam lefthand {
+    }
+    MeshParam "lefthand.001" {
+    }
+    MeshParam "lefthand.002" {
+    }
+    MeshParam leftshoulder {
+    }
+    MeshParam lelbow {
+    }
+    MeshParam lelbow_axis {
+    }
+    MeshParam lfemur {
+    }
+    MeshParam lknee {
+    }
+    MeshParam lknee_axis {
+    }
+    MeshParam lwrist {
+    }
+    MeshParam pelvis {
+    }
+    MeshParam "pelvis.001" {
+    }
+    MeshParam pilot {
+    }
+    MeshParam rankle {
+    }
+    MeshParam relbow {
+    }
+    MeshParam relbow_axis {
+    }
+    MeshParam rfemur {
+    }
+    MeshParam righthand {
+    }
+    MeshParam "righthand.001" {
+    }
+    MeshParam "righthand.002" {
+    }
+    MeshParam rightshoulder {
+    }
+    MeshParam rknee {
+    }
+    MeshParam rknee_axis {
+    }
+    MeshParam rwrist {
+    }
+    MeshParam spine3 {
+    }
+    MeshParam "spine3.001" {
+    }
+    MeshParam "spine3.002" {
+    }
+    MeshParam weapon {
+    }
+    MeshParam "weapon.001" {
+    }
+    MeshParam "weapon.002" {
+    }
+    MeshParam "weapon.003" {
+    }
+    MeshParam "weapon.004" {
+    }
+    MeshParam "proxy:/ca/weapons/rpg7_proxy.001" {
+    }
+    MeshParam "proxy:/ca/weapons/rpg7_proxy.002" {
+    }
+    MeshParam "proxy:/ca/weapons/rpg7_proxy.003" {
+    }
+   }
+   GeometryParams {
+    GeometryParam UBX_EarLGeo {
+     LayerPreset "Character"
+     SurfaceProperties {
+      "{EB67C7AAFE4FAD87}Common/Materials/Game/Fabric/fabric_3mm_min.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UBX_EarRGeo {
+     LayerPreset "Character"
+     SurfaceProperties {
+      "{EB67C7AAFE4FAD87}Common/Materials/Game/Fabric/fabric_3mm_min.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UBX_HelmetGeo {
+     LayerPreset "Character"
+     SurfaceProperties {
+      "{1E4F05B3A10A714E}Common/Materials/Game/Armor/armor_1mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UTM_VisorGeo {
+     LayerPreset "Character"
+     SurfaceProperties {
+      "{D35A995F5FF6BA8F}Common/Materials/Game/glass_laminated.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam UTM_FireGeometry {
+     LayerPreset "FireView"
+     SurfaceProperties {
+      "{1E4F05B3A10A714E}Common/Materials/Game/Armor/armor_1mm.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{5CAA025FDFC531F5}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{5CAA025FDFC533F6}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{5CAA025FDFC53273}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{5CAA025FDFC532DC}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{5CAA025FDFC53520}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

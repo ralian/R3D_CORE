@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{FDBB45258EDA078A}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_Zsh5.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

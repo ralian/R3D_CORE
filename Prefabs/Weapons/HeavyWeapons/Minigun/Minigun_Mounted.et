@@ -1,0 +1,154 @@
+GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.et" {
+ ID "476AE74DE20E1061"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames {
+    "{3E28601CBE736F22}Sounds/Weapons/HeavyWeapons/Minigun/Weapons_HeavyWeapons_M134_Shot_02.acp" "{6616B1A0537FC180}Sounds/Vehicles/Wheeled/M151A2/Vehicles_M151A2_Turret.acp" "{EC7E8631CBC17F15}Sounds/Weapons/HeavyWeapons/M2/Weapons_HeavyWeapons_M2_Handling.acp"
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{A49BC653982A4E09}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Mounted.xob"
+  }
+  SCR_DamageManagerComponent "{506CDB924EC124FE}" {
+   "Additional hit zones" {
+   }
+  }
+  SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
+   Enabled 1
+   Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {
+    ItemDisplayName WeaponUIInfo "{5222CB07E1D123E9}" {
+     Name "#AR-Weapon_M134_Name"
+     Description "#AR-Weapon_M134_Description"
+    }
+    ItemAnimationAttributes ItemAnimationAttributes "{5284960E60421307}" {
+     AllowInspection 0
+    }
+   }
+  }
+  TurretComponent "{6D6D283BE816D8C3}" {
+   components {
+    SightsComponent "{548ACB4CB39992AB}" {
+     SightsPosition PointInfo "{548ACB4CAD252930}" {
+      Offset 0 0 0
+     }
+    }
+   }
+   LimitsHoriz -80 80
+   LimitsVert -80 40
+   CameraAdsAttachment PointInfo "{56B4E2BA9BEFA450}" {
+    PivotID "w_turret_vertical"
+    Offset 0.0218 0.26 -0.478
+    Angles 0 0 0
+   }
+   ikTargets {
+    AnimationIKTargetInfo "{52A8F6FBFD4FABD2}" {
+     BindingName "LHandIKTarget"
+     PositionInfo PointInfo "{52A8F6FBF1B039F8}" {
+      PivotID "v_hand_L_target"
+      Offset 0 0.043 0
+     }
+    }
+    AnimationIKTargetInfo "{52A8F6FBFC729D0C}" {
+     BindingName "RHandIKTarget"
+     PositionInfo PointInfo "{52A8F6FBF92A2E39}" {
+      PivotID "v_hand_R_target"
+      Offset -0.0493 -0.0423 0
+     }
+    }
+   }
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    AttachmentSlotComponent "{B502E4DC8A9E835E}" {
+     Enabled 1
+    }
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     components {
+      CaseEjectingEffectComponent "{5122AAD190FCA21D}" {
+       Enabled 1
+       EffectPosition EntitySlotInfo "{513A938439231378}" {
+        Angles 0 -90 0
+       }
+      }
+      CaseEjectingEffectComponent "{52D4A6D19FE1F420}" {
+       ParticleEffect "{1758A8D6FF010E99}Particles/Weapons/HeavyWeapons/Minigun/Smoke_M134.ptc"
+      }
+      CaseEjectingEffectComponent "{56D2FD459B34A0B8}" {
+       Enabled 0
+       EffectPosition EntitySlotInfo casing_holder {
+        Angles 0 -90 0
+       }
+      }
+      SCR_MuzzleEffectComponent "{C9B3271BB22CDB68}" {
+       ParticleEffect "{DA98D17FA4F0BAB3}Particles/Weapons/HeavyWeapons/Minigun/Muzzle_M134_1.ptc"
+      }
+     }
+     ChamberedAmmo 0
+     FireModes {
+      BaseFireMode "{B80A64F4A8EF8333}" {
+       MaxSalvo 5
+       RoundsPerMinute 1000
+      }
+     }
+     MagazineWell MagazineWellM134 "{476AE746AB0E8948}" {
+     }
+     DispersionDiameter 0.6
+     DispersionRange 100
+     WeaponAimModifiers {
+      SwayWeaponAimModifier "{521AE9A27BDC1E6F}" {
+       IsEnabled 0
+      }
+      RecoilWeaponAimModifier "{58FEF4CEB6D08FB5}" {
+       IsEnabled 0
+       LinearData RecoilData "{58FEF4CEB4AD6DC3}" {
+        "Base Recoil Scale" 0.5
+        "Deployment Recoil Scale" 0.5
+        "OneHand Scale" 0.5
+       }
+       AngularData RecoilData "{58FEF4CEB55C295D}" {
+        "Base Recoil Scale" 0.5
+       }
+       TurnOffsetData RecoilData "{58FEF4CEAAB470D0}" {
+        "Base Recoil Scale" 0.5
+       }
+      }
+     }
+     UIInfo MuzzleUIInfo "{2FBBA72C906C627E}" {
+      m_sCaliber "#AR-AmmunitionID_762x51mm"
+     }
+     ReloadDuration 10
+     MagazinePosition InventoryStorageSlot "{B80A64F4C834E9CB}" {
+      PivotID "w_turret_vertical"
+      Offset 0 0.0064 -0.1101
+      ChildPivotID ""
+     }
+     MagazineTemplate "{FF49212FC1CE54F8}Prefabs/Weapons/Magazines/Box_762x51_M134_500rnd_Tracer.et"
+    }
+    SightsComponent "{BB23A637957CFFF8}" {
+     SightsPosition PointInfo "{BB23A63796688E69}" {
+      PivotID "eye"
+     }
+    }
+    WeaponAnimationComponent "{5AAC19DA416327C9}" {
+     AnimGraph "{5C41727F96285D4E}Assets/Weapons/MachineGuns/workspaces/M249.agr"
+     AnimInstance "{38B2B88A95DCEA4A}Assets/Weapons/HeavyWeapons/Minigun/anims/workspaces/minigun_weapon.asi"
+     AlwaysActive 1
+     AnimInjection AnimationAttachmentInfo "{5AAC19DA4AF97BC0}" {
+      AnimGraph "{C727601154428730}Assets/Weapons/HeavyWeapons/workspaces/M2HB_tripod.agr"
+      AnimInstance "{90F5E30119FE8312}Assets/Weapons/HeavyWeapons/workspaces/M2HB_Player_tripod.asi"
+      BindingName "Weapon"
+     }
+     BindWithInjection 1
+     AnimCommandsToBind {
+     }
+     AnimVariablesToBind {
+     }
+    }
+   }
+   UIInfo WeaponUIInfo "{CC3BA6A2C42F09F4}" {
+    Name "M134"
+    Description "American 7.62×51mm NATO six-barrel rotary machine gun"
+   }
+  }
+ }
+}
