@@ -58,7 +58,9 @@ ZEL_PilotHelmet : "{17F335BF60DD2550}Prefabs/Characters/Core/Headgear_Base.et" {
    AreaType LoadoutHeadCoverArea "{5CA835ED186A9606}" {
    }
    WornModel "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
-   ItemModel "{30B248EB2E94DA34}Assets/Characters/Headgear/Zsh5/Zsh5.xob"
+   ItemModel "{1A37699916B6CCFC}Assets/Characters/Headgear/Zsh5/Zsh5Item.xob"
+   PhysicsOnWearEnabled 1
+   AnimateCollidersOnWear 1
    SoundInt 120
   }
   ActionsManagerComponent "{5112706CD4157AC9}" {
