@@ -1,9 +1,14 @@
 GenericEntity : "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et" {
  ID "5E2E362F886335F0"
  components {
+  R3D_UIInfo "{5E3F094903F0D720}" {
+   m_uiInfo SCR_UIInfo "{5E3F0949011F425A}" {
+    Name "#R3D-EditableEntity_Mk82_Name"
+   }
+  }
   SCR_EditableEntityComponent "{5E609DC74A213D0B}" : "{996046FE206C699A}Prefabs/Editor/Components/Default_SCR_EditableEntityComponent.ct" {
    m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
-    Name "(Mk82)"
+    Name "#R3D-EditableEntity_Mk82_Name"
     m_Image "{A63A34760A6C8C55}UI/Textures/EditorPreviews/Auto/Weapons/HeavyWeapons/Mk82/E_Mk82.edds"
     m_aAuthoredLabels {
      1001
