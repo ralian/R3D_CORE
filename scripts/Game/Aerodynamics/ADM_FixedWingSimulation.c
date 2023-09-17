@@ -174,7 +174,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		Rpc(Rpc_Owner_ToggleEngine);
 	}
 	
-	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_ToggleEngine()
 	{
 		m_bIsEngineOn = !m_bIsEngineOn;
@@ -206,7 +206,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		Rpc(Rpc_Owner_ToggleGear);	
 	}
 	
-	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_ToggleGear()
 	{
 		m_bGearState = !m_bGearState;
