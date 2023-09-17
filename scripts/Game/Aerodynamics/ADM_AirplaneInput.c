@@ -91,7 +91,7 @@ class ADM_AirplaneInput : ScriptComponent
 			}
 		}
 		
-		Math.Clamp(input, -1, 1);
+		input = Math.Clamp(input, -1, 1);
 		
 		return input;
 	}
@@ -126,6 +126,8 @@ class ADM_AirplaneInput : ScriptComponent
 			m_fAileronTrim += m_trimVelocity * aileron * 0.1;
 		else
 			m_fAileronInput = aileron;
+		
+		m_fAileronTrim = Math.Clamp(m_fAileronTrim, -1, 1);
 	}
 	
 	void ElevatorInput(float elevator = 0.0, EActionTrigger reason = 0) 
@@ -137,6 +139,8 @@ class ADM_AirplaneInput : ScriptComponent
 			m_fElevatorTrim += m_trimVelocity * elevator * 0.1;
 		else
 			m_fElevatorInput = elevator;
+		
+		m_fElevatorTrim = Math.Clamp(m_fElevatorTrim, -1, 1);
 	}
 	
 	void RudderInput(float rudder = 0.0, EActionTrigger reason = 0) 
@@ -147,6 +151,8 @@ class ADM_AirplaneInput : ScriptComponent
 			m_fRudderTrim += m_trimVelocity * rudder * 0.1;
 		else
 			m_fRudderInput = rudder;
+		
+		m_fRudderTrim = Math.Clamp(m_fRudderTrim, -1, 1);
 	}
 	
 	void ThrustInput(float thrust = 0.0, EActionTrigger reason = 0) 
@@ -259,8 +265,12 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	override void OnPostInit(IEntity owner)
 	{
+		#ifdef WORKBENCH
+		SetEventMask(owner, EntityEvent.FRAME | EntityEvent.DIAG);
+		#else
 		SetEventMask(owner, EntityEvent.FRAME);
-		
+		#endif
+				
 		InputManager inputManager = GetGame().GetInputManager();
         inputManager.AddActionListener("R3D_AirplaneAilerons", 		EActionTrigger.VALUE, AileronInput);
         inputManager.AddActionListener("R3D_AirplaneElevators", 	EActionTrigger.VALUE, ElevatorInput);
@@ -291,5 +301,33 @@ class ADM_AirplaneInput : ScriptComponent
 			m_fSpeedBrakeInput -= m_fSpeedBrakeVelocity;
 			m_fSpeedBrakeInput = Math.Clamp(m_fSpeedBrakeInput, 0, 1);
 		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	bool m_ShowDbgUI = true;
+	override void EOnDiag(IEntity owner, float timeSlice)
+	{
+		super.EOnDiag(owner, timeSlice);
+	
+#ifdef WORKBENCH
+		DbgUI.Begin(string.Format("ADM_AirplaneInput: %1", owner.GetName()));
+		if (m_ShowDbgUI)
+		{
+			DbgUI.Text(string.Format("m_fAileronInput: %1", m_fAileronInput));
+			DbgUI.Text(string.Format("m_fElevatorInput: %1", m_fElevatorInput));
+			DbgUI.Text(string.Format("m_fRudderInput: %1", m_fRudderInput));
+			DbgUI.Text(string.Format("m_fThrustInput: %1", m_fThrustInput));
+			DbgUI.Text(string.Format("m_fSpeedBrakeInput: %1", m_fSpeedBrakeInput));
+			DbgUI.Text(string.Format("m_fFlapInput: %1", m_fFlapInput));
+			DbgUI.Text(string.Format("m_bSpeedBrakeToggle: %1", m_bSpeedBrakeToggle));
+			DbgUI.Text(string.Format("m_TrimModifier: %1", m_TrimModifier));
+			DbgUI.Text(string.Format("m_fAileronTrim: %1", m_fAileronTrim));
+			DbgUI.Text(string.Format("m_fElevatorTrim: %1", m_fElevatorTrim));
+			DbgUI.Text(string.Format("m_fRudderTrim: %1", m_fRudderTrim));
+			DbgUI.Text(string.Format("m_Freelook: %1", m_Freelook));
+			DbgUI.Text("");
+		}
+		DbgUI.End();
+#endif
 	}
 }

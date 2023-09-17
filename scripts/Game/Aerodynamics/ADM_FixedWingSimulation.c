@@ -26,11 +26,15 @@ class ADM_FixedWingSimulation : ScriptComponent
 	[Attribute(uiwidget: UIWidgets.Object, category: "Fixed Wing Simulation")]
 	ref array<ref ADM_LandingGear> m_Gear;
 	
-	//[RplProp()]
+	[Attribute(category: "Fixed Wing Simulation")]
+	protected string m_sHullHitzone;
+	
+	[RplProp()]
 	protected bool m_bIsEngineOn = false; //Set the engine to be off by default
 	
-	//[RplProp()]
+	[RplProp()]
 	protected bool m_bGearState = true; // true = deployed, false = retracted
+	
 	private IEntity m_Owner = null;
 	private Physics m_Physics = null;
 	private ADM_AirplaneInput m_Input = null;
@@ -42,6 +46,8 @@ class ADM_FixedWingSimulation : ScriptComponent
 	private CameraHandlerComponent m_LocalCameraHandler = null;
 	private CameraManager m_CameraManager = null;
 	private ref array<ADM_EngineComponent> m_Engines = {}; 
+	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
+	private HitZone m_HullHitZone = null;
 	
 	private int m_iPitchSignal = -1;
 	private int m_iRollSignal = -1;
@@ -63,9 +69,9 @@ class ADM_FixedWingSimulation : ScriptComponent
 		super.OnPostInit(owner);
 		
 		#ifdef ENABLE_DIAG
-		SetEventMask(owner, EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.DIAG);
+		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.DIAG);
 		#else
-		SetEventMask(owner, EntityEvent.FRAME | EntityEvent.SIMULATE);
+		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE);
 		#endif
 		owner.SetFlags(EntityFlags.ACTIVE, true);
 		
@@ -76,6 +82,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_VehicleWheeledSim = VehicleWheeledSimulation_SA.Cast(owner.FindComponent(VehicleWheeledSimulation_SA));
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_CameraManager = GetGame().GetCameraManager();
+		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		
 		m_Physics.SetActive(true);
 		
@@ -115,7 +122,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 			gear.m_vPosition.Init(owner);
 		}
 		
-		CalculatePanels(owner);
+		CalculatePanels();
 		
 		EventHandlerManagerComponent ev = EventHandlerManagerComponent.Cast(owner.FindComponent(EventHandlerManagerComponent));
 		if (ev)
@@ -123,6 +130,11 @@ class ADM_FixedWingSimulation : ScriptComponent
 			ev.RegisterScriptHandler("OnCompartmentEntered", this, OnCompartmentEntered);
 			ev.RegisterScriptHandler("OnCompartmentLeft", this, OnCompartmentLeft);
 		}
+	}
+	
+	override void EOnInit(IEntity owner)
+	{		
+		m_HullHitZone = m_DamageManager.GetHitZoneByName(m_sHullHitzone);
 	}
 	
 	protected CharacterAnimationComponent m_CharacterAnim = null;
@@ -150,61 +162,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_iCharacterAileronInput = -1;
 		m_iCharacterElevatorInput = -1;
 		m_Pilot = null;
-		
-		vector position = m_Owner.GetOrigin();
-		vector angles = m_Owner.GetAngles();
-		vector velocity = m_Owner.GetPhysics().GetVelocity();
-		//Rpc(RpcAsk_OnPilotExit, position, angles, velocity);
-	}
-	
-	//------------------------------------------------------------------------------------------------
-	bool m_ShowDbgUI = true;
-	override void EOnDiag(IEntity owner, float timeSlice)
-	{
-		super.EOnDiag(owner, timeSlice);
-	
-#ifdef WORKBENCH
-		//Draw(owner);
-		
-		DbgUI.Begin(string.Format("ISA Properties: %1", owner.GetName()));
-		if (!m_Physics) return;
-		vector vel = m_Physics.GetVelocity();	
-		if (m_ShowDbgUI)
-		{
-			float altitude = GetAltitude();
-			float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
-			float pressure = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Pressure);
-			float temperature = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Temperature);
-			float dynamicViscosity = ADM_InternationalStandardAtmosphere.GetDynamicViscosity(altitude);
-			float reynoldsNumber = density * vel.Length() / dynamicViscosity;
-			
-			DbgUI.Text(string.Format("Altitude: %1 m", altitude));
-			DbgUI.Text(string.Format("Density: %1 kg/m^3", density));
-			DbgUI.Text(string.Format("Pressure: %1 Pa", pressure));
-			DbgUI.Text(string.Format("Temperature: %1 K", temperature));
-			DbgUI.Text(string.Format("Dynamic Viscosity: %1 Pa*s", dynamicViscosity));
-			DbgUI.Text(string.Format("Reynolds Number: %1 m^-1", reynoldsNumber));
-			DbgUI.Text("");
-		}
-		DbgUI.End();
-		
-		DbgUI.Begin(string.Format("ADM_FixedWing: %1", owner.GetName()));
-		if (m_ShowDbgUI)
-		{
-			float mach = GetMachNumber();
-			
-			DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
-			DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
-			DbgUI.Text("");
-		}
-		DbgUI.End();
-		
-		vector coa = owner.CoordToParent(m_vAerodynamicCenter + m_vAerodynamicCenterOffset);
-		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);	
-		
-		vector wind = GetWindVector();
-		Shape.CreateArrow(coa, coa + wind, 1, Color.YELLOW, ShapeFlags.ONCE);
-#endif
 	}
 	
 	bool IsEngineOn()
@@ -214,12 +171,20 @@ class ADM_FixedWingSimulation : ScriptComponent
 	
 	void ToggleEngine()
 	{
+		Rpc(Rpc_Owner_ToggleEngine);
+	}
+	
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	void Rpc_Owner_ToggleEngine()
+	{
 		m_bIsEngineOn = !m_bIsEngineOn;
 		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
 		foreach(ADM_EngineComponent engine : m_Engines)
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
 		}
+		
+		Replication.BumpMe();
 	}
 	
 	float GetAltitude()
@@ -238,6 +203,12 @@ class ADM_FixedWingSimulation : ScriptComponent
 	
 	void ToggleGear()
 	{
+		Rpc(Rpc_Owner_ToggleGear);	
+	}
+	
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	void Rpc_Owner_ToggleGear()
+	{
 		m_bGearState = !m_bGearState;
 		
 		if (m_SignalsManager)
@@ -245,6 +216,8 @@ class ADM_FixedWingSimulation : ScriptComponent
 			int signalIndex = m_SignalsManager.AddOrFindMPSignal("ToggleGear", 0, 30, (int)(!m_bGearState), SignalCompressionFunc.RotDEG);
 			m_SignalsManager.SetSignalValue(signalIndex, (int)(!m_bGearState));
 		}
+		
+		Replication.BumpMe();
 	}
 	
 	void FindLocalPlayerController()
@@ -360,6 +333,16 @@ class ADM_FixedWingSimulation : ScriptComponent
 			}
 		}
 		
+		if (m_HullHitZone && m_HullHitZone.GetDamageState() == EDamageState.DESTROYED)
+		{
+			if (m_bIsEngineOn)
+			{
+				ToggleEngine();
+			}
+			
+			Deactivate(m_Owner);
+		}
+		
 		m_vPreviousVelocity = velocity;
 	}
 	
@@ -382,13 +365,14 @@ class ADM_FixedWingSimulation : ScriptComponent
 		float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density); // [kg/m^3]
 		float dynamicPressure = 1/2 * density * flowVelocity.LengthSq(); // [Pa]
 		
-		//TODO: optimize by not using script-script function calls. (normal vector, chord vector, span, etc)
+		//TODO: optimize by not using script-script function calls
 		for (int i = 0; i < m_Wings.Count(); i++)
 		{
 			float aspectRatio = m_Wings[i].GetAspectRatio();	
 			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
 			{
 				ADM_WingSection curSection = m_Wings[i].m_Sections[j];
+				
 				float surfaceArea = curSection.m_fSurfaceArea;
 				vector vSpan = owner.VectorToParent(curSection.m_vSpan);
 				vector aerocenter = owner.CoordToParent(curSection.m_vAerodynamicCenter);
@@ -400,7 +384,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 				vector dragDir = sectionFlowVelocity.Normalized();
 				vector liftDir = dragDir * vSpan;
 				
-				float angleOfAttack = Math.Atan2(-sectionFlowVelocityLocal[1], sectionFlowVelocityLocal[2])*Math.RAD2DEG + curSection.m_TwistAngle*-1;
+				float angleOfAttack = Math.Atan2(-sectionFlowVelocityLocal[1], sectionFlowVelocityLocal[2])*Math.RAD2DEG;
 				
 				float CL = 0;
 				float CD = 0;
@@ -476,75 +460,17 @@ class ADM_FixedWingSimulation : ScriptComponent
 	}
 	
 	// Only calculated once since panels are static
-	void CalculatePanels(IEntity owner)
+	void CalculatePanels()
 	{
 		vector acTotal = vector.Zero;
 		float acTotalArea = 0;
 		
-		// Calculate panel normals and aerodynamic center
 		for (int i = 0; i < m_Wings.Count(); i++)
 		{
-			vector wingRoot = m_Wings[i].m_vRootPosition;
+			m_Wings[i].CalculatePanels();
 			
-			// Each subsequent section should start at the leading edge at the end of the span of the previous section
-			vector previousSectionLE = vector.Zero;
-			float totalSpan = 0;
-			float meanChord = 0;
-			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
-			{
-				ADM_WingSection curSection = m_Wings[i].m_Sections[j];
-				
-				// Transformations on basis vectors
-				// Rotate points for twist and dihedral angles
-				vector angles;
-				angles[1] = curSection.m_TwistAngle;
-				angles[2] = curSection.m_DihedralAngle;
-				
-				// Skew points for sweep angle
-				vector transformMatrix[3];
-				Math3D.AnglesToMatrix(angles, transformMatrix);
-				transformMatrix[0][2] = Math.Tan(curSection.m_SweepAngle * Math.DEG2RAD);
-				
-				vector vSpan = vector.Right.Multiply3(transformMatrix); // 1 0 0
-				vector vChord = vector.Forward.Multiply3(transformMatrix); // 0 0 1
-				vector vNormal = vChord * vSpan;
-				
-				// AC Line
-				vector acLine[2];
-				acLine[0] = wingRoot + previousSectionLE - vChord * curSection.m_ACPosition * curSection.m_Chord;
-				acLine[1] = acLine[0] + vSpan * curSection.m_Span;
-				previousSectionLE = previousSectionLE + vSpan * curSection.m_Span;
-				vector acCenter = (acLine[0] + acLine[1])/2;
-				
-				totalSpan += Math.AbsFloat(curSection.m_Span);
-				meanChord += Math.AbsFloat(curSection.m_Chord);
-				
-				float surfaceArea = Math.AbsFloat(curSection.m_Span * curSection.m_Chord);
-				acTotal += acCenter * surfaceArea;
-				acTotalArea += surfaceArea;
-		
-				curSection.SetNormalVector(vNormal);
-				curSection.SetSpanVector(vSpan);
-				curSection.SetChordVector(vChord);
-				curSection.SetAerodynamicCenter(acCenter);
-				curSection.SetSurfaceArea(surfaceArea);
-				
-				if (curSection.m_ControlSurfaces)
-				{
-					for (int k = 0; k < curSection.m_ControlSurfaces.Count(); k++)
-					{
-						curSection.m_ControlSurfaces[k].m_fChordPercentRoot = Math.Sqrt(curSection.m_ControlSurfaces[k].m_fChordPercent);
-					}
-				}
-			}
-			
-			if (m_Wings[i].m_Sections && m_Wings[i].m_Sections.Count() > 0)
-			{
-				meanChord /= m_Wings[i].m_Sections.Count();
-			}
-				
-			float aspectRatio = totalSpan / meanChord;
-			m_Wings[i].SetAspectRatio(aspectRatio);
+			acTotalArea += m_Wings[i].GetSurfaceArea();
+			acTotal += m_Wings[i].GetAerodynamicCenter();
 		}
 		
 		if (acTotalArea > 0) acTotal /= acTotalArea;
@@ -648,11 +574,15 @@ class ADM_FixedWingSimulation : ScriptComponent
 		}
 		
 		if (acTotalArea > 0) acTotal /= acTotalArea;
-		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, owner.CoordToParent(acTotal + m_vAerodynamicCenterOffset), 0.1);	
+		vector coa = owner.CoordToParent(acTotal + m_vAerodynamicCenterOffset);
+		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);	
 		
 		vector COM = vector.Zero;
 		if (m_Physics && m_Physics.GetCenterOfMass()) COM = m_Physics.GetCenterOfMass();
 		Shape.CreateSphere(Color.YELLOW, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, owner.CoordToParent(COM), 0.1);	
+		
+		vector wind = GetWindVector();
+		Shape.CreateArrow(coa, coa + wind, 1, Color.YELLOW, ShapeFlags.ONCE);
 	}
 #endif
 	
@@ -660,8 +590,52 @@ class ADM_FixedWingSimulation : ScriptComponent
 #ifdef WORKBENCH
 	protected override void _WB_AfterWorldUpdate(IEntity owner, float timeSlice)
 	{
-		CalculatePanels(owner);
+		CalculatePanels();
 		Draw(owner);
 	}
 #endif
+	
+	//------------------------------------------------------------------------------------------------
+	bool m_ShowDbgUI = true;
+	override void EOnDiag(IEntity owner, float timeSlice)
+	{
+		super.EOnDiag(owner, timeSlice);
+	
+#ifdef WORKBENCH
+		Draw(owner);
+		
+		DbgUI.Begin(string.Format("ISA Properties: %1", owner.GetName()));
+		if (!m_Physics) return;
+		vector vel = m_Physics.GetVelocity();	
+		if (m_ShowDbgUI)
+		{
+			float altitude = GetAltitude();
+			float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
+			float pressure = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Pressure);
+			float temperature = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Temperature);
+			float dynamicViscosity = ADM_InternationalStandardAtmosphere.GetDynamicViscosity(altitude);
+			float reynoldsNumber = density * vel.Length() / dynamicViscosity;
+			
+			DbgUI.Text(string.Format("Altitude: %1 m", altitude));
+			DbgUI.Text(string.Format("Density: %1 kg/m^3", density));
+			DbgUI.Text(string.Format("Pressure: %1 Pa", pressure));
+			DbgUI.Text(string.Format("Temperature: %1 K", temperature));
+			DbgUI.Text(string.Format("Dynamic Viscosity: %1 Pa*s", dynamicViscosity));
+			DbgUI.Text(string.Format("Reynolds Number: %1 m^-1", reynoldsNumber));
+			DbgUI.Text("");
+		}
+		DbgUI.End();
+		
+		DbgUI.Begin(string.Format("ADM_FixedWing: %1", owner.GetName()));
+		if (m_ShowDbgUI)
+		{
+			float mach = GetMachNumber();
+			
+			DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
+			DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
+			DbgUI.Text("");
+		}
+		DbgUI.End();
+#endif
+	}
 }

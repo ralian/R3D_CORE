@@ -46,5 +46,7 @@ GenericEntity {
   }
   RplComponent "{5E2E362844B9731E}" {
   }
+  NwkMovementComponent "{5E6040A169E67927}" {
+  }
  }
 }
