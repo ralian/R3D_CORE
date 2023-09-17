@@ -1,13 +1,13 @@
 GenericEntity {
  ID "5E2E362F886335F0"
  components {
+  SignalsManagerComponent "{5E605C46F31F3AA8}" {
+  }
   MeshObject "{5E2E2858CE4B1AB2}" {
    Object "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
   }
-  R3D_ExplosionTriggerComponent "{5E3342118F9BC37D}" {
+  R3D_ExplosionTriggerComponent "{5E623601F49CCDB4}" {
    m_sExplosionPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
-   m_fMinAltitudeAGLTrigger -1
-   m_fMinPressureTrigger -1
    m_bCollisionTrigger 1
    m_bBelowTerrainTrigger 1
    m_fArmingDelay 2
@@ -25,28 +25,10 @@ GenericEntity {
    CenterOfMass 0 -0.234 -0.2
    ModelGeometry 1
   }
-  SCR_EditableEntityComponent "{5E434AE663ECC3D8}" {
-   m_UIInfo SCR_EditableEntityUIInfo "{5E434AE60961FCF0}" {
-    Name "Mk82"
-    m_Image "{91F00974E11967B4}UI/Textures/EditorPreviews/gbu.edds"
-    m_aAuthoredLabels {
-     1 27
-    }
-   }
-  }
-  SCR_PreviewEntityComponent "{5E434AE656C2EA74}" {
-   m_aEntries {
-    SCR_BasePreviewEntry "{5E4428E518519DBE}" {
-     m_iParentID -1
-     m_Mesh "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et"
-     m_Shape MESH
-     m_vPosition 0 0 0
-    }
-   }
+  NwkMovementComponent "{5E6040A169E67927}" {
   }
   RplComponent "{5E2E362844B9731E}" {
-  }
-  NwkMovementComponent "{5E6040A169E67927}" {
+   "Rpl State Override" Runtime
   }
  }
 }

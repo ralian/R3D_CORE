@@ -1,6 +1,16 @@
 GenericEntity : "{62B2ADC4243454F9}Prefabs/Props/Civilian/Jerrycan_01.et" {
  ID "527C8824F3732100"
  components {
+  SCR_EditableEntityComponent "{58AAE8059CB24CBA}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    m_aAuthoredLabels {
+     1001
+    }
+    m_aAutoLabels + {
+     23
+    }
+   }
+  }
   SCR_PlaceableInventoryItemComponent "{5DEF5AF1D7B457CD}" {
    Attributes SCR_ItemAttributeCollection "{5DEF5AF1DA1A24F5}" {
     ItemDisplayName UIInfo "{5DEF5AF1DEA10A48}" {

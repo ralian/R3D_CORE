@@ -1,0 +1,32 @@
+GenericEntity : "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et" {
+ ID "5E2E362F886335F0"
+ components {
+  SCR_EditableEntityComponent "{5E609DC74A213D0B}" : "{996046FE206C699A}Prefabs/Editor/Components/Default_SCR_EditableEntityComponent.ct" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "(Mk82)"
+    m_Image "{A63A34760A6C8C55}UI/Textures/EditorPreviews/Auto/Weapons/HeavyWeapons/Mk82/E_Mk82.edds"
+    m_aAuthoredLabels {
+     1001
+    }
+    m_aAutoLabels {
+     1 121 27
+    }
+   }
+  }
+  SCR_PreviewEntityComponent "{5E609DC74A22F47C}" : "{6CADA7A88A6265FD}Prefabs/Editor/Components/PreviewEntityComponentClass.ct" {
+   m_bRuntime 0
+   m_aEntries {
+    SCR_BasePreviewEntry "{5E609DC74A22F702}" {
+     m_iParentID -1
+     m_Mesh "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+     m_Flags EDITABLE
+     m_Shape MESH
+     m_iPivotID ""
+     m_vScale 1 1 1
+     m_vPosition 0 0 0
+     m_vAngles 0 0 0
+    }
+   }
+  }
+ }
+}
