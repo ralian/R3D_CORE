@@ -41,7 +41,7 @@ class ADM_EngineComponent : ScriptComponent
 	private float m_fRPM;
 	
 	[RplProp()]
-	private bool m_bIsEngineOn = false;
+	private bool m_bIsEngineOn;
 	
 	[Attribute()]
 	protected float m_fMinRPM;
@@ -85,6 +85,9 @@ class ADM_EngineComponent : ScriptComponent
 		if (m_fThrottle <= 0 || m_fThrottle > 2 || !m_Physics || !m_bIsEngineOn || !m_RplComponent.IsOwner())
 			return;
 		
+		if (m_RplComponent.Role() == RplRole.Authority)
+			return;
+		
 		vector thrust = -owner.VectorToParent(m_vExhaustDirection) * m_fMaxThrust * m_fThrottle;
 		m_Physics.ApplyImpulseAt(owner.CoordToParent(m_vNozzleExit), thrust * timeSlice);
 	}
@@ -121,7 +124,7 @@ class ADM_EngineComponent : ScriptComponent
 		Rpc(Rpc_Owner_SetEngineStatus, status);
 	}
 	
-	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_SetEngineStatus(bool status)
 	{
 		m_bIsEngineOn = status;

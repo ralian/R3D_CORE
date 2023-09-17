@@ -41,7 +41,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 	private vector m_vAerodynamicCenter;
 	private SignalsManagerComponent m_SignalsManager = null;
 	private VehicleWheeledSimulation_SA m_VehicleWheeledSim = null;
-	private RplComponent m_RplComponent = null;
+	private BaseRplComponent m_RplComponent = null;
 	private SCR_PlayerController m_LocalPlayerController = null;
 	private CameraHandlerComponent m_LocalCameraHandler = null;
 	private CameraManager m_CameraManager = null;
@@ -80,7 +80,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_Input = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));
 		m_VehicleWheeledSim = VehicleWheeledSimulation_SA.Cast(owner.FindComponent(VehicleWheeledSimulation_SA));
-		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
+		m_RplComponent = BaseRplComponent.Cast(owner.FindComponent(BaseRplComponent));
 		m_CameraManager = GetGame().GetCameraManager();
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		
@@ -161,6 +161,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_CharacterAnim = null;	
 		m_iCharacterAileronInput = -1;
 		m_iCharacterElevatorInput = -1;
+		m_iCharacterThrottleInput = -1;
 		m_Pilot = null;
 	}
 	
@@ -169,22 +170,22 @@ class ADM_FixedWingSimulation : ScriptComponent
 		return m_bIsEngineOn;
 	}
 	
-	void ToggleEngine()
+	/*void ToggleEngine()
 	{
-		Rpc(Rpc_Owner_ToggleEngine);
-	}
+		Rpc(Rpc_Server_ToggleEngine);
+	}*/
 	
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void Rpc_Owner_ToggleEngine()
+	void Rpc_Server_ToggleEngine()
 	{
 		m_bIsEngineOn = !m_bIsEngineOn;
-		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
+		Replication.BumpMe();
+		
+		//m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
 		foreach(ADM_EngineComponent engine : m_Engines)
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
 		}
-		
-		Replication.BumpMe();
 	}
 	
 	float GetAltitude()
@@ -276,7 +277,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 			m_SignalsManager.SetSignalValue(m_iViewAngleSignal, n_angle);
 		}
 		
-		if (!m_RplComponent.IsOwner() || m_Pilot == null)
+		if (m_RplComponent.Role() == RplRole.Authority)
 			return;
 		
 		// Cockpit Animation Signals
@@ -337,7 +338,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		{
 			if (m_bIsEngineOn)
 			{
-				ToggleEngine();
+				Rpc(Rpc_Server_ToggleEngine);
 			}
 			
 			Deactivate(m_Owner);
@@ -349,6 +350,9 @@ class ADM_FixedWingSimulation : ScriptComponent
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		super.EOnSimulate(owner, timeSlice);
+		
+		if (m_RplComponent.Role() == RplRole.Authority)
+			return;
 		
 		if (!m_Physics || !m_Physics.IsActive() || !m_RplComponent.IsOwner())
 			return;
