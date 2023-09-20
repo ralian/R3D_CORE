@@ -85,9 +85,6 @@ class ADM_EngineComponent : ScriptComponent
 		if (m_fThrottle <= 0 || m_fThrottle > 2 || !m_Physics || !m_bIsEngineOn || !m_RplComponent.IsOwner())
 			return;
 		
-		if (m_RplComponent.Role() == RplRole.Authority)
-			return;
-		
 		vector thrust = -owner.VectorToParent(m_vExhaustDirection) * m_fMaxThrust * m_fThrottle;
 		m_Physics.ApplyImpulseAt(owner.CoordToParent(m_vNozzleExit), thrust * timeSlice);
 	}

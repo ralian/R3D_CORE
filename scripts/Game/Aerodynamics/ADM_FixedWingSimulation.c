@@ -277,9 +277,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 			m_SignalsManager.SetSignalValue(m_iViewAngleSignal, n_angle);
 		}
 		
-		if (m_RplComponent.Role() == RplRole.Authority)
-			return;
-		
 		// Cockpit Animation Signals
 		vector velocity = m_Physics.GetVelocity();
 		vector flowVelocity = velocity + GetWindVector();
@@ -350,9 +347,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		super.EOnSimulate(owner, timeSlice);
-		
-		if (m_RplComponent.Role() == RplRole.Authority)
-			return;
 		
 		if (!m_Physics || !m_Physics.IsActive() || !m_RplComponent.IsOwner())
 			return;
