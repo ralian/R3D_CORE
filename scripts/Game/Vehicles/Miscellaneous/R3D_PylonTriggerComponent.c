@@ -3,7 +3,7 @@ class R3D_PylonTriggerComponentClass : ScriptComponentClass {}
 class R3D_PylonTriggerComponent : ScriptComponent 
 {
 	// Mod me for custom behavior on drop. (like triggering a missile)
-	bool Trigger(IEntity owner, R3D_PylonComponent fromPylon)
+	/*bool Trigger(IEntity owner, R3D_PylonComponent fromPylon)
 	{
 		if (fromPylon.CanUnloadItem())
 		{
@@ -27,5 +27,5 @@ class R3D_PylonTriggerComponent : ScriptComponent
 		}
 		
 		return false;
-	}
+	}*/
 }

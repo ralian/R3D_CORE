@@ -90,7 +90,7 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 	private bool m_bHasExploded = false;
 	void Explode()
 	{
-		if (m_bHasExploded) return;
+		if (m_bHasExploded || !Replication.IsServer()) return;
 		m_bHasExploded = true;
 		
 		EntitySpawnParams params = EntitySpawnParams();

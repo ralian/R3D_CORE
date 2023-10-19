@@ -35,20 +35,23 @@ class ADM_FixedWingSimulation : ScriptComponent
 	[RplProp()]
 	protected bool m_bGearState = true; // true = deployed, false = retracted
 	
+	// Required Component References
 	private IEntity m_Owner = null;
 	private Physics m_Physics = null;
 	private ADM_AirplaneInput m_Input = null;
 	private vector m_vAerodynamicCenter;
 	private SignalsManagerComponent m_SignalsManager = null;
-	private VehicleWheeledSimulation_SA m_VehicleWheeledSim = null;
-	private BaseRplComponent m_RplComponent = null;
+	private VehicleBaseSimulation m_VehicleBaseSim = null;
+	private RplComponent m_RplComponent = null;
 	private SCR_PlayerController m_LocalPlayerController = null;
 	private CameraHandlerComponent m_LocalCameraHandler = null;
 	private CameraManager m_CameraManager = null;
 	private ref array<ADM_EngineComponent> m_Engines = {}; 
 	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
 	private HitZone m_HullHitZone = null;
+	private NwkHeliMovementComponent m_NwkMovement = null;
 	
+	// Animation signals
 	private int m_iPitchSignal = -1;
 	private int m_iRollSignal = -1;
 	private int m_iAltitudeSignal = -1;
@@ -68,23 +71,26 @@ class ADM_FixedWingSimulation : ScriptComponent
 	{
 		super.OnPostInit(owner);
 		
-		#ifdef ENABLE_DIAG
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.DIAG);
-		#else
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE);
-		#endif
+		//#ifdef ENABLE_DIAG
+		//SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.DIAG);
+		//#else
+		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.POSTFRAME);
+		//#endif
 		owner.SetFlags(EntityFlags.ACTIVE, true);
 		
+		// Required Components
 		m_Owner = owner;
 		m_Physics = owner.GetPhysics();
 		m_Input = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));
-		m_VehicleWheeledSim = VehicleWheeledSimulation_SA.Cast(owner.FindComponent(VehicleWheeledSimulation_SA));
-		m_RplComponent = BaseRplComponent.Cast(owner.FindComponent(BaseRplComponent));
+		m_VehicleBaseSim = VehicleBaseSimulation.Cast(owner.FindComponent(VehicleBaseSimulation));
+		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_CameraManager = GetGame().GetCameraManager();
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
-		
+		m_NwkMovement = NwkHeliMovementComponent.Cast(owner.FindComponent(NwkHeliMovementComponent));
 		m_Physics.SetActive(true);
+		
+		ConnectToDiagSystem(owner);
 		
 		array<Managed> components = {};
 		owner.FindComponents(ADM_EngineComponent, components);
@@ -97,6 +103,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 			}
 		}
 		
+		// Signals
 		if (m_SignalsManager)
 		{
 			m_iPitchSignal = m_SignalsManager.AddOrFindSignal("Pitch");
@@ -154,6 +161,18 @@ class ADM_FixedWingSimulation : ScriptComponent
 		
 		m_Pilot = occupant;
 		m_Owner.GetPhysics().SetActive(true);
+		
+		if (m_NwkMovement && m_RplComponent)
+		{
+			if(!m_RplComponent.IsProxy())
+			{
+				m_NwkMovement.SetAllowance(false, 100, 100, 100, 100);
+			} else if(m_RplComponent.IsProxy() && m_RplComponent.IsOwner()) {
+				m_NwkMovement.SetPrediction(false);
+			} 
+		
+			Print("update car movement settings");
+		}
 	}
 	
 	void OnCompartmentLeft(IEntity vehicle, BaseCompartmentManagerComponent mgr, IEntity occupant, int managerId, int slotID)
@@ -231,11 +250,19 @@ class ADM_FixedWingSimulation : ScriptComponent
 	}
 	
 	protected TimeAndWeatherManagerEntity timeManager;
+	protected ChimeraWorld world;
 	vector GetWindVector()
 	{
+		return vector.Zero;
+/*
+		if (!world)
+		{
+			world = m_Owner.GetWorld();
+		}
+		
 		if (!timeManager)
 		{
-			timeManager = GetGame().GetTimeAndWeatherManager();
+			timeManager = world.GetTimeAndWeatherManager();
 			if (!timeManager) 
 				return vector.Zero;
 		}
@@ -247,7 +274,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
 		
-		return speed * mat[2];
+		return speed * mat[2];*/
 	}
 	
 	vector m_vPreviousVelocity = vector.Zero;
@@ -285,15 +312,15 @@ class ADM_FixedWingSimulation : ScriptComponent
 			vector angles = m_Owner.GetAngles();
 			float climbRate = m_Physics.GetVelocity()[1];
 			
-			vector v_accG = (1/9.81) * (velocity - m_vPreviousVelocity) / timeSlice;
-			float accG = vector.Dot(v_accG + vector.Up, m_Owner.VectorToParent(vector.Up));
+			//vector v_accG = (1/9.81) * (velocity - m_vPreviousVelocity) / timeSlice;
+			//float accG = vector.Dot(v_accG + vector.Up, m_Owner.VectorToParent(vector.Up));
 			
 			m_SignalsManager.SetSignalValue(m_iPitchSignal, angles[0]);
 			m_SignalsManager.SetSignalValue(m_iRollSignal, angles[2]);
 			m_SignalsManager.SetSignalValue(m_iAltitudeSignal, GetAltitude());
 			m_SignalsManager.SetSignalValue(m_iClimbRateSignal, climbRate);
 			m_SignalsManager.SetSignalValue(m_iHeadingSignal, angles[1]);
-			m_SignalsManager.SetSignalValue(m_iAccSignal, accG);
+			m_SignalsManager.SetSignalValue(m_iAccSignal, m_VehicleBaseSim.GetGForceMagnitude());
 			m_SignalsManager.SetSignalValue(m_iAirspeedSignal, flowVelocity.Length());
 			m_SignalsManager.SetSignalValue(m_iFlapsNeedleSignal, m_Input.GetInput(ADM_InputType.Flap));
 			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_Input.GetInput(ADM_InputType.Thrust));
@@ -342,13 +369,16 @@ class ADM_FixedWingSimulation : ScriptComponent
 		}
 		
 		m_vPreviousVelocity = velocity;
+		
+		// Check that all slot entities are owned by the pilot
+		
 	}
 	
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		super.EOnSimulate(owner, timeSlice);
 		
-		if (!m_Physics || !m_Physics.IsActive() || !m_RplComponent.IsOwner())
+		if (!m_Physics || !m_Physics.IsActive())
 			return;
 		
 		vector com = owner.CoordToParent(m_Physics.GetCenterOfMass());
@@ -419,7 +449,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 				float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(), ADM_ISAProperties.SpeedOfSound);
 				float machSqr = flowVelocity.LengthSq() / speedOfSound / speedOfSound;
 				
-				// at mach 0.3 (sqrt = 0.0625) compressibility effects are greater than 5%, in the transonic-supersonic M > 0.75 (sqrt = 0.5625) regime this correction is not valid
+				// at mach 0.3 (sqrt = 0.0625) compressibility effects are greater than 5% error, in the transonic-supersonic M > 0.75 (sqrt = 0.5625) regime this correction is not valid
 				if (machSqr > 0.0625 && machSqr < 0.5625) 
 					CL = CL / Math.Sqrt(1 - machSqr);
 				
@@ -455,6 +485,30 @@ class ADM_FixedWingSimulation : ScriptComponent
 		}
 		
 		m_SignalsManager.SetSignalValue(m_iSpeedSignal, absoluteVelocity.Length());
+	}
+	
+	float lastSendTime = -50000;
+	float updateFrequency = 0.5;
+	override void EOnPostFrame(IEntity owner, float timeSlice)
+	{
+		vector mat[4];
+		m_Owner.GetTransform(mat);
+		
+		float curTime = System.GetTickCount();
+		if ((curTime - lastSendTime) > 1000/updateFrequency)
+		{
+			Rpc(Rpc_Server_ReceiveNewStates, mat, m_Physics.GetVelocity(), m_Physics.GetAngularVelocity());
+			Print("update plane to server");
+			lastSendTime = curTime;
+		}
+	}
+	
+	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
+	void Rpc_Server_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
+	{
+		m_Owner.SetTransform(mat);
+		m_Physics.SetVelocity(velocity);	
+		m_Physics.SetAngularVelocity(angularVelocity);
 	}
 	
 	// Only calculated once since panels are static
