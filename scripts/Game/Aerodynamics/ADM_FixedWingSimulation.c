@@ -49,7 +49,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 	private ref array<ADM_EngineComponent> m_Engines = {}; 
 	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
 	private HitZone m_HullHitZone = null;
-	private NwkHeliMovementComponent m_NwkMovement = null;
+	private NwkCarMovementComponent m_NwkMovement = null;
 	
 	// Animation signals
 	private int m_iPitchSignal = -1;
@@ -87,7 +87,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_CameraManager = GetGame().GetCameraManager();
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
-		m_NwkMovement = NwkHeliMovementComponent.Cast(owner.FindComponent(NwkHeliMovementComponent));
+		m_NwkMovement = NwkCarMovementComponent.Cast(owner.FindComponent(NwkCarMovementComponent));
 		m_Physics.SetActive(true);
 		
 		ConnectToDiagSystem(owner);
@@ -149,6 +149,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 	protected int m_iCharacterAileronInput = -1;
 	protected int m_iCharacterElevatorInput = -1;
 	protected int m_iCharacterThrottleInput = -1;
+	
 	void OnCompartmentEntered(IEntity vehicle, BaseCompartmentManagerComponent mgr, IEntity occupant, int managerId, int slotID)
 	{
 		m_CharacterAnim = CharacterAnimationComponent.Cast(occupant.FindComponent(CharacterAnimationComponent));
@@ -170,8 +171,17 @@ class ADM_FixedWingSimulation : ScriptComponent
 			} else if(m_RplComponent.IsProxy() && m_RplComponent.IsOwner()) {
 				m_NwkMovement.SetPrediction(false);
 			} 
+		}
 		
-			Print("update car movement settings");
+		if(!m_RplComponent.IsProxy())
+		{	
+			RplIdentity pilotIdentity = null;
+			
+			PlayerController playerController = GetGame().GetPlayerController();
+			if (playerController)
+				pilotIdentity = playerController.GetRplIdentity();
+			
+			Rpc(Rpc_Server_CheckSlotOwnership, pilotIdentity);
 		}
 	}
 	
@@ -182,6 +192,38 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_iCharacterElevatorInput = -1;
 		m_iCharacterThrottleInput = -1;
 		m_Pilot = null;
+	}
+	
+	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
+	void Rpc_Server_CheckSlotOwnership(RplIdentity pilot)
+	{		
+		if (!pilot)
+			return;
+		
+		Print(pilot);
+		
+		SlotManagerComponent slotManager = SlotManagerComponent.Cast(m_Owner.FindComponent(SlotManagerComponent));
+		if (!slotManager)
+			return;
+		
+		array<EntitySlotInfo> slots = {};
+		slotManager.GetSlotInfos(slots);
+		
+		foreach (EntitySlotInfo slot: slots)
+		{
+			if (!slot)
+				continue;
+			
+			IEntity attachedEntity = slot.GetAttachedEntity();
+			if (!attachedEntity)
+				continue;
+			
+			RplComponent attachedRpl = RplComponent.Cast(attachedEntity.FindComponent(RplComponent));
+			if (!attachedRpl)
+				continue;
+			
+			attachedRpl.Give(pilot);
+		}
 	}
 	
 	bool IsEngineOn()
@@ -274,7 +316,8 @@ class ADM_FixedWingSimulation : ScriptComponent
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
 		
-		return speed * mat[2];*/
+		return speed * mat[2];
+*/
 	}
 	
 	vector m_vPreviousVelocity = vector.Zero;
@@ -311,9 +354,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 		{
 			vector angles = m_Owner.GetAngles();
 			float climbRate = m_Physics.GetVelocity()[1];
-			
-			//vector v_accG = (1/9.81) * (velocity - m_vPreviousVelocity) / timeSlice;
-			//float accG = vector.Dot(v_accG + vector.Up, m_Owner.VectorToParent(vector.Up));
 			
 			m_SignalsManager.SetSignalValue(m_iPitchSignal, angles[0]);
 			m_SignalsManager.SetSignalValue(m_iRollSignal, angles[2]);
@@ -488,7 +528,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 	}
 	
 	float lastSendTime = -50000;
-	float updateFrequency = 0.5;
+	float updateFrequency = 5;
 	override void EOnPostFrame(IEntity owner, float timeSlice)
 	{
 		vector mat[4];
@@ -498,7 +538,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 		if ((curTime - lastSendTime) > 1000/updateFrequency)
 		{
 			Rpc(Rpc_Server_ReceiveNewStates, mat, m_Physics.GetVelocity(), m_Physics.GetAngularVelocity());
-			Print("update plane to server");
 			lastSendTime = curTime;
 		}
 	}

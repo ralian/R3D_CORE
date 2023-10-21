@@ -14,11 +14,6 @@ GenericEntity {
   }
   R3D_PylonTriggerComponent "{5EA4268C51382B74}" {
   }
-  R3D_UIInfo "{5EA4268C51382B19}" {
-   m_uiInfo SCR_UIInfo "{5EA4268C51382B1C}" {
-    Name "#R3D-EditableEntity_Mk82_Name"
-   }
-  }
   RigidBody "{5EA4268C51382B0D}" {
    Active Active
    Mass 240
@@ -54,10 +49,10 @@ GenericEntity {
     }
    }
   }
-  NwkMovementComponent "{5EA4268C51382B98}" {
-  }
   RplComponent "{5EA4268C51382B8E}" {
    "Rpl State Override" Runtime
+  }
+  Hierarchy "{5EA6384AFA17A41A}" {
   }
  }
  coords 927.264 41.353 2652.439
