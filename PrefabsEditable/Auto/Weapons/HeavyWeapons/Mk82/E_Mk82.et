@@ -60,18 +60,18 @@ GenericEntity {
     }
    }
   }
+  ActionsManagerComponent "{5EE56EE9DDFB7AE7}" {
+   additionalActions {
+    R3D_SetExplosionLiveAction "{5EE56EF6408512F0}" {
+    }
+   }
+  }
   RplComponent "{5ECB2CD27B820861}" {
    "Rpl State Override" Runtime
    AutoHierarchy 0
   }
   Hierarchy "{5ECB2CD266394A25}" {
    MergePhysics 0
-  }
-  ActionsManagerComponent "{5EE56EE9DDFB7AE7}" {
-   additionalActions {
-    R3D_SetExplosionLiveAction "{5EE56EF6408512F0}" {
-    }
-   }
   }
  }
  coords 927.264 41.353 2652.439

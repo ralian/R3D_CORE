@@ -24,8 +24,8 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 			return;
 
 		//TODO: replace with get velocity at and get angular velocity at position if the plane is rotating
-		vector velocity = parent.GetPhysics().GetVelocity();
-		vector angularVelocity = parent.GetPhysics().GetAngularVelocity(); 
+		vector velocity = entity.GetRootParent().GetPhysics().GetVelocity();
+		vector angularVelocity = entity.GetRootParent().GetPhysics().GetAngularVelocity(); 
 
 		EntitySlotInfo slotInfo = EntitySlotInfo.GetSlotInfo(entity);
 		if (slotInfo)
