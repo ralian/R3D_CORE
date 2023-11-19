@@ -172,17 +172,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 				m_NwkMovement.SetPrediction(false);
 			} 
 		}
-		
-		if(!m_RplComponent.IsProxy())
-		{	
-			RplIdentity pilotIdentity = null;
-			
-			PlayerController playerController = GetGame().GetPlayerController();
-			if (playerController)
-				pilotIdentity = playerController.GetRplIdentity();
-			
-			Rpc(Rpc_Server_CheckSlotOwnership, pilotIdentity);
-		}
 	}
 	
 	void OnCompartmentLeft(IEntity vehicle, BaseCompartmentManagerComponent mgr, IEntity occupant, int managerId, int slotID)
@@ -192,38 +181,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_iCharacterElevatorInput = -1;
 		m_iCharacterThrottleInput = -1;
 		m_Pilot = null;
-	}
-	
-	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
-	void Rpc_Server_CheckSlotOwnership(RplIdentity pilot)
-	{		
-		if (!pilot)
-			return;
-		
-		Print(pilot);
-		
-		SlotManagerComponent slotManager = SlotManagerComponent.Cast(m_Owner.FindComponent(SlotManagerComponent));
-		if (!slotManager)
-			return;
-		
-		array<EntitySlotInfo> slots = {};
-		slotManager.GetSlotInfos(slots);
-		
-		foreach (EntitySlotInfo slot: slots)
-		{
-			if (!slot)
-				continue;
-			
-			IEntity attachedEntity = slot.GetAttachedEntity();
-			if (!attachedEntity)
-				continue;
-			
-			RplComponent attachedRpl = RplComponent.Cast(attachedEntity.FindComponent(RplComponent));
-			if (!attachedRpl)
-				continue;
-			
-			attachedRpl.Give(pilot);
-		}
 	}
 	
 	bool IsEngineOn()

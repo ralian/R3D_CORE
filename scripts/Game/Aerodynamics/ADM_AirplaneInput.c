@@ -20,9 +20,6 @@ class ADM_AirplaneInputClass: ScriptComponentClass
 {
 };
 
-//! A brief explanation of what this component does.
-//! The explanation can be spread across multiple lines.
-//! This should help with quickly understanding the script's purpose.
 class ADM_AirplaneInput : ScriptComponent
 {	
 	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.01")]
@@ -267,19 +264,31 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
 	{
-		/*array<Managed> components = {};
-		GetOwner().FindComponents(R3D_PylonComponent, components);
-		
-		foreach (Managed cmp : components)
+		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
+		if (!slotManager)
 		{
-			R3D_PylonComponent pyCmp = R3D_PylonComponent.Cast(cmp);
-			
-			if (pyCmp)
+			return;
+		}
+		
+		array<EntitySlotInfo> outSlotInfos = {};
+		slotManager.GetSlotInfos(outSlotInfos);
+		
+		foreach (EntitySlotInfo slotInfo : outSlotInfos)
+		{
+			if (slotInfo.Type() == R3D_PylonSlotInfo)
 			{
-				if (pyCmp.TriggerPylon())
-					return;
+				R3D_PylonSlotInfo r3dSlotInfo = R3D_PylonSlotInfo.Cast(slotInfo);
+				if (!r3dSlotInfo)
+				{
+					continue;
+				}
+				
+				Print("trigger pylon");
+				r3dSlotInfo.TriggerPylon();
+				
+				return;
 			}
-		}*/
+		}
 	}
 	
 	void AirplaneFreelook(float freelook = 0.0, EActionTrigger reason = 0)
@@ -327,12 +336,10 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	override void OnPostInit(IEntity owner)
 	{
-		//#ifdef WORKBENCH
-		//SetEventMask(owner, EntityEvent.FRAME | EntityEvent.DIAG);
-		//#else
+		#ifdef WORKBENCH
 		ConnectToDiagSystem(owner);
+		#endif
 		SetEventMask(owner, EntityEvent.FRAME);
-		//#endif
 				
 		InputManager inputManager = GetGame().GetInputManager();
         inputManager.AddActionListener("R3D_AirplaneAilerons", 			EActionTrigger.VALUE, AileronInput);

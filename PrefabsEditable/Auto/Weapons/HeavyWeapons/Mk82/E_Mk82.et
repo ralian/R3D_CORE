@@ -3,21 +3,32 @@ GenericEntity {
  components {
   SignalsManagerComponent "{5EA4268C51382B53}" {
   }
+  CollisionTriggerComponent "{5EE56EEED1AB0130}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{5EE56EEE83F8CC39}" {
+     TriggerOnce 1
+     AttachToParent 0
+     EffectPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
+     ParticleEffect "{AD5DE75242B5E4DA}Particles/Weapons/HeavyWeapons/Mk82/Explosion_Mk82.ptc"
+    }
+   }
+   DELETE_ON_TRIGGER 1
+  }
   MeshObject "{5EA4268C51382B42}" {
    Object "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
   }
-  R3D_ExplosionTriggerComponent "{5EA4268C51382B76}" {
-   m_sExplosionPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
-   m_bCollisionTrigger 1
-   m_bBelowTerrainTrigger 1
-   m_fArmingDelay 2
-  }
   R3D_PylonTriggerComponent "{5EA4268C51382B74}" {
+   Enabled 1
   }
   RigidBody "{5EA4268C51382B0D}" {
-   Active Active
+   Active AlwaysActive
    Mass 240
    CenterOfMass 0 -0.234 -0.2
+   LinearDamping 0
+   AngularDamping 0
+   LinearSleepingThreashold 0.1
+   AngularSleepingThreashold 0.1
+   ResponseIndex "HugeDestructible"
    ModelGeometry 1
   }
   SCR_EditableEntityComponent "{5EA4268C51382BFF}" {
@@ -49,10 +60,18 @@ GenericEntity {
     }
    }
   }
-  RplComponent "{5EA4268C51382B8E}" {
+  RplComponent "{5ECB2CD27B820861}" {
    "Rpl State Override" Runtime
+   AutoHierarchy 0
   }
-  Hierarchy "{5EA6384AFA17A41A}" {
+  Hierarchy "{5ECB2CD266394A25}" {
+   MergePhysics 0
+  }
+  ActionsManagerComponent "{5EE56EE9DDFB7AE7}" {
+   additionalActions {
+    R3D_SetExplosionLiveAction "{5EE56EF6408512F0}" {
+    }
+   }
   }
  }
  coords 927.264 41.353 2652.439

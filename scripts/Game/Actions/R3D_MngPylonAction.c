@@ -1,42 +1,42 @@
 class R3D_MngPylonAction : ScriptedUserAction
 {
 	[Attribute(defvalue: "", desc: "Pylon in SlotManager that this action is for")]
-	protected string m_sPylonSlot;
+	string m_sPylonSlot;
 	protected bool m_bCache = false;
 	
-	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	R3D_PylonSlotInfo GetSlot()
 	{
-		if (!Replication.IsServer()) return;
-		
 		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
 		if (!slotManager)
 		{
-			return;
+			return null;
 		}
 		
 		R3D_PylonSlotInfo slot = R3D_PylonSlotInfo.Cast(slotManager.GetSlotByName(m_sPylonSlot));
 		if (!slot)
 		{
-			return;
+			return null;
 		}
+		
+		return slot;
+	}
+	
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		R3D_PylonSlotInfo slot = GetSlot();
 		
 		if (slot.CanUnload())
 		{
 			IEntity entity = slot.GetAttachedEntity();
 			if (entity)
 			{
-				R3D_PylonSlotInfo.DetachFromParent(entity, false); // for some reason updateHierarchy = true will crash, instead lets just remove it manually
-			}
-			
-			IEntity parent = entity.GetParent();
-			if (parent)
-			{
-				parent.RemoveChild(entity, true);
+				R3D_PylonSlotInfo.DetachFromParent(entity); 
 			}
 				
 			return;
 		}
 		
+		// TODO: How to make sure everyone gets the same nearest loadable? had a case where two clients loaded different things
 		IEntity entity = slot.NearestLoadable();
 		if (entity)
 		{

@@ -10,7 +10,7 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 	//! Checks whether provided entity has parent and if so, tries to find a slot which it would belong to
 	//! and unregister from it.
 	// SCR_DestructionHandler::DetachFromParent
-	static void DetachFromParent(IEntity entity, bool updateHierarchy)
+	static void DetachFromParent(IEntity entity)
 	{
 		if (!entity || entity.IsDeleted())
 			return;
@@ -23,15 +23,29 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		if (!physics)
 			return;
 
-		vector velocity = physics.GetVelocity();
-		vector angularVelocity = physics.GetAngularVelocity();
+		//TODO: replace with get velocity at and get angular velocity at position if the plane is rotating
+		vector velocity = parent.GetPhysics().GetVelocity();
+		vector angularVelocity = parent.GetPhysics().GetAngularVelocity(); 
 
 		EntitySlotInfo slotInfo = EntitySlotInfo.GetSlotInfo(entity);
 		if (slotInfo)
-			slotInfo.DetachEntity(updateHierarchy);
-
+		{
+			slotInfo.DetachEntity(false); // for some reason updateHierarchy = true will crash, instead lets just remove it manually
+		}
+			
+		if (parent)
+		{
+			parent.RemoveChild(entity, true);
+			Print("child removed");
+		}
+		
+		parent.Update();
+		entity.Update();
+			
+		Print("physic check");
 		if (physics.IsDynamic() && !entity.GetParent())
 		{
+			Print("apply physic");
 			physics.SetVelocity(velocity);
 			physics.SetAngularVelocity(angularVelocity);
 		}
@@ -71,6 +85,7 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		return true;
 	}
 	
+	// TODO: make sure the same entity is found for all clients
 	IEntity NearestLoadable()
 	{
 		m_NearItems.Clear();
@@ -92,6 +107,25 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		}
 		
 		return nearestValid;
+	}
+	
+	bool TriggerPylon()
+	{
+		IEntity item = GetAttachedEntity();
+		if (!item) 
+		{
+			return false;
+		}
+		
+		R3D_PylonTriggerComponent pylonTriggerComp = R3D_PylonTriggerComponent.Cast(item.FindComponent(R3D_PylonTriggerComponent));
+		if (!pylonTriggerComp)
+		{
+			Print("Pylon has no trigger component!");
+			return false;
+		}
+		
+		pylonTriggerComp.Trigger(this);
+		return true;
 	}
 	
 	override void OnAttachedEntity(IEntity entity)
