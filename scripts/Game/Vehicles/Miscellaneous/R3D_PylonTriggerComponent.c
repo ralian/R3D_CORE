@@ -63,62 +63,9 @@ class R3D_PylonTriggerComponent : ScriptComponent
 			if (setLiveAction)
 				actionPerformer.PerformAction(setLiveAction);
 			
-			if (attachedEntity)
-			{
-				//Print("calling rpc");
-				//RplComponent rplComp = RplComponent.Cast(attachedEntity.FindComponent(RplComponent));
-				//if (!rplComp)
-				//{
-				//	return false;
-				//}
-				
-				//Rpc(Rpc_DoSetLive, rplComp.Id());
-				/*BaseTriggerComponent triggerComp = BaseTriggerComponent.Cast(attachedEntity.FindComponent(BaseTriggerComponent));
-				if (triggerComp) 
-				{
-					triggerComp.SetLive();
-				}*/
-			}
-			
 			return true;
 		}
 		
 		return false;
-	}
-	
-	void SetLive(IEntity entity)
-	{
-		BaseTriggerComponent triggerComp = BaseTriggerComponent.Cast(entity.FindComponent(BaseTriggerComponent));
-		if (triggerComp) 
-		{
-			triggerComp.SetLive();
-		}
-	}
-	
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void Rpc_DoSetLive(RplId entityId)
-	{
-		RplComponent rplComp = RplComponent.Cast(Replication.FindItem(entityId));
-		IEntity entity = rplComp.GetEntity();
-		Print(entity);
-		if (entity)
-		{
-			SetLive(entity);
-			Rpc(Rpc_Broadcast_SetLive, entityId);
-			Print("boom");
-		}
-	}
-	
-	[RplRpc(RplRcver.Broadcast, RplChannel.Reliable)]
-	void Rpc_Broadcast_SetLive(RplId entityId)
-	{
-		RplComponent rplComp = RplComponent.Cast(Replication.FindItem(entityId));
-		IEntity entity = rplComp.GetEntity();
-		Print(entity);
-		if (entity)
-		{
-			SetLive(entity);
-			Print("boom");
-		}
 	}
 }
