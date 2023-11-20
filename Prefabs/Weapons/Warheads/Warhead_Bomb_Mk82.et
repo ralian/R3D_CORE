@@ -11,15 +11,12 @@ GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et
     ExplosionDamageContainer "{5E3E3536F71D4036}" {
      ExplosionDamageEffects {
       ExplosionImpulseEffect "{5E3E3536CAF353D3}" {
-       ExplosionImpulseMultiplier 1
       }
       ExplosionFragmentationEffect "{5E3E3536C922A31D}" {
-       DamageValue 30
        DamageFragmentCount 1000
        CaseWeight 93000
       }
       BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" {
-       DamageValue 200
       }
      }
      ChargeWeight 87000
@@ -33,7 +30,6 @@ GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et
      }
     }
    }
-   TriggerOffset -0.5
   }
  }
 }

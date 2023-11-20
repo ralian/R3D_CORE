@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{010194D8DC7AC2AE}Language/R3DCORE_localization.it_it.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass XBOX_ONE : PC {
+  }
+  CONFResourceClass XBOX_SERIES : PC {
+  }
+  CONFResourceClass PS4 : PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

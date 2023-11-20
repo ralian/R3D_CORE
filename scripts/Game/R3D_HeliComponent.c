@@ -83,11 +83,11 @@ class R3D_HeliComponent : ScriptComponent
 					//GetGame().GetInputManager().SetActionValue("CyclicAside", 0);
 				}
 				controller.SetDisableViewControls(false);
-				controller.SetFreeLook(true);
+				//controller.SetFreeLook(true);
 				player.m_HeliViewLock = false;
 			} else {
 				controller.SetDisableViewControls(true);
-				controller.SetFreeLook(false);
+				//controller.SetFreeLook(false);
 				player.m_HeliViewLock = true;
 			}
 		}
