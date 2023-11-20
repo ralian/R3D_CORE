@@ -7,7 +7,7 @@ enum R3D_RadarSignalType {
 
 class R3D_RadarTrackingInfo {
 	IEntity target = null;
-	float seenTime = Replication.Time();
+	float seenTime = g_Game.GetWorld().GetWorldTime();
 	vector seenLocation = target.GetOrigin();
 }
 
