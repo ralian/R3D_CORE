@@ -55,8 +55,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 	protected float m_fThrustAngleX; // Thrust angle about body x axis [radians]
 	protected float m_fThrustAngleY; // Thrust angle about body y axis [radians]
 	
-	protected SCR_ParticleEmitter m_pParticle;
-	
 	override void EOnInit(IEntity owner)
 	{
 		m_Owner = owner;
@@ -143,8 +141,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		m_fLaunchTime = System.GetTickCount();
 		m_Physics.SetActive(true);
-		
-		m_pParticle = SCR_ParticleEmitter.CreateAsChild(m_ExhaustParticle, m_Owner, m_ExhaustPosition);
 	}
 	
 	void Setup()
@@ -255,8 +251,8 @@ class R3D_RocketMoveComponent: ScriptComponent
 			m_Physics.SetMass(mass);
 		}
 		
-		if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
-			m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
+		//if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
+		//	m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
 		
 		// Calculate Aerodynamics
 		float altitude = GetAltitude();

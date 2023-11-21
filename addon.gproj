@@ -7,14 +7,27 @@ GameProject {
  }
  Configurations {
   GameProjectConfig PC {
+   WidgetManagerSettings WidgetManagerSettings "{AC4BE58770485E02}" {
+    StringTables {
+     StringTableDefinition "{5E606ECCAECC367C}" {
+      StringTableSource "{2F3B9EAD6E9C99F3}Language/R3DCORE_localization.st"
+      Languages {
+       LanguageDefinition "{5E606ECCADAB8D85}" {
+        Code "en_us"
+        StringTableRuntime "{FFF9A35279D9C94A}Language/R3DCORE_localization.en_us.conf"
+       }
+      }
+     }
+    }
+   }
+  }
+  GameProjectConfig HEADLESS {
   }
   GameProjectConfig XBOX_ONE {
   }
   GameProjectConfig XBOX_SERIES {
   }
   GameProjectConfig PS4 {
-  }
-  GameProjectConfig HEADLESS {
   }
  }
 }

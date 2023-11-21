@@ -12,12 +12,14 @@ GenericEntity : "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et" {
      ExplosionDamageEffects {
       ExplosionImpulseEffect "{5E3E3536CAF353D3}" : "{3BE7AB8C8BD42E9B}Prefabs/Weapons/Core/Damage/BlastDamageEffect.conf" {
        PerformTraces 0
+       ExplosionImpulseMultiplier 0.4
       }
       ExplosionFragmentationEffect "{5E3E3536C922A31D}" : "{D865ECB9F1A819E9}Prefabs/Weapons/Core/Damage/FragmentationDamageEffect.conf" {
+       ExplosionEffectSpeed 2427
        GurneyConstant 2370
       }
       BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" : "{ACBA86677A85EA46}Prefabs/Weapons/Core/Damage/IncendiaryDamageEffect.conf" {
-       DamageValue 60
+       DamageValue 45
        PerformTraces 0
       }
      }
