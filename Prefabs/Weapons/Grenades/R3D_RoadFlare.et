@@ -21,6 +21,7 @@ GenericEntity : "{0DCE9A9A4F31BE1C}Prefabs/Weapons/Core/SmokeGrenade_Base.et" {
   GrenadeMoveComponent "{1F80A73ADE35BFF1}" {
    InitSpeed 30
    Mass 0.397
+   TimeToLive 910
    BallisticTableConfig "{900E362C5B4A1B69}Configs/Weapons/AIBallisiticTables/AIBT_Smoke_RDG2.conf"
    SingleSafety 1
   }
@@ -51,8 +52,6 @@ GenericEntity : "{0DCE9A9A4F31BE1C}Prefabs/Weapons/Core/SmokeGrenade_Base.et" {
   }
   MeshObject "{51EC93F29BA5F234}" {
    Object "{C05DCB34CA38F109}Assets/Items/Equipment/RoadFlare/R3D_RoadFlare.xob"
-  }
-  Hierarchy "{5DFD3852A85D18AE}" {
   }
   RigidBody "{0F2AA6AEC948C9D6}" {
    Mass 0.397
@@ -132,6 +131,8 @@ GenericEntity : "{0DCE9A9A4F31BE1C}Prefabs/Weapons/Core/SmokeGrenade_Base.et" {
     }
     m_bShowAmmoTypeText 0
    }
+  }
+  Hierarchy "{5DFD3852A85D18AE}" {
   }
  }
 }

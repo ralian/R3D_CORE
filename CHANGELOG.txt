@@ -1,3 +1,11 @@
+v1.2.0 (1.0 Compatibility Update)
+Added: More aero and replication logic
+Fixed: Script compatibility fixes
+Fixed: Removed duplicate conflict logic now in vanilla
+Fixed: Road flare now actually lasts 15 minutes
+
+
+
 v1.1.4
 Fixed: Camera handler NULL check
 

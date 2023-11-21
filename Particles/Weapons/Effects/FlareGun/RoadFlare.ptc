@@ -137,5 +137,6 @@ EffectDef {
  }
  LightOffset 0 0 0
  LightClipEV -6
- LightRadius 35
+ LightRadius 55
+ CastShadow 1
 }
