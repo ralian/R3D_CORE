@@ -10,8 +10,6 @@ class ADM_ControlSurface
 	[Attribute(params: "0 1", desc: "Width of control surface in terms of % chord")]
 	float m_fChordPercent;
 	
-	float m_fChordPercentRoot;
-	
 	// degrees
 	[Attribute()]
 	float m_fMinAngle;

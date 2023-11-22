@@ -3,12 +3,7 @@ SCR_EditorModeEntity : "{E56F54E533ACE527}Prefabs/Editor/Modes/EditorModeBase.et
  components {
   SCR_PlacingEditorComponent "{5145484399BAA2E7}" {
    m_Registries {
-    SCR_PlaceableEntitiesRegistry "{5E4428E5C7188A3C}" {
-     m_sAddon "R3D_CORE"
-     m_sSourceDirectory "{FC41709DE6E5D801}Prefabs/Weapons/HeavyWeapons/Mk82"
-     m_Prefabs {
-      "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et"
-     }
+    SCR_PlaceableEntitiesRegistry "{5E4428E5C7188A3C}" : "{C83A53726A0146F3}Configs/Editor/PlaceableEntities/R3DCORE_Props.conf" {
     }
    }
   }

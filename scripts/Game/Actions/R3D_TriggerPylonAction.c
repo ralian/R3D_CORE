@@ -7,7 +7,7 @@ class R3D_TriggerPylonAction : ScriptedUserAction
 	
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		array<Managed> components = {};
+		/*array<Managed> components = {};
 		GetOwner().FindComponents(R3D_PylonComponent, components);
 		
 		foreach (Managed cmp : components)
@@ -19,7 +19,7 @@ class R3D_TriggerPylonAction : ScriptedUserAction
 				if (pyCmp.TriggerPylon())
 					return;
 			}
-		}
+		}*/
 	}
 	
 	override bool CanBePerformedScript(IEntity user) 
@@ -29,7 +29,7 @@ class R3D_TriggerPylonAction : ScriptedUserAction
 	
 	override bool GetActionNameScript(out string outName) 
 	{
-		array<Managed> components = {};
+		/*array<Managed> components = {};
 		GetOwner().FindComponents(R3D_PylonComponent, components);
 		
 		foreach (Managed cmp : components)
@@ -49,6 +49,6 @@ class R3D_TriggerPylonAction : ScriptedUserAction
 		
 		viCache = false;
 		outName = "Nothing to trigger";
-		return true;
+		return true;*/
 	}	
 }

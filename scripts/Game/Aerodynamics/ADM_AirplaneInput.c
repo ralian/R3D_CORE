@@ -91,7 +91,7 @@ class ADM_AirplaneInput : ScriptComponent
 			}
 		}
 		
-		Math.Clamp(input, -1, 1);
+		input = Math.Clamp(input, -1, 1);
 		
 		return input;
 	}
@@ -110,6 +110,55 @@ class ADM_AirplaneInput : ScriptComponent
 		return 0.0;
 	}
 	
+	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
+	void Rpc_UpdateInput(ADM_InputType input, float value, bool trim)
+	{
+		if (input == ADM_InputType.Aileron)
+		{
+			if (trim)
+			{
+				m_fAileronTrim = value;
+			} else {
+				m_fAileronInput = value;
+			}
+		}
+		
+		if (input == ADM_InputType.Elevator)
+		{
+			if (trim)
+			{
+				m_fElevatorTrim = value;
+			} else {
+				m_fElevatorInput = value;
+			}
+		}
+		
+		if (input == ADM_InputType.Rudder)
+		{
+			if (trim)
+			{
+				m_fRudderTrim = value;
+			} else {
+				m_fRudderInput = value;
+			}
+		}
+		
+		if (input == ADM_InputType.SpeedBrake)
+		{
+			m_fSpeedBrakeInput = value;
+		}
+		
+		if (input == ADM_InputType.Flap)
+		{
+			m_fFlapInput = value;
+		}
+		
+		if (input == ADM_InputType.Thrust)
+		{
+			m_fThrustInput = value;
+		}
+	}
+	
 	void AirplaneTrimModifier(float trimModifier = 0.0, EActionTrigger reason = 0) 
 	{ 
 		if (!IsControlActive()) return;
@@ -123,9 +172,15 @@ class ADM_AirplaneInput : ScriptComponent
 		if (IsFreelookActiveForLocalPlayer()) return;
 		
 		if (m_TrimModifier > 0.5)
+		{
 			m_fAileronTrim += m_trimVelocity * aileron * 0.1;
-		else
+			m_fAileronTrim = Math.Clamp(m_fAileronTrim, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronTrim, true);
+		} else {
 			m_fAileronInput = aileron;
+			m_fAileronInput = Math.Clamp(m_fAileronInput, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronInput, false);
+		}
 	}
 	
 	void ElevatorInput(float elevator = 0.0, EActionTrigger reason = 0) 
@@ -133,20 +188,30 @@ class ADM_AirplaneInput : ScriptComponent
 		if (!IsControlActive()) return;
 		if (IsFreelookActiveForLocalPlayer()) return;
 		
-		if (m_TrimModifier > 0.5)
+		if (m_TrimModifier > 0.5) {
 			m_fElevatorTrim += m_trimVelocity * elevator * 0.1;
-		else
+			m_fElevatorTrim = Math.Clamp(m_fElevatorTrim, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorTrim, true);
+		} else {
 			m_fElevatorInput = elevator;
+			m_fElevatorInput = Math.Clamp(m_fElevatorInput, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorInput, false);
+		}
 	}
 	
 	void RudderInput(float rudder = 0.0, EActionTrigger reason = 0) 
 	{
 		if (!IsControlActive()) return;
 		
-		if (m_TrimModifier > 0.5)
+		if (m_TrimModifier > 0.5) {
 			m_fRudderTrim += m_trimVelocity * rudder * 0.1;
-		else
+			m_fRudderTrim = Math.Clamp(m_fRudderTrim, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderTrim, true);
+		} else {
 			m_fRudderInput = rudder;
+			m_fRudderInput = Math.Clamp(m_fRudderInput, -1, 1);
+			Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderInput, false);
+		}
 	}
 	
 	void ThrustInput(float thrust = 0.0, EActionTrigger reason = 0) 
@@ -167,6 +232,7 @@ class ADM_AirplaneInput : ScriptComponent
 		
 		m_fThrustInput += thrust * m_fThrustVelocity; 
 		m_fThrustInput = Math.Clamp(m_fThrustInput, 0, 1);
+		Rpc(Rpc_UpdateInput, ADM_InputType.Thrust, m_fThrustInput, false);
 	}
 	
 	void SpeedBrakeInput(float airBrake = 0.0, EActionTrigger reason = 0) 
@@ -182,6 +248,7 @@ class ADM_AirplaneInput : ScriptComponent
 		} else {
 			m_bSpeedBrakeToggle = false;
 		}
+		Rpc(Rpc_UpdateInput, ADM_InputType.SpeedBrake, m_fSpeedBrakeInput, false);
 	}
 	
 	void FlapInput(float flap = 0.0, EActionTrigger reason = 0)
@@ -190,6 +257,7 @@ class ADM_AirplaneInput : ScriptComponent
 		
 		m_fFlapInput += flap * m_fFlapVelocity;
 		m_fFlapInput = Math.Clamp(m_fFlapInput, 0, 1);
+		Rpc(Rpc_UpdateInput, ADM_InputType.Flap, m_fFlapInput, false);
 	}
 	
 	void ToggleGear(float gear = 0.0, EActionTrigger reason = 0)
@@ -199,7 +267,7 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
 	{
-		array<Managed> components = {};
+		/*array<Managed> components = {};
 		GetOwner().FindComponents(R3D_PylonComponent, components);
 		
 		foreach (Managed cmp : components)
@@ -211,7 +279,7 @@ class ADM_AirplaneInput : ScriptComponent
 				if (pyCmp.TriggerPylon())
 					return;
 			}
-		}
+		}*/
 	}
 	
 	void AirplaneFreelook(float freelook = 0.0, EActionTrigger reason = 0)
@@ -259,19 +327,24 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	override void OnPostInit(IEntity owner)
 	{
+		//#ifdef WORKBENCH
+		//SetEventMask(owner, EntityEvent.FRAME | EntityEvent.DIAG);
+		//#else
+		ConnectToDiagSystem(owner);
 		SetEventMask(owner, EntityEvent.FRAME);
-		
+		//#endif
+				
 		InputManager inputManager = GetGame().GetInputManager();
-        inputManager.AddActionListener("R3D_AirplaneAilerons", 		EActionTrigger.VALUE, AileronInput);
-        inputManager.AddActionListener("R3D_AirplaneElevators", 	EActionTrigger.VALUE, ElevatorInput);
-		inputManager.AddActionListener("R3D_AirplaneTrimModifier", 	EActionTrigger.VALUE, AirplaneTrimModifier);
-        inputManager.AddActionListener("R3D_AirplaneRudder", 		EActionTrigger.VALUE, RudderInput);
-        inputManager.AddActionListener("R3D_AirplaneThrust", 		EActionTrigger.VALUE, ThrustInput);
-        inputManager.AddActionListener("R3D_AirplaneFlaps", 		EActionTrigger.VALUE, FlapInput);
-        inputManager.AddActionListener("R3D_AirplaneSpeedBrake", 	EActionTrigger.VALUE, SpeedBrakeInput);
-        inputManager.AddActionListener("R3D_AirplaneToggleGear", 	EActionTrigger.DOWN, ToggleGear);
-		inputManager.AddActionListener("R3D_Freelook", 				EActionTrigger.VALUE, AirplaneFreelook);
-		inputManager.AddActionListener("R3D_WeaponRelease", 		EActionTrigger.DOWN, WeaponRelease);
+        inputManager.AddActionListener("R3D_AirplaneAilerons", 			EActionTrigger.VALUE, AileronInput);
+        inputManager.AddActionListener("R3D_AirplaneElevators", 		EActionTrigger.VALUE, ElevatorInput);
+		inputManager.AddActionListener("R3D_AirplaneTrimModifier", 		EActionTrigger.VALUE, AirplaneTrimModifier);
+        inputManager.AddActionListener("R3D_AirplaneRudder", 			EActionTrigger.VALUE, RudderInput);
+        inputManager.AddActionListener("R3D_AirplaneThrust", 			EActionTrigger.VALUE, ThrustInput);
+        inputManager.AddActionListener("R3D_AirplaneFlaps", 			EActionTrigger.VALUE, FlapInput);
+        inputManager.AddActionListener("R3D_AirplaneSpeedBrake", 		EActionTrigger.VALUE, SpeedBrakeInput);
+        inputManager.AddActionListener("R3D_AirplaneToggleGear", 		EActionTrigger.DOWN,  ToggleGear);
+		inputManager.AddActionListener("R3D_Freelook", 					EActionTrigger.VALUE, AirplaneFreelook);
+		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,  WeaponRelease);
 		
 		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
 	}
@@ -291,5 +364,33 @@ class ADM_AirplaneInput : ScriptComponent
 			m_fSpeedBrakeInput -= m_fSpeedBrakeVelocity;
 			m_fSpeedBrakeInput = Math.Clamp(m_fSpeedBrakeInput, 0, 1);
 		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	bool m_ShowDbgUI = true;
+	override void EOnDiag(IEntity owner, float timeSlice)
+	{
+		super.EOnDiag(owner, timeSlice);
+	
+#ifdef WORKBENCH
+		DbgUI.Begin(string.Format("ADM_AirplaneInput: %1", owner.GetName()));
+		if (m_ShowDbgUI)
+		{
+			DbgUI.Text(string.Format("m_fAileronInput: %1", m_fAileronInput));
+			DbgUI.Text(string.Format("m_fElevatorInput: %1", m_fElevatorInput));
+			DbgUI.Text(string.Format("m_fRudderInput: %1", m_fRudderInput));
+			DbgUI.Text(string.Format("m_fThrustInput: %1", m_fThrustInput));
+			DbgUI.Text(string.Format("m_fSpeedBrakeInput: %1", m_fSpeedBrakeInput));
+			DbgUI.Text(string.Format("m_fFlapInput: %1", m_fFlapInput));
+			DbgUI.Text(string.Format("m_bSpeedBrakeToggle: %1", m_bSpeedBrakeToggle));
+			DbgUI.Text(string.Format("m_TrimModifier: %1", m_TrimModifier));
+			DbgUI.Text(string.Format("m_fAileronTrim: %1", m_fAileronTrim));
+			DbgUI.Text(string.Format("m_fElevatorTrim: %1", m_fElevatorTrim));
+			DbgUI.Text(string.Format("m_fRudderTrim: %1", m_fRudderTrim));
+			DbgUI.Text(string.Format("m_Freelook: %1", m_Freelook));
+			DbgUI.Text("");
+		}
+		DbgUI.End();
+#endif
 	}
 }

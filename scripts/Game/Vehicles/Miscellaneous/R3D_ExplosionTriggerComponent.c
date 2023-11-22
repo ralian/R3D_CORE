@@ -23,7 +23,10 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 	protected float m_fArmingDelay;
 	
 	protected ref array<IEntity> m_IgnoredCollisionEntities = {};
+	
+	[RplProp()]
 	protected bool m_bArmed = false;
+	
 	protected IEntity m_Owner = null;
 	protected RplComponent m_RplComponent = null;
 	
@@ -40,18 +43,19 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 		}			
 	}
 	
-	void TriggerArmExplosive()
+	void TriggerArmExplosive(bool skipDelay = false)
 	{
 		if (!m_sExplosionPrefab.Length() > 0) return;
 		
-		if (m_fArmingDelay > 0)
+		if (m_fArmingDelay > 0 && !skipDelay)
 		{
-			GetGame().GetCallqueue().CallLater(ArmExplosive, m_fArmingDelay * 1000);
+			GetGame().GetCallqueue().CallLater(TriggerArmExplosive, m_fArmingDelay * 1000, false, true);
 		} else {
-			ArmExplosive();
+			Rpc(ArmExplosive);
 		}
 	}
 	
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
 	void ArmExplosive()
 	{
 		if (!m_sExplosionPrefab.Length() > 0) return;
@@ -65,8 +69,10 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 		SetEventMask(GetOwner(), mask);
 		
 		m_bArmed = true;
+		Replication.BumpMe();
 	}
 	
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
 	void DearmExplosive()
 	{
 		if (!m_bArmed) return;
@@ -78,12 +84,13 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 		}
 		
 		m_bArmed = false;
+		Replication.BumpMe();
 	}
 	
 	private bool m_bHasExploded = false;
 	void Explode()
 	{
-		if (m_bHasExploded) return;
+		if (m_bHasExploded || !Replication.IsServer()) return;
 		m_bHasExploded = true;
 		
 		EntitySpawnParams params = EntitySpawnParams();
@@ -115,7 +122,7 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 	{
 		super.EOnFrame(owner, timeSlice);
 		
-		if (!m_bArmed || m_bHasExploded || m_RplComponent.IsProxy()) return;
+		if (!m_bArmed || m_bHasExploded || !Replication.IsServer()) return;
 		
 		vector position = m_Owner.GetOrigin();
 		float altitudeASL = position[1];
@@ -153,7 +160,7 @@ class R3D_ExplosionTriggerComponent : ScriptComponent
 	{
 		super.EOnContact(owner, other, contact);
 		
-		if (!m_bCollisionTrigger || !m_bArmed || m_IgnoredCollisionEntities.Contains(other)) return;
+		if (!m_bCollisionTrigger || !m_bArmed || m_IgnoredCollisionEntities.Contains(other) || !Replication.IsServer()) return;
 			
 		Explode();
 	}

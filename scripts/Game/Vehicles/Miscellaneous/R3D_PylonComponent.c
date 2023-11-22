@@ -36,11 +36,11 @@ class R3D_PylonComponent : ScriptComponent {
 	{
 		if (!item) return false;
 		
-		R3D_PylonTriggerComponent pylonTrigger = R3D_PylonTriggerComponent.Cast(item.FindComponent(R3D_PylonTriggerComponent));
-		if (pylonTrigger)
-		{
-			return pylonTrigger.Trigger(m_owner, this);
-		}
+		//R3D_PylonTriggerComponent pylonTrigger = R3D_PylonTriggerComponent.Cast(item.FindComponent(R3D_PylonTriggerComponent));
+		//if (pylonTrigger)
+		//{
+		//	return pylonTrigger.Trigger(m_owner, this);
+		//}
 		
 		return false;
 	}

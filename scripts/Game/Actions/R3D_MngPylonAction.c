@@ -1,69 +1,87 @@
 class R3D_MngPylonAction : ScriptedUserAction
 {
-	[Attribute(defvalue: "-1")]
-	int pylonNo;
-	
-	bool viCache = false;
+	[Attribute(defvalue: "", desc: "Pylon in SlotManager that this action is for")]
+	protected string m_sPylonSlot;
+	protected bool m_bCache = false;
 	
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		array<Managed> components = {};
-		GetOwner().FindComponents(R3D_PylonComponent, components);
+		if (!Replication.IsServer()) return;
 		
-		foreach (Managed cmp : components)
+		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
+		if (!slotManager)
 		{
-			R3D_PylonComponent pyCmp = R3D_PylonComponent.Cast(cmp);
-			
-			if (pyCmp && pyCmp.pylonNo == pylonNo)
+			return;
+		}
+		
+		R3D_PylonSlotInfo slot = R3D_PylonSlotInfo.Cast(slotManager.GetSlotByName(m_sPylonSlot));
+		if (!slot)
+		{
+			return;
+		}
+		
+		if (slot.CanUnload())
+		{
+			IEntity entity = slot.GetAttachedEntity();
+			if (entity)
 			{
-				if (pyCmp.CanUnloadItem())
-				{
-					pyCmp.UnloadItem();
-					return;
-				}
-				
-				IEntity it = pyCmp.NearestLoadable();
-				if (it)
-					pyCmp.LoadItem(it);
+				R3D_PylonSlotInfo.DetachFromParent(entity, false); // for some reason updateHierarchy = true will crash, instead lets just remove it manually
 			}
+			
+			IEntity parent = entity.GetParent();
+			if (parent)
+			{
+				parent.RemoveChild(entity, true);
+			}
+				
+			return;
+		}
+		
+		IEntity entity = slot.NearestLoadable();
+		if (entity)
+		{
+			slot.AttachEntity(entity);
 		}
 	}
 	
-	override bool CanBePerformedScript(IEntity user) { return viCache; };
+	override bool CanBePerformedScript(IEntity user) 
+	{ 
+		return m_bCache; 
+	}
 	
-	override bool GetActionNameScript(out string outName) {
-		array<Managed> components = {};
-		GetOwner().FindComponents(R3D_PylonComponent, components);
-		
-		foreach (Managed cmp : components)
+	override bool GetActionNameScript(out string outName) 
+	{
+		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
+		if (!slotManager)
 		{
-			R3D_PylonComponent pyCmp = R3D_PylonComponent.Cast(cmp);
-			
-			if (pyCmp && pyCmp.pylonNo == pylonNo)
-			{
-				if (pyCmp.CanUnloadItem())
-				{
-					viCache = true;
-					outName = "Unload Armament";
-					return true;
-				}
-				
-				IEntity it = pyCmp.NearestLoadable();
-				if (it)
-				{
-					string name = it.GetPrefabData().GetPrefabName();
-					R3D_UIInfo uiInfo = R3D_UIInfo.Cast(it.FindComponent(R3D_UIInfo));
-					if (uiInfo) name = uiInfo.GetUIInfo().GetName();
-					
-					viCache = true;
-					outName = "Load " + name;
-					return true;
-				}
-			}
+			return false;
 		}
 		
-		viCache = false;
-		outName = "No Item to Load";
+		R3D_PylonSlotInfo slot = R3D_PylonSlotInfo.Cast(slotManager.GetSlotByName(m_sPylonSlot));
+		if (!slot)
+		{
+			return false;
+		}
+		
+		if (slot.CanUnload())
+		{
+			m_bCache = true;
+			outName = "Unload Armament";
+			return true;
+		}
+		
+		IEntity entitiy = slot.NearestLoadable();
+		if (entitiy)
+		{
+			string name = entitiy.GetPrefabData().GetPrefabName();
+			SCR_EditableEntityComponent editableEntity = SCR_EditableEntityComponent.Cast(entitiy.FindComponent(SCR_EditableEntityComponent));
+			if (editableEntity) name = editableEntity.GetInfo().GetName();
+			
+			m_bCache = true;
+			outName = "Load " + name;
+			return true;
+		}
+		
 		return true;
 	}	
 }
