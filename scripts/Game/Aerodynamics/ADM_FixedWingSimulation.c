@@ -120,7 +120,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 			m_iThirdPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftThirdPerson", 1);
 			m_iViewAngleSignal = m_SignalsManager.AddOrFindSignal("AircraftViewAngle", 1);
 			
-			m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 0);
+			m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
 			m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 1);
 		}
 		
@@ -199,7 +199,8 @@ class ADM_FixedWingSimulation : ScriptComponent
 		m_bIsEngineOn = !m_bIsEngineOn;
 		Replication.BumpMe();
 		
-		//m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
+		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
+		Print(m_bIsEngineOn);
 		foreach(ADM_EngineComponent engine : m_Engines)
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
@@ -236,6 +237,14 @@ class ADM_FixedWingSimulation : ScriptComponent
 			m_SignalsManager.SetSignalValue(signalIndex, (int)(!m_bGearState));
 		}
 		
+		if (!m_bGearState)
+		{
+			m_VehicleBaseSim.Deactivate(m_Owner);
+			m_Physics.EnableGravity(true);
+		} else {
+			m_VehicleBaseSim.Activate(m_Owner);
+		}
+			
 		Replication.BumpMe();
 	}
 	
@@ -252,8 +261,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 	protected ChimeraWorld world;
 	vector GetWindVector()
 	{
-		return vector.Zero;
-/*
 		if (!world)
 		{
 			world = m_Owner.GetWorld();
@@ -270,11 +277,11 @@ class ADM_FixedWingSimulation : ScriptComponent
 		float speed = timeManager.GetWindSpeed();
 		angles[0] = timeManager.GetWindDirection() + 180; // GM wind is weird, also the clouds move the opposite direction of the wind vector??
 		
+		
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
 		
 		return speed * mat[2];
-*/
 	}
 	
 	vector m_vPreviousVelocity = vector.Zero;
@@ -365,10 +372,7 @@ class ADM_FixedWingSimulation : ScriptComponent
 			Deactivate(m_Owner);
 		}
 		
-		m_vPreviousVelocity = velocity;
-		
-		// Check that all slot entities are owned by the pilot
-		
+		m_vPreviousVelocity = velocity;		
 	}
 	
 	override void EOnSimulate(IEntity owner, float timeSlice)
