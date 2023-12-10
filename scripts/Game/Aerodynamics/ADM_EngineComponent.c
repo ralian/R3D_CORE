@@ -139,6 +139,9 @@ class ADM_EngineComponent : ScriptComponent
 	#ifdef WORKBENCH
 	void DrawDebug(IEntity owner)
 	{
+		if (!DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPLANEDEBUG))
+			return;
+		
 		if (!m_vThrustInfo)
 			return;
 		

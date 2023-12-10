@@ -603,7 +603,9 @@ class ADM_FixedWingSimulation : ScriptComponent
 				
 				Shape.CreateTris(ARGB(100,255,0,0), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPoints, 2);
 				Shape.CreateLines(Color.CYAN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, debugACLine, 2);
-				Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER); 
+				
+				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWNORMALSDEBUG))
+					Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER); 
 				
 				if (curSection.m_ControlSurfaces)
 				{
@@ -628,13 +630,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 		if (acTotalArea > 0) acTotal /= acTotalArea;
 		vector coa = owner.CoordToParent(acTotal + m_vAerodynamicCenterOffset);
 		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);	
-		
-		vector COM = vector.Zero;
-		if (m_Physics && m_Physics.GetCenterOfMass()) COM = m_Physics.GetCenterOfMass();
-		Shape.CreateSphere(Color.YELLOW, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, owner.CoordToParent(COM), 0.1);	
-		
-		vector wind = GetWindVector();
-		Shape.CreateArrow(coa, coa + wind, 1, Color.YELLOW, ShapeFlags.ONCE);
 	}
 #endif
 	
@@ -643,7 +638,6 @@ class ADM_FixedWingSimulation : ScriptComponent
 	protected override void _WB_AfterWorldUpdate(IEntity owner, float timeSlice)
 	{
 		CalculatePanels();
-		Draw(owner);
 	}
 #endif
 	
@@ -654,40 +648,55 @@ class ADM_FixedWingSimulation : ScriptComponent
 		super.EOnDiag(owner, timeSlice);
 	
 #ifdef WORKBENCH
-		Draw(owner);
 		
-		DbgUI.Begin(string.Format("ISA Properties: %1", owner.GetName()));
-		if (!m_Physics) return;
+		if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPANELSDEBUG))
+			Draw(owner);
+		
+		if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWWIND))
+		{
+			vector center = owner.GetOrigin();
+			vector wind = GetWindVector();
+			Shape.CreateArrow(center, center + wind, 1, Color.YELLOW, ShapeFlags.ONCE);
+		}
+		
 		vector vel = m_Physics.GetVelocity();	
-		if (m_ShowDbgUI)
+		if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWATMOSPHEREDEBUG))
 		{
-			float altitude = GetAltitude();
-			float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
-			float pressure = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Pressure);
-			float temperature = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Temperature);
-			float dynamicViscosity = ADM_InternationalStandardAtmosphere.GetDynamicViscosity(altitude);
-			float reynoldsNumber = density * vel.Length() / dynamicViscosity;
-			
-			DbgUI.Text(string.Format("Altitude: %1 m", altitude));
-			DbgUI.Text(string.Format("Density: %1 kg/m^3", density));
-			DbgUI.Text(string.Format("Pressure: %1 Pa", pressure));
-			DbgUI.Text(string.Format("Temperature: %1 K", temperature));
-			DbgUI.Text(string.Format("Dynamic Viscosity: %1 Pa*s", dynamicViscosity));
-			DbgUI.Text(string.Format("Reynolds Number: %1 m^-1", reynoldsNumber));
-			DbgUI.Text("");
+			DbgUI.Begin(string.Format("ISA Properties: %1", owner.GetName()));
+			if (!m_Physics) return;
+			if (m_ShowDbgUI)
+			{
+				float altitude = GetAltitude();
+				float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
+				float pressure = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Pressure);
+				float temperature = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Temperature);
+				float dynamicViscosity = ADM_InternationalStandardAtmosphere.GetDynamicViscosity(altitude);
+				float reynoldsNumber = density * vel.Length() / dynamicViscosity;
+				
+				DbgUI.Text(string.Format("Altitude: %1 m", altitude));
+				DbgUI.Text(string.Format("Density: %1 kg/m^3", density));
+				DbgUI.Text(string.Format("Pressure: %1 Pa", pressure));
+				DbgUI.Text(string.Format("Temperature: %1 K", temperature));
+				DbgUI.Text(string.Format("Dynamic Viscosity: %1 Pa*s", dynamicViscosity));
+				DbgUI.Text(string.Format("Reynolds Number: %1 m^-1", reynoldsNumber));
+				DbgUI.Text("");
+			}
+			DbgUI.End();
 		}
-		DbgUI.End();
 		
-		DbgUI.Begin(string.Format("ADM_FixedWing: %1", owner.GetName()));
-		if (m_ShowDbgUI)
+		if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPLANEDEBUG))
 		{
-			float mach = GetMachNumber();
-			
-			DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
-			DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
-			DbgUI.Text("");
+			DbgUI.Begin(string.Format("ADM_FixedWing: %1", owner.GetName()));
+			if (m_ShowDbgUI)
+			{
+				float mach = GetMachNumber();
+				
+				DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
+				DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
+				DbgUI.Text("");
+			}
+			DbgUI.End();
 		}
-		DbgUI.End();
 #endif
 	}
 }
