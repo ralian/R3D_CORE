@@ -285,7 +285,7 @@ class ADM_AirplaneInput : ScriptComponent
 			if (slotInfo.Type() == R3D_PylonSlotInfo)
 			{
 				R3D_PylonSlotInfo r3dSlotInfo = R3D_PylonSlotInfo.Cast(slotInfo);
-				if (!r3dSlotInfo)
+				if (!r3dSlotInfo || !r3dSlotInfo.CanUnload())
 				{
 					continue;
 				}
