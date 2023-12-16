@@ -52,6 +52,13 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	protected ADM_FixedWingSimulation m_FixedWingSim;
 	
+	void ResetTrim()
+	{
+		m_fAileronTrim = 0;
+		m_fElevatorTrim = 0;
+		m_fRudderTrim = 0;
+	}
+	
 	float GetInput(ADM_InputType type)
 	{
 		float input = GetTrim(type);
@@ -172,11 +179,11 @@ class ADM_AirplaneInput : ScriptComponent
 		{
 			m_fAileronTrim += m_trimVelocity * aileron * 0.1;
 			m_fAileronTrim = Math.Clamp(m_fAileronTrim, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronTrim, true);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronTrim, true);
 		} else {
 			m_fAileronInput = aileron;
 			m_fAileronInput = Math.Clamp(m_fAileronInput, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronInput, false);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Aileron, m_fAileronInput, false);
 		}
 	}
 	
@@ -188,11 +195,11 @@ class ADM_AirplaneInput : ScriptComponent
 		if (m_TrimModifier > 0.5) {
 			m_fElevatorTrim += m_trimVelocity * elevator * 0.1;
 			m_fElevatorTrim = Math.Clamp(m_fElevatorTrim, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorTrim, true);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorTrim, true);
 		} else {
 			m_fElevatorInput = elevator;
 			m_fElevatorInput = Math.Clamp(m_fElevatorInput, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorInput, false);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Elevator, m_fElevatorInput, false);
 		}
 	}
 	
@@ -203,11 +210,11 @@ class ADM_AirplaneInput : ScriptComponent
 		if (m_TrimModifier > 0.5) {
 			m_fRudderTrim += m_trimVelocity * rudder * 0.1;
 			m_fRudderTrim = Math.Clamp(m_fRudderTrim, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderTrim, true);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderTrim, true);
 		} else {
 			m_fRudderInput = rudder;
 			m_fRudderInput = Math.Clamp(m_fRudderInput, -1, 1);
-			Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderInput, false);
+			//Rpc(Rpc_UpdateInput, ADM_InputType.Rudder, m_fRudderInput, false);
 		}
 	}
 	
@@ -229,7 +236,7 @@ class ADM_AirplaneInput : ScriptComponent
 		
 		m_fThrustInput += thrust * m_fThrustVelocity; 
 		m_fThrustInput = Math.Clamp(m_fThrustInput, 0, 1);
-		Rpc(Rpc_UpdateInput, ADM_InputType.Thrust, m_fThrustInput, false);
+		//Rpc(Rpc_UpdateInput, ADM_InputType.Thrust, m_fThrustInput, false);
 	}
 	
 	void SpeedBrakeInput(float airBrake = 0.0, EActionTrigger reason = 0) 
@@ -245,7 +252,7 @@ class ADM_AirplaneInput : ScriptComponent
 		} else {
 			m_bSpeedBrakeToggle = false;
 		}
-		Rpc(Rpc_UpdateInput, ADM_InputType.SpeedBrake, m_fSpeedBrakeInput, false);
+		//Rpc(Rpc_UpdateInput, ADM_InputType.SpeedBrake, m_fSpeedBrakeInput, false);
 	}
 	
 	void FlapInput(float flap = 0.0, EActionTrigger reason = 0)
@@ -254,7 +261,7 @@ class ADM_AirplaneInput : ScriptComponent
 		
 		m_fFlapInput += flap * m_fFlapVelocity;
 		m_fFlapInput = Math.Clamp(m_fFlapInput, 0, 1);
-		Rpc(Rpc_UpdateInput, ADM_InputType.Flap, m_fFlapInput, false);
+		//Rpc(Rpc_UpdateInput, ADM_InputType.Flap, m_fFlapInput, false);
 	}
 	
 	void ToggleGear(float gear = 0.0, EActionTrigger reason = 0)

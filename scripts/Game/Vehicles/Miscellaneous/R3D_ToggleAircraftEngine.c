@@ -11,10 +11,10 @@ class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 	
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		if (!Replication.IsServer())
-			return;
-		
-		m_FixedWing.Rpc_Server_ToggleEngine();
+		if (Replication.IsServer())
+		{
+			m_FixedWing.Rpc_Server_ToggleEngine();
+		}
 	}
 	
 	override bool GetActionNameScript(out string outName)
@@ -34,4 +34,4 @@ class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 	{
 		return m_Input.IsControlActive();
 	}
-};
+}

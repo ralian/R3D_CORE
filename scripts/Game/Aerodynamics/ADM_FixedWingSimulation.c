@@ -129,14 +129,10 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			// System stuff
 			m_iRPMSignal = m_SignalsManager.AddOrFindMPSignal("RPM", 1, 30, 0, SignalCompressionFunc.Range01);
 			m_iSpeedSignal = m_SignalsManager.AddOrFindMPSignal("Speed", 1, 30, 0, SignalCompressionFunc.None);
-			m_iAircraftIsEngineOnSignal = m_SignalsManager.AddOrFindMPSignal("AircraftIsEngineOn", 0.1, 30, 1, SignalCompressionFunc.Range01);
-			m_iThirdPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftThirdPersonAndEngine", 1);
-			m_iFirstPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftFirstPersonAndEngine", 1);
-			m_iViewAngleSignal = m_SignalsManager.AddOrFindSignal("AircraftViewAngle", 1);
-			
-			m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
-			m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, (bool)1 && m_bIsEngineOn);
-			m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, (bool)0 && m_bIsEngineOn);
+			m_iAircraftIsEngineOnSignal = m_SignalsManager.AddOrFindSignal("AircraftIsEngineOn", 0);
+			m_iThirdPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftThirdPersonAndEngine", 0);
+			m_iFirstPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftFirstPersonAndEngine", 0);
+			m_iViewAngleSignal = m_SignalsManager.AddOrFindSignal("AircraftViewAngle", 0);
 		}
 		
 		foreach (ADM_LandingGear gear: m_Gear)
@@ -196,7 +192,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_bIsEngineOn = !m_bIsEngineOn;
 		Replication.BumpMe();
 		
-		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, m_bIsEngineOn);
+		float signalValue = 0;
+		if (m_bIsEngineOn)
+			signalValue = 1.0;
+		
+		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, signalValue);
 		foreach(ADM_EngineComponent engine : m_Engines)
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
@@ -250,7 +250,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (!m_LocalPlayerController) return;
 		
 		m_LocalCameraHandler = CameraHandlerComponent.Cast(m_LocalPlayerController.GetMainEntity().FindComponent(CameraHandlerComponent));
-		if (!m_LocalCameraHandler) return;
 	}
 	
 	protected TimeAndWeatherManagerEntity timeManager;
@@ -286,6 +285,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	
 	void OwnerTick(IEntity owner, float timeSlice)
 	{
+		if (m_SignalsManager)
+		{
+			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_Input.GetInput(ADM_InputType.Thrust));
+		}
+		
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
 			if (m_bGearState && gear.GetState() < 1)
@@ -323,15 +327,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	
 	void ProxyTick(IEntity owner, float timeSlice)
 	{
-		if (!m_LocalPlayerController) FindLocalPlayerController();
-		if (m_LocalCameraHandler && m_Input && m_SignalsManager)
-		{
-			int thirdPerson = m_Input.IsControlActive() && m_LocalCameraHandler.IsInThirdPerson();
-			if (!m_Input.IsControlActive()) thirdPerson = 1;
-			
-			m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, thirdPerson && m_bIsEngineOn);
-			m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, !thirdPerson && m_bIsEngineOn);
-		}
+		if (!m_LocalCameraHandler) FindLocalPlayerController();
 		
 		if (m_CameraManager && m_CameraManager.CurrentCamera())
 		{
@@ -362,7 +358,47 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			m_SignalsManager.SetSignalValue(m_iAccSignal, m_VehicleBaseSim.GetGForceMagnitude());
 			m_SignalsManager.SetSignalValue(m_iAirspeedSignal, flowVelocity.Length());
 			m_SignalsManager.SetSignalValue(m_iFlapsNeedleSignal, m_Input.GetInput(ADM_InputType.Flap));
-			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_Input.GetInput(ADM_InputType.Thrust));
+			
+			if (m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iAircraftIsEngineOnSignal) != 1)
+			{
+				m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 1);
+			}
+			
+			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iAircraftIsEngineOnSignal) != 0)
+			{
+				m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 0);
+			}
+			
+			bool cockpitSound = !m_LocalCameraHandler.IsInThirdPerson() && m_Input.IsControlActive();
+			if (m_bIsEngineOn && !cockpitSound && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 1)
+			{
+				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 1);
+			}
+			
+			if (m_bIsEngineOn && cockpitSound && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 0)
+			{
+				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 0);
+			}
+			
+			if (m_bIsEngineOn && !cockpitSound && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 0)
+			{
+				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 0);
+			}
+			
+			if (m_bIsEngineOn && cockpitSound && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 1)
+			{
+				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 1);
+			}
+			
+			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 0)
+			{
+				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 0);
+			}
+			
+			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 0)
+			{
+				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 0);
+			}
 		}
 		
 		if (m_CharacterAnim)
