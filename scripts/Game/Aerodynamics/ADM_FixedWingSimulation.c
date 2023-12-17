@@ -50,6 +50,10 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
 	private HitZone m_HullHitZone = null;
 	private NwkCarMovementComponent m_NwkMovement = null;
+	private BaseLightManagerComponent m_LightManager = null;
+	protected TimeAndWeatherManagerEntity m_TimeManager = null;
+	protected ChimeraWorld m_World = null;
+	private bool m_bPreviousHeadlightState = false;
 	
 	// Animation signals
 	private int m_iPitchSignal = -1;
@@ -99,6 +103,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_CameraManager = GetGame().GetCameraManager();
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		m_NwkMovement = NwkCarMovementComponent.Cast(owner.FindComponent(NwkCarMovementComponent));
+		m_LightManager = BaseLightManagerComponent.Cast(owner.FindComponent(BaseLightManagerComponent));
 		m_Physics.SetActive(true);
 		
 		// Find all engines
@@ -237,6 +242,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		{
 			m_VehicleBaseSim.Deactivate(m_Owner);
 			m_Physics.EnableGravity(true);
+			m_bPreviousHeadlightState = m_LightManager.GetLightsState(ELightType.Head);
 		} else {
 			m_VehicleBaseSim.Activate(m_Owner);
 		}
@@ -249,28 +255,28 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_LocalPlayerController = SCR_PlayerController.Cast(GetGame().GetPlayerController());
 		if (!m_LocalPlayerController) return;
 		
-		m_LocalCameraHandler = CameraHandlerComponent.Cast(m_LocalPlayerController.GetMainEntity().FindComponent(CameraHandlerComponent));
+		IEntity mainEntity = m_LocalPlayerController.GetMainEntity();
+		if (!mainEntity) return;
+		m_LocalCameraHandler = CameraHandlerComponent.Cast(mainEntity.FindComponent(CameraHandlerComponent));
 	}
 	
-	protected TimeAndWeatherManagerEntity timeManager;
-	protected ChimeraWorld world;
 	vector GetWindVector()
 	{
-		if (!world)
+		if (!m_World)
 		{
-			world = m_Owner.GetWorld();
+			m_World = m_Owner.GetWorld();
 		}
 		
-		if (!timeManager)
+		if (!m_TimeManager)
 		{
-			timeManager = world.GetTimeAndWeatherManager();
-			if (!timeManager) 
+			m_TimeManager = m_World.GetTimeAndWeatherManager();
+			if (!m_TimeManager) 
 				return vector.Zero;
 		}
 		
 		vector angles = vector.Zero;
-		float speed = timeManager.GetWindSpeed();
-		angles[0] = timeManager.GetWindDirection() + 180; // GM wind is weird, also the clouds move the opposite direction of the wind vector??
+		float speed = m_TimeManager.GetWindSpeed();
+		angles[0] = m_TimeManager.GetWindDirection() + 180; // GM wind is weird, also the clouds move the opposite direction of the wind vector??
 		
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
@@ -409,7 +415,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 	}
 	
-	override void EOnFrame(IEntity owner, float timeSlice)
+	override event protected void EOnFrame(IEntity owner, float timeSlice)
 	{
 		super.EOnFrame(owner, timeSlice);
 		
@@ -420,10 +426,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 	}
 	
-	private float lastSendTime = -50000;
-	private float updateFrequency = 5;
-	override void EOnPostFrame(IEntity owner, float timeSlice)
+	private float m_fLandingGearDisableLightState = 0.15;
+	private float m_fLastSendTime = -float.MAX;
+	private float m_fUpdateFrequency = 5;
+	private bool m_bDidToggleLights = false;
+	override event protected void EOnPostFrame(IEntity owner, float timeSlice)
 	{
+		super.EOnPostFrame(owner, timeSlice);
 		if (!m_RplComponent.IsOwner())
 			return;
 		
@@ -431,10 +440,25 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_Owner.GetTransform(mat);
 		
 		float curTime = System.GetTickCount();
-		if ((curTime - lastSendTime) > 1000/updateFrequency)
+		if ((curTime - m_fLastSendTime) > 1000/m_fUpdateFrequency)
 		{
 			Rpc(Rpc_Server_ReceiveNewStates, mat, m_Physics.GetVelocity(), m_Physics.GetAngularVelocity());
-			lastSendTime = curTime;
+			m_fLastSendTime = curTime;
+		}
+		
+		foreach (ADM_LandingGear gear: m_Gear)
+		{
+			if (gear.m_bDisableHeadlight && !m_bGearState && m_LightManager.GetLightsState(ELightType.Head) != false && gear.GetState() < m_fLandingGearDisableLightState)
+			{
+				m_LightManager.SetLightsState(ELightType.Head, false);
+				m_bDidToggleLights = true;
+			}
+			
+			if (gear.m_bDisableHeadlight && m_bGearState && m_bDidToggleLights && m_LightManager.GetLightsState(ELightType.Head) != m_bPreviousHeadlightState && gear.GetState() > m_fLandingGearDisableLightState)
+			{
+				m_LightManager.SetLightsState(ELightType.Head, m_bPreviousHeadlightState);
+				m_bDidToggleLights = false;
+			}
 		}
 	}
 	

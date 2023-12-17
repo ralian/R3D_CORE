@@ -21,6 +21,9 @@ class ADM_LandingGear
 	[Attribute(defvalue: "10")]
 	float m_fRotationRate;
 	
+	[Attribute(desc: "Disable headlight when landing gear is more than 90% stowed.")]
+	bool m_bDisableHeadlight;
+	
 	protected float m_fCurrentState = 1;
 	
 	// amount is in degrees

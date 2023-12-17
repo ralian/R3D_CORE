@@ -113,6 +113,7 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		}
 		
 		pylonTriggerComp.Trigger(this);
+		Print("pylon triggered");
 		return true;
 	}
 	

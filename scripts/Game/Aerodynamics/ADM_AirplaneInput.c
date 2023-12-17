@@ -277,6 +277,7 @@ class ADM_AirplaneInput : ScriptComponent
 			return;
 		}
 		
+		// TODO: allow user to define order/precedence/manually select which pylon to trigger
 		array<EntitySlotInfo> outSlotInfos = {};
 		slotManager.GetSlotInfos(outSlotInfos);
 		
@@ -290,12 +291,17 @@ class ADM_AirplaneInput : ScriptComponent
 					continue;
 				}
 				
-				Print("trigger pylon");
 				r3dSlotInfo.TriggerPylon();
+				Print("trigger pylon");
 				
 				return;
 			}
 		}
+	}
+	
+	void TrimReset(float trimReset = 0.0, EActionTrigger reason = 0)
+	{
+		ResetTrim();
 	}
 	
 	void AirplaneFreelook(float freelook = 0.0, EActionTrigger reason = 0)
@@ -359,6 +365,7 @@ class ADM_AirplaneInput : ScriptComponent
         inputManager.AddActionListener("R3D_AirplaneToggleGear", 		EActionTrigger.DOWN,  ToggleGear);
 		inputManager.AddActionListener("R3D_Freelook", 					EActionTrigger.VALUE, AirplaneFreelook);
 		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,  WeaponRelease);
+		inputManager.AddActionListener("R3D_AirplaneTrimReset",			EActionTrigger.DOWN,  TrimReset);
 		
 		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
 	}
