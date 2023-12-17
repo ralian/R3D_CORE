@@ -1,3 +1,11 @@
+v1.2.1
+Fixed: Mk82 placeable prefab
+Fixed: Various aerodynamics, pylon system, and sound fixes
+Fixed: Pylon network replication
+Added: Landing gear, aero wind effects, various other aero features
+
+
+
 v1.2.0 (1.0 Compatibility Update)
 Added: More aero and replication logic
 Fixed: Script compatibility fixes
