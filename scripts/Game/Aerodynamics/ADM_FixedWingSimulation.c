@@ -375,7 +375,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 0);
 			}
 			
-			bool cockpitSound = !m_LocalCameraHandler.IsInThirdPerson() && m_Input.IsControlActive();
+			bool cockpitSound = m_LocalCameraHandler && !m_LocalCameraHandler.IsInThirdPerson() && m_Input.IsControlActive();
 			if (m_bIsEngineOn && !cockpitSound && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 1)
 			{
 				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 1);
