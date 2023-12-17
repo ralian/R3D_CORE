@@ -15,13 +15,11 @@ GenericEntity {
   MeshObject "{5CE7195E3ABC67DB}" {
    Object "{AACA655E5EEB0110}Prefabs/Weapons/HeavyWeapons/Hellfire/Hellfire.xob"
   }
-  Hierarchy "{5CE7195E3ABC67CF}" {
-  }
   R3D_MissileGuidanceComponent "{5CE7195E3ABC67E6}" {
    m_TriggerMode R3D_MissileTriggerModeCollision "{5CE7546E3FE91201}" {
    }
    m_TargetPos 5000 95 6500
-   m_TargetingMode Direct
+   m_TargetingMode DirectPointing
    KpX 0.1
    KiX 0
    KdX 0.01
@@ -57,15 +55,10 @@ GenericEntity {
      }
     }
    }
-   additionalActions {
-    R3D_RocketLaunchAction "{5CE7195E3ABC6468}" {
-     ParentContextList {
-      "launch"
-     }
-    }
-   }
   }
   RplComponent "{5CE7195E3ABC6413}" {
+  }
+  Hierarchy "{5CE7195E3ABC67CF}" {
   }
  }
  coords 5534.997 90.734 5882.365

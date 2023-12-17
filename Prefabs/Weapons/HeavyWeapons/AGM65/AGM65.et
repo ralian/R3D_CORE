@@ -4,14 +4,6 @@ GenericEntity {
   MeshObject "{5E481AF34F54E132}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
   }
-  R3D_ExplosionTriggerComponent "{5E481AF34F54E13B}" {
-   m_sExplosionPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
-   m_fMinAltitudeAGLTrigger -1
-   m_fMinPressureTrigger -1
-   m_bCollisionTrigger 1
-   m_bBelowTerrainTrigger 1
-   m_fArmingDelay 2
-  }
   R3D_PylonTriggerComponent "{5E481AF34F54E125}" {
   }
   R3D_UIInfo "{5E481AF34F54E126}" {

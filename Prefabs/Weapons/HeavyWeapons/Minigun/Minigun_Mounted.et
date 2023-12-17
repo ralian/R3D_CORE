@@ -10,8 +10,6 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
    Object "{A49BC653982A4E09}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Mounted.xob"
   }
   SCR_DamageManagerComponent "{506CDB924EC124FE}" {
-   "Additional hit zones" {
-   }
   }
   SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
    Enabled 1
@@ -41,18 +39,18 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
     Angles 0 0 0
    }
    ikTargets {
-    AnimationIKTargetInfo "{52A8F6FBFD4FABD2}" {
-     BindingName "LHandIKTarget"
-     PositionInfo PointInfo "{52A8F6FBF1B039F8}" {
-      PivotID "v_hand_L_target"
-      Offset 0 0.043 0
-     }
-    }
     AnimationIKTargetInfo "{52A8F6FBFC729D0C}" {
      BindingName "RHandIKTarget"
      PositionInfo PointInfo "{52A8F6FBF92A2E39}" {
       PivotID "v_hand_R_target"
       Offset -0.0493 -0.0423 0
+     }
+    }
+    AnimationIKTargetInfo "{52A8F6FBFD4FABD2}" {
+     BindingName "LHandIKTarget"
+     PositionInfo PointInfo "{52A8F6FBF1B039F8}" {
+      PivotID "v_hand_L_target"
+      Offset 0 0.043 0
      }
     }
    }
@@ -61,6 +59,11 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
    components {
     AttachmentSlotComponent "{B502E4DC8A9E835E}" {
      Enabled 1
+    }
+    SightsComponent "{BB23A637957CFFF8}" {
+     SightsPosition PointInfo "{BB23A63796688E69}" {
+      PivotID "eye"
+     }
     }
     MuzzleComponent "{50F64C4591CD7AA6}" {
      components {
@@ -102,7 +105,6 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
        IsEnabled 0
        LinearData RecoilData "{58FEF4CEB4AD6DC3}" {
         "Base Recoil Scale" 0.5
-        "Deployment Recoil Scale" 0.5
         "OneHand Scale" 0.5
        }
        AngularData RecoilData "{58FEF4CEB55C295D}" {
@@ -123,11 +125,6 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
       ChildPivotID ""
      }
      MagazineTemplate "{FF49212FC1CE54F8}Prefabs/Weapons/Magazines/Box_762x51_M134_500rnd_Tracer.et"
-    }
-    SightsComponent "{BB23A637957CFFF8}" {
-     SightsPosition PointInfo "{BB23A63796688E69}" {
-      PivotID "eye"
-     }
     }
     WeaponAnimationComponent "{5AAC19DA416327C9}" {
      AnimGraph "{5C41727F96285D4E}Assets/Weapons/MachineGuns/workspaces/M249.agr"

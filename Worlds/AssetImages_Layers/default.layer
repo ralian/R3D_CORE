@@ -1,0 +1,15 @@
+SCR_EditorImagePositionEntity Position_Airplane : "{6827E4D6141D8F9F}Prefabs/Editor/Common/AssetImagePosition.et" {
+ coords 4782.353 24.164 12012.06
+ m_Labels {
+  3 52
+ }
+ m_fDelay 4
+ m_PreviewMesh "{2254BE61BC85D56E}Assets/Structures/BuildingsParts/Electrical/DieselGenerator_01/Dst/DieselGenerator_01_wreck.xob"
+ m_fLatitude 47.685
+ m_fLongitude -27.311
+ m_fTime 0.75
+ {
+  SCR_CameraBase Camera_Airplane {
+  }
+ }
+}

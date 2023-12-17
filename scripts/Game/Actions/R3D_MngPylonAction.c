@@ -37,6 +37,7 @@ class R3D_MngPylonAction : ScriptedUserAction
 		}
 		
 		// TODO: How to make sure everyone gets the same nearest loadable? had a case where two clients loaded different things
+		// Need the client who performed this action to tell everyone the RplId of the desired item to be loaded
 		IEntity entity = slot.NearestLoadable();
 		if (entity)
 		{

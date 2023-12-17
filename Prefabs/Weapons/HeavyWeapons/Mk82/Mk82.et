@@ -1,0 +1,49 @@
+GenericEntity {
+ ID "5F2227E3AF457ED7"
+ components {
+  SignalsManagerComponent "{5F2227E3A2C31EF1}" {
+  }
+  CollisionTriggerComponent "{5F2227E3A2C31E84}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{5F2227E3A2C31E86}" {
+     TriggerOnce 1
+     AttachToParent 0
+     EffectPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
+     ParticleEffect "{AD5DE75242B5E4DA}Particles/Weapons/HeavyWeapons/Mk82/Explosion_Mk82.ptc"
+    }
+   }
+   DELETE_ON_TRIGGER 1
+  }
+  MeshObject "{5F2227E3A2C31E88}" {
+   Object "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+  }
+  R3D_PylonTriggerComponent "{5F2227E3A2C31EB2}" {
+   Enabled 1
+  }
+  RigidBody "{5F2227E3A2C31EAD}" {
+   Active AlwaysActive
+   Mass 240
+   CenterOfMass 0 -0.234 -0.2
+   LinearDamping 0
+   AngularDamping 0
+   LinearSleepingThreashold 0.1
+   AngularSleepingThreashold 0.1
+   ResponseIndex "HugeDestructible"
+   ModelGeometry 1
+  }
+  ActionsManagerComponent "{5F2227E3A2C31F13}" {
+   additionalActions {
+    R3D_SetExplosionLiveAction "{5F2227E3A2C31F12}" {
+    }
+   }
+  }
+  RplComponent "{5F2227E3A2C31F1A}" {
+   "Rpl State Override" Runtime
+   AutoHierarchy 0
+  }
+  Hierarchy "{5F2227E3A2C31F03}" {
+   MergePhysics 0
+  }
+ }
+ coords 951.753 39.01 2673.716
+}

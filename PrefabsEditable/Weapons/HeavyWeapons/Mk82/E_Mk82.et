@@ -1,0 +1,28 @@
+GenericEntity : "{5E3D3BA78BEA7843}Prefabs/Weapons/HeavyWeapons/Mk82/Mk82.et" {
+ ID "5F2227E3AF457ED7"
+ components {
+  SCR_EditableEntityComponent "{5EA4268C51382BFF}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5EA4268C51382B23}" {
+    Name "#R3D-EditableEntity_Mk82_Name"
+    m_Image "{A63A34760A6C8C55}UI/Textures/EditorPreviews/Auto/Weapons/HeavyWeapons/Mk82/E_Mk82.edds"
+    m_aAuthoredLabels {
+     1001
+    }
+    m_aAutoLabels {
+     1 121 27
+    }
+   }
+   m_bAutoRegister ALWAYS
+   m_Flags 769
+  }
+  SCR_PreviewEntityComponent "{5EA4268C51382B9F}" {
+   m_bRuntime 0
+   m_aEntries {
+    SCR_BasePreviewEntry "{5F223B788FC2F275}" {
+     m_Mesh "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+    }
+   }
+  }
+ }
+ coords 935.017 39.01 2649.256
+}

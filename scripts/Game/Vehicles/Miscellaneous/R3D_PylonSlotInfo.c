@@ -36,16 +36,13 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		if (parent)
 		{
 			parent.RemoveChild(entity, true);
-			Print("child removed");
 		}
 		
 		parent.Update();
 		entity.Update();
 			
-		Print("physic check");
 		if (physics.IsDynamic() && !entity.GetParent())
 		{
-			Print("apply physic");
 			physics.SetVelocity(velocity);
 			physics.SetAngularVelocity(angularVelocity);
 		}
@@ -53,20 +50,12 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 	
 	bool CanLoad(IEntity entity)
 	{
-		/*bool alreadyOnPylon = false;
+		bool alreadyOnPylon = false;
 		IEntity parent = entity.GetParent();
-		while (parent)
-		{
-			R3D_PylonComponent pylon = R3D_PylonComponent.Cast(parent.FindComponent(R3D_PylonComponent));
-			if (pylon)
-			{
-				alreadyOnPylon = true;
-				break;
-			}
-			parent = parent.GetParent();
-		}*/
+		if (parent)
+			alreadyOnPylon = true;
 		
-		return ((GetAttachedEntity() == null) && entity && entity.GetParent() != GetOwner() /*&& !alreadyOnPylon*/ && entity.GetPrefabData() && m_sAllowedPrefabs.Contains(entity.GetPrefabData().GetPrefabName()));
+		return ((GetAttachedEntity() == null) && entity && entity.GetParent() != GetOwner() && !alreadyOnPylon && entity.GetPrefabData() && m_sAllowedPrefabs.Contains(entity.GetPrefabData().GetPrefabName()));
 	}
 	
 	bool CanUnload()
@@ -85,7 +74,6 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		return true;
 	}
 	
-	// TODO: make sure the same entity is found for all clients
 	IEntity NearestLoadable()
 	{
 		m_NearItems.Clear();
@@ -125,6 +113,7 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		}
 		
 		pylonTriggerComp.Trigger(this);
+		Print("pylon triggered");
 		return true;
 	}
 	

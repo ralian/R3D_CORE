@@ -86,10 +86,6 @@ Projectile : "{C0BDA86B5AA5648C}Prefabs/Weapons/Core/Ammo_Rocket_Base.et" {
     }
    }
   }
-  ActionsManagerComponent "{50F6614BA1D6E54A}" {
-   additionalActions {
-   }
-  }
  }
  ProjectileModel "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"
  CartridgeModel "{3D2DFC533F142E11}Assets/Weapons/Ammo/Bullets/9x18/Bullet_9x18.xob"

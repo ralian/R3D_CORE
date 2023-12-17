@@ -30,6 +30,13 @@ GenericEntity : "{F54F6C453A8CB478}Prefabs/Weapons/Core/MachineGun_Base.et" {
   }
   WeaponComponent "{CFBAA4B706BA66E8}" {
    components {
+    AttachmentSlotComponent "{59EB6D963DF32B9E}" {
+     AttachmentSlot InventoryStorageSlot optics {
+      PivotID "slot_optics"
+      ChildPivotID "snap_weapon"
+      Enabled 0
+     }
+    }
     SightsComponent "{BB23A637957CFFF8}" {
      SightsPosition PointInfo "{BB23A63796688E69}" {
       PivotID "eye"
@@ -91,13 +98,6 @@ GenericEntity : "{F54F6C453A8CB478}Prefabs/Weapons/Core/MachineGun_Base.et" {
       Offset 0.18 -0.13 0.15
      }
      MagazineTemplate "{3D895B38FE6943B0}Prefabs/Weapons/Magazines/FlareMag.et"
-    }
-    AttachmentSlotComponent "{59EB6D963DF32B9E}" {
-     AttachmentSlot InventoryStorageSlot optics {
-      PivotID "slot_optics"
-      ChildPivotID "snap_weapon"
-      Enabled 0
-     }
     }
    }
    WeaponType None

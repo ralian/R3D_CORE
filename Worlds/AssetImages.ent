@@ -1,0 +1,3 @@
+SubScene {
+ Parent "worlds/Editor/Slots/AssetImages/Eden_AssetImages.ent"
+}
