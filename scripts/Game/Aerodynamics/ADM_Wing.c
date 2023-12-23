@@ -80,11 +80,13 @@ class ADM_Wing {
 			meanChord /= m_Sections.Count();
 		}
 			
-		m_fAspectRatio = totalSpan / meanChord;
+		if (meanChord > 0)
+			m_fAspectRatio = totalSpan / meanChord;
 		
-		if (acTotalArea > 0) acTotal /= acTotalArea;
+		if (acTotalArea > 0) 
+			acTotal /= acTotalArea;
+		
 		m_vAerodynamicCenter = acTotal;
-		
 		m_fSurfaceArea = acTotalArea;
 	}
 }

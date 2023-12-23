@@ -37,6 +37,9 @@ GenericEntity {
     }
    }
   }
+  NwkMovementComponent "{5F2D558C88884091}" {
+   HierarchySync 1
+  }
   RplComponent "{5F2227E3A2C31F1A}" {
    "Rpl State Override" Runtime
    AutoHierarchy 0
