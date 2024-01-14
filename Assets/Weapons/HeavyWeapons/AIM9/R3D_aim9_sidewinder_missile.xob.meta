@@ -1,0 +1,46 @@
+MetaFileClass {
+ Name "{6613A0B6A6F95EDA}Assets/Weapons/HeavyWeapons/AIM9/R3D_aim9_sidewinder_missile.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{605C1163CD2A5EED}" {
+     SourceMaterial "helicopter_nato_weapons"
+     AssignedMaterial "{B1F32BD5ADECADE0}Assets/Weapons/HeavyWeapons/AIM9/Data/helicopter_nato_weapons.emat"
+    }
+   }
+   MeshParams {
+    MeshParam R3D_aim9_sidewinder_missile {
+    }
+   }
+   GeometryParams {
+    GeometryParam UCX_aim9_projectile {
+     LayerPreset "Projectile"
+     SurfaceProperties {
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+   }
+   Common TXOCommonClass "{605C1163CD3C44E5}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{605C1163CD3C74C2}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{605C1163CD3C7754}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{605C1163CD3C7799}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{605C1163CD3C77D9}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

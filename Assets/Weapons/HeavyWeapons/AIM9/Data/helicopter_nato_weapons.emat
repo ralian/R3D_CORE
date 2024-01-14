@@ -1,0 +1,5 @@
+MatPBRBasic {
+ RoughnessScale 1.141
+ BCRMap "{25EB3DACD06D687A}Assets/Weapons/HeavyWeapons/AIM9/Data/Data/NATO_Aircraft_Weapons_BCR.edds"
+ NMOMap "{1D33863E091A3AE4}Assets/Weapons/HeavyWeapons/AIM9/Data/Data/NATO_Aircraft_Weapons_NMO.edds"
+}

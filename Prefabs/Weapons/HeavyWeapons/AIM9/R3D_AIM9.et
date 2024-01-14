@@ -1,0 +1,47 @@
+GenericEntity {
+ ID "605C116348F361F4"
+ components {
+  MeshObject "{605C116348F36011}" {
+   Object "{6613A0B6A6F95EDA}Assets/Weapons/HeavyWeapons/AIM9/R3D_aim9_sidewinder_missile.xob"
+  }
+  MissileMoveComponent "{605C11625F2B3AF2}" {
+  }
+  R3D_MissileGuidanceComponent "{605C1162453D3069}" {
+  }
+  R3D_PylonTriggerComponent "{605C116348F36006}" {
+  }
+  R3D_ThermalReceiverComponent "{605C116285D213CA}" {
+  }
+  R3D_UIInfo "{605C116348F36001}" {
+   m_uiInfo SCR_UIInfo "{605C116348F36008}" {
+    Name "MK-82"
+   }
+  }
+  RigidBody "{605C116348F337DB}" {
+   Active Active
+   Mass 240
+   CenterOfMass 0 -0.234 -0.2
+   ModelGeometry 1
+  }
+  SCR_EditableEntityComponent "{605C116348F337D9}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{605C116348F337D8}" {
+    Name "Mk82"
+    m_Image "{91F00974E11967B4}UI/Textures/EditorPreviews/gbu.edds"
+    m_aAuthoredLabels {
+     1 27
+    }
+   }
+  }
+  SCR_PreviewEntityComponent "{605C116348F337E7}" {
+   m_aEntries {
+    SCR_BasePreviewEntry "{605C116348F337E5}" {
+     m_iParentID -1
+     m_Mesh "{988C010D4E446F4E}Prefabs/Weapons/HeavyWeapons/AGM65/AGM65.et"
+     m_Shape MESH
+    }
+   }
+  }
+  RplComponent "{605C116348F337E3}" {
+  }
+ }
+}

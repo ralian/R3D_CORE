@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{811968F2C5A102AF}Prefabs/Weapons/HeavyWeapons/AGM65/AIM9.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}
