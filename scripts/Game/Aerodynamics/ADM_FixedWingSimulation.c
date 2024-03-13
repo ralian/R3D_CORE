@@ -240,6 +240,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			m_SignalsManager.SetSignalValue(signalIndex, (int)(!m_bGearState));
 		}
 		
+		// TODO: only do this if all gear retract
 		if (!m_bGearState)
 		{
 			m_VehicleBaseSim.Deactivate(m_Owner);
@@ -300,6 +301,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
+			if (gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0)
+			{
+				continue;
+			}
+				
 			if (m_bGearState && gear.GetState() < 1)
 			{
 				gear.RotateGear(gear.m_fRotationRate * timeSlice);
@@ -764,7 +770,10 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			if (m_ShowDbgUI)
 			{
 				float mach = GetMachNumber();
-				float turningRadius = (vel.LengthSq()/turningAcceleration) * 3.28;
+				float turningRadius = 0;
+				if (turningAcceleration > 0) {
+					turningRadius = (vel.LengthSq()/turningAcceleration) * 3.28;
+				}
 				
 				DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
 				DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
