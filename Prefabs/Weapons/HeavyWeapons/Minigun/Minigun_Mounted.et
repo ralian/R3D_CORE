@@ -10,6 +10,15 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
    Object "{A49BC653982A4E09}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Mounted.xob"
   }
   SCR_DamageManagerComponent "{506CDB924EC124FE}" {
+   "Additional hit zones" {
+    SCR_HitZone M134 {
+     ColliderNames {
+      "UCL_Body"
+     }
+     HZDefault 1
+    }
+   }
+   EnableDamage 0
   }
   SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
    Enabled 1
