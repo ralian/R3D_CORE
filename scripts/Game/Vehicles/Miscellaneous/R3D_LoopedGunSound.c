@@ -18,38 +18,17 @@ class R3D_LoopedGunSound : ScriptGameComponent
 	{
 		super.OnPostInit(owner);
 				
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME);
-	}
-	
-	override void EOnInit(IEntity owner)
-	{
-		// Must be done in EOnInit and not OnPostInit so weapons are created
-		BaseWeaponManagerComponent weaponManager = BaseWeaponManagerComponent.Cast(owner.FindComponent(BaseWeaponManagerComponent));
-		if (!weaponManager) return;
-		
-		array<WeaponSlotComponent> weaponSlots = {};
-		weaponManager.GetWeaponsSlots(weaponSlots);
-		
-		foreach(WeaponSlotComponent weaponSlot : weaponSlots)
+		m_WeaponSignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));
+		m_Muzzle = BaseMuzzleComponent.Cast(owner.FindComponent(BaseMuzzleComponent));
+		m_iPreviousAmmoCount = m_Muzzle.GetAmmoCount();
+				
+		if (m_WeaponSignalsManager)
 		{
-			if (weaponSlot.GetWeaponSlotIndex() == m_iWeaponIndex || weaponSlots.Count() <= 1)
-			{
-				IEntity weapon = weaponSlot.GetWeaponEntity();
-				if (!weapon) return;
-				
-				m_WeaponSignalsManager = SignalsManagerComponent.Cast(weapon.FindComponent(SignalsManagerComponent));
-				m_Muzzle = BaseMuzzleComponent.Cast(weapon.FindComponent(BaseMuzzleComponent));
-				m_iPreviousAmmoCount = m_Muzzle.GetAmmoCount();
-				
-				if (m_WeaponSignalsManager)
-				{
-					m_iWeaponSignal = m_WeaponSignalsManager.AddOrFindMPSignal("VehicleFire", 0.1, 1/30, 0, SignalCompressionFunc.Range01);
-					m_iWeaponWasFiringSignal = m_WeaponSignalsManager.AddOrFindMPSignal("VehicleFireReleased", 0.1, 1/30, 0, SignalCompressionFunc.Range01);
-				}
-				
-				return;
-			}
+			m_iWeaponSignal = m_WeaponSignalsManager.AddOrFindMPSignal("VehicleFire", 0.1, 1/30, 0, SignalCompressionFunc.Range01);
+			m_iWeaponWasFiringSignal = m_WeaponSignalsManager.AddOrFindMPSignal("VehicleFireReleased", 0.1, 1/30, 0, SignalCompressionFunc.Range01);
 		}
+				
+		SetEventMask(owner, EntityEvent.FRAME);
 	}
 	
 	override event protected bool OnTicksOnRemoteProxy() 
