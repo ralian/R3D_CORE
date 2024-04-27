@@ -27,19 +27,19 @@ AudioClass {
    tl 1434.709 126.347
    res "{6DFC123D28CCC546}Sounds/_SharedData/Signals/Weapons/Weapon_Occlusion.sig"
    inputsport {
-    1 2 8 10 36 53 54
+    1 2 8 10 36 53 54 100
    }
    outputsport {
     5 42
    }
    inputvalues {
-    0 0 0 0 1 400 800
+    0 0 0 0 1 400 800 0
    }
    inputvaluesmin {
-    0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
    }
    inputvaluesmax {
-    1 1 1 1 1 10000 10000
+    1 1 1 1 1 10000 10000 1
    }
   }
   SignalClass {
@@ -633,160 +633,6 @@ AudioClass {
    res "{99482B186481AD82}Sounds/_SharedData/Signals/Weapons/Weapon_BodyManager_3_Distances.sig"
    conns {
     IOPConnectionClass iopConnection {
-     port 30
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 1
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 31
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 2
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 32
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 3
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 33
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 4
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 34
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 5
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 35
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 6
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 43
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 8
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 44
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 9
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 45
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 11
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 47
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 13
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 100
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 14
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
      port 109
      conn {
       ConnectionsClass connections {
@@ -795,20 +641,6 @@ AudioClass {
         ConnectionClass connection {
          id 110605
          port 5
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 112
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 15
         }
        }
       }
@@ -851,48 +683,6 @@ AudioClass {
         ConnectionClass connection {
          id 399373
          port 10
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 153
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 16
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 154
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 17
-        }
-       }
-      }
-     }
-    }
-    IOPConnectionClass iopConnection {
-     port 155
-     conn {
-      ConnectionsClass connections {
-       id 8
-       links {
-        ConnectionClass connection {
-         id 331788
-         port 18
         }
        }
       }
@@ -1137,19 +927,19 @@ AudioClass {
     }
    }
    inputsport {
-    2 3 11 12 17
+    2 3
    }
    outputsport {
     1 10
    }
    inputvalues {
-    0 0 0 0 1
+    0 0
    }
    inputvaluesmin {
-    0 0 0 0 0
+    0 0
    }
    inputvaluesmax {
-    1 1 1 1 1
+    1 1
    }
   }
   SignalClass {
@@ -1322,7 +1112,7 @@ AudioClass {
   SignalClass {
    id 444429
    name "AddOpenBoltDelay"
-   tl -681.429 5514.286
+   tl -642.963 5557.013
    res "{26CD745B50052FCC}Sounds/_SharedData/Signals/SimpleHelpers/Sum_2_inputs_2.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -1410,7 +1200,7 @@ AudioClass {
     }
    }
    pi {
-    3
+    1
    }
   }
   FilterClass {
@@ -1419,7 +1209,7 @@ AudioClass {
    version 5
    tl 859.286 3324.341
    pi {
-    3
+    1
    }
    DSPObject Equalizer4DSPTypeClass dsp {
     gain1 4
@@ -1450,7 +1240,7 @@ AudioClass {
     }
    }
    pi {
-    3
+    1
    }
    DSPObject BiquadDSPTypeClass dsp {
     biquadType HighPass
@@ -1474,7 +1264,7 @@ AudioClass {
     }
    }
    pi {
-    3
+    1
    }
    wetDry 0
    volume_dB 1
@@ -1483,7 +1273,6 @@ AudioClass {
     ratio 1.9
     attack 41
     release 271
-    clip 1
    }
   }
   FilterClass {
@@ -1492,7 +1281,7 @@ AudioClass {
    version 5
    tl 845.437 -1298.878
    pi {
-    3
+    1
    }
    DSPObject Equalizer4DSPTypeClass dsp {
     gain2 3
@@ -1522,7 +1311,7 @@ AudioClass {
     }
    }
    pi {
-    3
+    1
    }
   }
   FilterClass {
@@ -1542,14 +1331,13 @@ AudioClass {
     }
    }
    pi {
-    3
+    1
    }
    DSPObject CompressorDSPTypeClass dsp {
     threshold -15.1
     ratio 1.9
     attack 41
     release 271
-    clip 1
    }
   }
   FilterClass {
@@ -1558,7 +1346,7 @@ AudioClass {
    version 5
    tl 120 -1005.556
    pi {
-    3
+    1
    }
    DSPObject BiquadDSPTypeClass dsp {
     fc 3000
@@ -1591,7 +1379,7 @@ AudioClass {
    ctl 0 -21
    parent "{13961E4C7CBDD9DE}Sounds/_SharedData/Configs/Filter/Weapons/Filter_Weapons_SlapBack_Small_LoCut.conf"
    pi {
-    3
+    1
    }
   }
  }
@@ -1687,7 +1475,7 @@ AudioClass {
  sounds {
   SoundClass : "{300F043778B99923}Sounds/_SharedData/Configs/Sound/Weapons/Sound_Weapons_Shot_762.conf" {
    id 5129
-   version 0
+   version 5
    tl 1614.635 367.161
    ctl 0 -21
    parent "{300F043778B99923}Sounds/_SharedData/Configs/Sound/Weapons/Sound_Weapons_Shot_762.conf"
@@ -1837,15 +1625,6 @@ AudioClass {
    ctl 0 -21
    ins {
     ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 57
-      }
-     }
-    }
-    ConnectionsClass connections {
      id 64
      links {
       ConnectionClass connection {
@@ -1866,9 +1645,6 @@ AudioClass {
       }
      }
     }
-   }
-   pi {
-    1
    }
   }
   BusClass {
@@ -2428,89 +2204,6 @@ AudioClass {
    }
   }
   ConstantClass {
-   id 331788
-   name "Constant 315"
-   version 5
-   tl -879.167 -175.808
-   "Constant values" {
-    IOPConstantsValueClass CLS_OUT {
-     Key "CLS_OUT"
-     Value 2
-     Port 1
-    }
-    IOPConstantsValueClass CLS_END {
-     Key "CLS_END"
-     Value 100
-     Port 2
-    }
-    IOPConstantsValueClass CLS_EXP {
-     Key "CLS_EXP"
-     Value 7
-     Port 3
-    }
-    IOPConstantsValueClass FAR_START {
-     Key "FAR_START"
-     Value 120
-     Port 4
-    }
-    IOPConstantsValueClass FAR_MAX {
-     Key "FAR_MAX"
-     Value 700
-     Port 5
-    }
-    IOPConstantsValueClass FAR_EXP {
-     Key "FAR_EXP"
-     Value 1
-     Port 6
-    }
-    IOPConstantsValueClass DIST_X_MIN {
-     Key "DIST_X_MIN"
-     Value 0.3
-     Port 8
-    }
-    IOPConstantsValueClass DIST_X_MAX {
-     Key "DIST_X_MAX"
-     Value 250
-     Port 9
-    }
-    IOPConstantsValueClass CLSFAR_DBDIFF_ABS {
-     Key "CLSFAR_DBDIFF_ABS"
-     Value 3.3
-     Port 11
-    }
-    IOPConstantsValueClass Y_EXP {
-     Key "Y_EXP"
-     Value 1
-     Port 13
-    }
-    IOPConstantsValueClass MECH_ADS_DB {
-     Key "MECH_ADS_DB"
-     Value 1.4
-     Port 14
-    }
-    IOPConstantsValueClass MECH_3p {
-     Key "MECH_3p"
-     Value -2.5
-     Port 15
-    }
-    IOPConstantsValueClass INT_FO_START {
-     Key "INT_FO_START"
-     Value 150
-     Port 16
-    }
-    IOPConstantsValueClass INT_FO_END {
-     Key "INT_FO_END"
-     Value 2000
-     Port 17
-    }
-    IOPConstantsValueClass INT_BASE_V {
-     Key "INT_BASE_V"
-     Value 0.95
-     Port 18
-    }
-   }
-  }
-  ConstantClass {
    id 337932
    name "20ms+boltSnapDelay"
    version 5
@@ -2692,15 +2385,6 @@ AudioClass {
      }
     }
     ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 350227
-       port 65
-      }
-     }
-    }
-    ConnectionsClass connections {
      id 2
      links {
       ConnectionClass connection {
@@ -2732,7 +2416,7 @@ AudioClass {
     }
    }
    pi {
-    7
+    5
    }
   }
   ShaderClass {
@@ -2786,22 +2470,13 @@ AudioClass {
    id 201746
    name "AL InteriorTail Shader"
    version 5
-   tl 1055.417 643.857
+   tl 1055.417 715.857
    ins {
     ConnectionsClass connections {
      id 0
      links {
       ConnectionClass connection {
        id 200732
-       port 65
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 350227
        port 65
       }
      }
@@ -2830,7 +2505,7 @@ AudioClass {
     }
    }
    pi {
-    7
+    5
    }
    ITD 0
   }
@@ -2846,15 +2521,6 @@ AudioClass {
      links {
       ConnectionClass connection {
        id 341020
-       port 65
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 350227
        port 65
       }
      }
@@ -2891,7 +2557,7 @@ AudioClass {
     }
    }
    pi {
-    7
+    5
    }
   }
   ShaderClass {
@@ -2905,15 +2571,6 @@ AudioClass {
      links {
       ConnectionClass connection {
        id 364572
-       port 65
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 350227
        port 65
       }
      }
@@ -2946,7 +2603,7 @@ AudioClass {
     }
    }
    pi {
-    7
+    5
    }
    ITD 0
   }
@@ -2961,15 +2618,6 @@ AudioClass {
      links {
       ConnectionClass connection {
        id 368668
-       port 65
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 350227
        port 65
       }
      }
@@ -2994,7 +2642,7 @@ AudioClass {
     }
    }
    pi {
-    7
+    5
    }
    ITD 0
   }
@@ -3070,22 +2718,16 @@ AudioClass {
   }
  }
  amplitudes {
-  AmplitudeClass {
+  AmplitudeClass : "{778C82C228A55EF9}Sounds/_SharedData/Configs/Amplitude/Weapons/Amplitude_Weapons_Mechanics_Smallarms.conf" {
    id 285715
    name "Mechanics Amplitude"
    version 5
    tl 1059.068 -1375.743
+   parent "{778C82C228A55EF9}Sounds/_SharedData/Configs/Amplitude/Weapons/Amplitude_Weapons_Mechanics_Smallarms.conf"
    curve "1/r"
    innerRange 0.3
    outerRange 45
    slopeFactor 22
-  }
-  AmplitudeClass : "{197B780224F9CD10}Sounds/_SharedData/Configs/Amplitude/_SharedData/Amplitude_20-22.conf" {
-   id 350227
-   name ""
-   version 5
-   tl -1422.524 600.19
-   parent "{197B780224F9CD10}Sounds/_SharedData/Configs/Amplitude/_SharedData/Amplitude_20-22.conf"
   }
  }
  frequency {
@@ -3130,27 +2772,9 @@ AudioClass {
   BankLocalClass {
    id 166916
    name "Tail Forest Close"
-   version 0
+   version 7
    tl -150.278 3981.514
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 4
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3162,11 +2786,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 1
    "Pitch variance" 0.5
-   "Fade out time" 5
+   "Termination Fade Out" 5
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3186,27 +2810,9 @@ AudioClass {
   BankLocalClass {
    id 167940
    name "Tail Hills Close"
-   version 0
+   version 7
    tl -150.278 3550.546
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 23
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3218,10 +2824,10 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    "Pitch variance" 0.75
-   "Fade out time" 7
+   "Termination Fade Out" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3241,27 +2847,9 @@ AudioClass {
   BankLocalClass {
    id 168964
    name "EL Houses Close"
-   version 0
+   version 7
    tl -160.278 1537.519
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 28
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -3282,7 +2870,7 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    "Volume variance" 0.2
    Pitch 6
@@ -3309,27 +2897,9 @@ AudioClass {
   BankLocalClass {
    id 171012
    name "Tail Meadows Close"
-   version 0
+   version 7
    tl -150.278 3295.11
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 2
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3341,11 +2911,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume -0.75
    "Pitch variance" 1
-   "Fade out time" 7
+   "Termination Fade Out" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3365,27 +2935,9 @@ AudioClass {
   BankLocalClass {
    id 177156
    name "EL Forest Close"
-   version 0
+   version 7
    tl -160.278 1307.415
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 4
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3397,7 +2949,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    "Volume variance" 0.2
    Pitch 6
@@ -3427,27 +2979,9 @@ AudioClass {
   BankLocalClass {
    id 178180
    name "EL Forest Far"
-   version 0
+   version 7
    tl -160.278 1794.135
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 5
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3459,7 +2993,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 1.5
    Pitch 6
@@ -3487,27 +3021,9 @@ AudioClass {
   BankLocalClass {
    id 179204
    name "Tail Houses Close"
-   version 0
+   version 7
    tl -150.278 4230.479
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 28
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3519,12 +3035,12 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 1
    Pitch 1
    "Pitch variance" 0.5
-   "Fade out time" 5
+   "Termination Fade Out" 5
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3544,27 +3060,9 @@ AudioClass {
   BankLocalClass {
    id 182276
    name "Tail Meadows Far"
-   version 0
+   version 7
    tl -150.278 3413.586
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 3
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3576,12 +3074,12 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 9
    "Pitch variance" 1
+   "Termination Fade Out" 7
    "Fade in time" 200
-   "Fade out time" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3601,27 +3099,9 @@ AudioClass {
   BankLocalClass {
    id 188420
    name "EL Houses Far"
-   version 0
+   version 7
    tl -160.278 1910.227
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 29
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -3642,7 +3122,7 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    Volume 1
    "Volume variance" 0.2
@@ -3671,27 +3151,9 @@ AudioClass {
   BankLocalClass {
    id 190468
    name "Tail Hills Far"
-   version 0
+   version 7
    tl -150.278 3690.57
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 24
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3703,11 +3165,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 7
    "Pitch variance" 0.75
-   "Fade out time" 7
+   "Termination Fade Out" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3727,27 +3189,9 @@ AudioClass {
   BankLocalClass {
    id 192516
    name "EL Hills Far"
-   version 0
+   version 7
    tl -152.778 2040.208
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 24
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3759,7 +3203,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 1
    "Volume variance" 0.2
@@ -3788,27 +3232,9 @@ AudioClass {
   BankLocalClass {
    id 193540
    name "EL Meadows Far"
-   version 0
+   version 7
    tl -160.278 1679.293
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 3
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -3829,7 +3255,7 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    Volume 8
    "Volume variance" 0.3
@@ -3858,27 +3284,9 @@ AudioClass {
   BankLocalClass {
    id 194564
    name "Tail Forest Far"
-   version 0
+   version 7
    tl -150.278 4106.724
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 5
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3890,11 +3298,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 6
    "Pitch variance" 0.5
-   "Fade out time" 7
+   "Termination Fade Out" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -3914,27 +3322,9 @@ AudioClass {
   BankLocalClass {
    id 195588
    name "EL Hills Close"
-   version 0
+   version 7
    tl -160.278 1422.467
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 23
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -3946,7 +3336,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    "Volume variance" 0.2
    Pitch 6
@@ -3974,27 +3364,9 @@ AudioClass {
   BankLocalClass {
    id 196612
    name "Tail Houses Far"
-   version 0
+   version 7
    tl -150.278 4340.431
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 29
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -4006,10 +3378,10 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    "Pitch variance" 0.75
-   "Fade out time" 5
+   "Termination Fade Out" 5
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -4029,8 +3401,8 @@ AudioClass {
   BankLocalClass {
    id 217092
    name "AL InteriorTail"
-   version 0
-   tl -157.167 602.119
+   version 7
+   tl -151.167 601.119
    ins {
     ConnectionsClass connections {
      id 0
@@ -4086,27 +3458,9 @@ AudioClass {
   BankLocalClass {
    id 309252
    name "EL Meadows Close"
-   version 0
+   version 7
    tl -162.183 1165.675
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 2
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -4127,7 +3481,7 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    "Volume variance" 0.2
    Pitch 6
@@ -4157,7 +3511,7 @@ AudioClass {
   BankLocalClass {
    id 333828
    name "Body Mid"
-   version 0
+   version 7
    tl -183.81 -134.168
    ins {
     ConnectionsClass connections {
@@ -4234,7 +3588,7 @@ AudioClass {
   BankLocalClass {
    id 334852
    name "DistZap Lo"
-   version 0
+   version 7
    tl -178.849 157.367
    ins {
     ConnectionsClass connections {
@@ -4300,7 +3654,7 @@ AudioClass {
   BankLocalClass {
    id 335876
    name "Body Far"
-   version 0
+   version 7
    tl -182.084 12.423
    ins {
     ConnectionsClass connections {
@@ -4377,7 +3731,7 @@ AudioClass {
   BankLocalClass {
    id 336900
    name "Body FP"
-   version 0
+   version 7
    tl -181.361 -360.261
    ins {
     ConnectionsClass connections {
@@ -4433,18 +3787,9 @@ AudioClass {
   BankLocalClass {
    id 344068
    name "AL Urban Slapback"
-   version 0
+   version 7
    tl -148.849 4645
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 29
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -4456,7 +3801,7 @@ AudioClass {
     }
    }
    pi {
-    33
+    32
    }
    Volume -3
    Pitch -1
@@ -4486,7 +3831,7 @@ AudioClass {
   BankLocalClass {
    id 345092
    name "AL Dist Crackling Far"
-   version 0
+   version 7
    tl -150.278 4964.778
    ins {
     ConnectionsClass connections {
@@ -4531,7 +3876,7 @@ AudioClass {
   BankLocalClass {
    id 347140
    name "AL Dist Crackling Close"
-   version 0
+   version 7
    tl -150.278 4817.278
    ins {
     ConnectionsClass connections {
@@ -4576,7 +3921,7 @@ AudioClass {
   BankLocalClass {
    id 362500
    name "Mechanics 2"
-   version 0
+   version 7
    tl -154.306 -1338.183
    ins {
     ConnectionsClass connections {
@@ -4615,7 +3960,6 @@ AudioClass {
    "Pitch variance" 0.3
    Resampler FIR_4
    "Fade in function" SCurve
-   "Fade out time" 0
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -4635,7 +3979,7 @@ AudioClass {
   BankLocalClass {
    id 381956
    name "Zeroing Snap"
-   version 0
+   version 7
    tl -151.806 -1623.85
    ins {
     ConnectionsClass connections {
@@ -4688,7 +4032,7 @@ AudioClass {
   BankLocalClass {
    id 395268
    name "In Cabin End"
-   version 0
+   version 7
    tl -163.914 -486.355
    ins {
     ConnectionsClass connections {
@@ -4716,7 +4060,6 @@ AudioClass {
    Volume -9
    "Pitch variance" 0.1
    Resampler FIR_4
-   "Fade out time" 0
    Samples {
     AudioBankSampleClass Sample {
      Filename "{28AFB13C028900A4}Sounds/Weapons/HeavyWeapons/KPVT/Samples/KPVT_InCabin_End_01.wav"
@@ -4734,7 +4077,7 @@ AudioClass {
   BankLocalClass {
    id 396292
    name "In Cabin"
-   version 0
+   version 7
    tl -165.278 -603.061
    ins {
     ConnectionsClass connections {
@@ -4779,7 +4122,7 @@ AudioClass {
   BankLocalClass {
    id 408580
    name "Cabin RoomTone 1"
-   version 0
+   version 7
    tl -160.278 -814.611
    ins {
     ConnectionsClass connections {
@@ -4824,7 +4167,7 @@ AudioClass {
   BankLocalClass {
    id 412676
    name "KPVT BoltSnap InCabin"
-   version 0
+   version 7
    tl -160.278 -697
    ins {
     ConnectionsClass connections {
@@ -4850,7 +4193,7 @@ AudioClass {
   BankLocalClass {
    id 415748
    name "Body FP InCabin"
-   version 0
+   version 7
    tl -160.278 -930.278
    ins {
     ConnectionsClass connections {
@@ -4909,27 +4252,9 @@ AudioClass {
   BankLocalClass {
    id 428036
    name "EnvLayer Meadows Far End"
-   version 0
+   version 7
    tl -165.556 2647.111
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 3
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -4950,12 +4275,12 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    Volume 2
    Pitch 6
    "Pitch variance" 0.7
-   "Fade out time" 25
+   "Termination Fade Out" 25
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -4979,27 +4304,9 @@ AudioClass {
   BankLocalClass {
    id 429060
    name "EL Houses Far End"
-   version 0
+   version 7
    tl -165.556 2889.463
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 29
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 4
      links {
@@ -5020,12 +4327,12 @@ AudioClass {
     }
    }
    pi {
-    51
+    48
    }
    Volume 3
    Pitch 6
    "Pitch variance" 0.7
-   "Fade out time" 25
+   "Termination Fade Out" 25
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -5049,27 +4356,9 @@ AudioClass {
   BankLocalClass {
    id 430084
    name "EL Forest Far  End"
-   version 0
+   version 7
    tl -165.556 2766.203
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 5
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5081,11 +4370,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Pitch 6
    "Pitch variance" 0.7
-   "Fade out time" 25
+   "Termination Fade Out" 25
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -5109,27 +4398,9 @@ AudioClass {
   BankLocalClass {
    id 431108
    name "EL Hills Far End"
-   version 0
+   version 7
    tl -165.556 3010.555
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 24
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5141,12 +4412,12 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 1
    Pitch 6
    "Pitch variance" 0.7
-   "Fade out time" 25
+   "Termination Fade Out" 25
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -5170,27 +4441,9 @@ AudioClass {
   BankLocalClass {
    id 434180
    name "SlapBack Meadows Small"
-   version 0
+   version 7
    tl 652.658 4844.966
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 62
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 82
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5202,7 +4455,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume -4
    "Pitch variance" 2
@@ -5227,27 +4480,9 @@ AudioClass {
   BankLocalClass {
    id 436228
    name "SlapBack Urban Small"
-   version 0
+   version 7
    tl 652.658 5083.604
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 80
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 82
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5259,7 +4494,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume 3
    Pitch 3.586
@@ -5285,27 +4520,9 @@ AudioClass {
   BankLocalClass {
    id 438276
    name "SlapBack Urban Small"
-   version 0
+   version 7
    tl 652.658 5202.923
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 80
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 82
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5317,7 +4534,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Pitch 3.586
    "Pitch variance" 2
@@ -5342,27 +4559,9 @@ AudioClass {
   BankLocalClass {
    id 440324
    name "SlapBack Forest Small"
-   version 0
+   version 7
    tl 652.658 4964.284
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 79
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 82
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5374,7 +4573,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume -2.7
    "Pitch variance" 2
@@ -5399,27 +4598,9 @@ AudioClass {
   BankLocalClass {
    id 441348
    name "SlapBack Hills Small"
-   version 0
+   version 7
    tl 652.658 5322.24
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 88
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 343053
-       port 82
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -5431,7 +4612,7 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume -1
    "Pitch variance" 2
@@ -5456,7 +4637,7 @@ AudioClass {
   BankLocalClass {
    id 445444
    name "Bank 435"
-   version 0
+   version 7
    tl -152.5 -1480
    ins {
     ConnectionsClass connections {
@@ -5494,7 +4675,6 @@ AudioClass {
    "Loop begin" 900
    Resampler FIR_4
    "Fade in function" SCurve
-   "Fade out time" 0
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -5506,7 +4686,7 @@ AudioClass {
   BankLocalClass {
    id 447492
    name "Body FP"
-   version 0
+   version 7
    tl 16.143 -350.536
    ins {
     ConnectionsClass connections {
@@ -5562,7 +4742,7 @@ AudioClass {
   BankLocalClass {
    id 450564
    name "Body Mid"
-   version 0
+   version 7
    tl 19.306 -132.5
    ins {
     ConnectionsClass connections {
@@ -5639,7 +4819,7 @@ AudioClass {
   BankLocalClass {
    id 451588
    name "Body Far"
-   version 0
+   version 7
    tl 11.667 16.389
    ins {
     ConnectionsClass connections {
@@ -5716,7 +4896,7 @@ AudioClass {
   BankLocalClass {
    id 453636
    name "Body FP"
-   version 0
+   version 7
    tl 213.75 -355
    ins {
     ConnectionsClass connections {
@@ -5772,7 +4952,7 @@ AudioClass {
   BankLocalClass {
    id 454660
    name "Body Mid"
-   version 0
+   version 7
    tl 223.75 -137.5
    ins {
     ConnectionsClass connections {
@@ -5849,7 +5029,7 @@ AudioClass {
   BankLocalClass {
    id 455684
    name "Body Far"
-   version 0
+   version 7
    tl 202.5 12.5
    ins {
     ConnectionsClass connections {
@@ -5926,8 +5106,8 @@ AudioClass {
   BankLocalClass {
    id 456708
    name "AL InteriorTail"
-   version 0
-   tl -157.5 763.75
+   version 7
+   tl -151.5 734.75
    ins {
     ConnectionsClass connections {
      id 0
@@ -5983,27 +5163,9 @@ AudioClass {
   BankLocalClass {
    id 457732
    name "Tail Meadows Close"
-   version 0
+   version 7
    tl -121.806 3143.195
    ins {
-    ConnectionsClass connections {
-     id 0
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 2
-      }
-     }
-    }
-    ConnectionsClass connections {
-     id 1
-     links {
-      ConnectionClass connection {
-       id 186381
-       port 35
-      }
-     }
-    }
     ConnectionsClass connections {
      id 5
      links {
@@ -6015,11 +5177,11 @@ AudioClass {
     }
    }
    pi {
-    35
+    32
    }
    Volume -0.75
    "Pitch variance" 1
-   "Fade out time" 7
+   "Termination Fade Out" 7
    "Disable streaming" 1
    Preload 1
    Samples {
@@ -6039,7 +5201,7 @@ AudioClass {
   BankLocalClass {
    id 458756
    name "Body FP"
-   version 0
+   version 7
    tl 403.333 -360
    ins {
     ConnectionsClass connections {
@@ -6119,7 +5281,7 @@ AudioClass {
   SpatialityClass : "{06EE9E12D2EEF99E}Sounds/_SharedData/Configs/Spatiality/Weapons/Spatiality_Weapons_InteriorTails_Default.conf" {
    id 200732
    version 5
-   tl 1055.417 579.567
+   tl 1056.417 608.567
    parent "{06EE9E12D2EEF99E}Sounds/_SharedData/Configs/Spatiality/Weapons/Spatiality_Weapons_InteriorTails_Default.conf"
   }
   SpatialityClass {
@@ -6212,13 +5374,13 @@ AudioClass {
    Color 1 0.333 1 0.251
   }
   GroupClass {
-   id 404483
-   name "AL 1"
+   id 443395
+   name "Slapback"
    children {
-    201746 200732 217092 342020 339972
+    439303 437270 434180 438276 436228 441348 435213 440324 442380
    }
    parent -1
-   Color 1 1 0 0.251
+   Color 0.6 0.6 0.6 0.251
   }
   GroupClass {
    id 373763
@@ -6257,13 +5419,13 @@ AudioClass {
    Color 0.667 0 0 0.251
   }
   GroupClass {
-   id 443395
-   name "Slapback"
+   id 460803
+   name "AL 1"
    children {
-    439303 437270 434180 438276 436228 441348 435213 440324 442380
+    200732 217092 201746 456708
    }
    parent -1
-   Color 0.6 0.6 0.6 0.251
+   Color 0.823 0.636 0.085 0.162
   }
  }
  version 1

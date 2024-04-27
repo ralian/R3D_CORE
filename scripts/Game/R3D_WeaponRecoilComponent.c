@@ -16,6 +16,7 @@ class R3D_WeaponRecoilComponent : ScriptComponent
 	protected IEntity m_Owner = null;
 	protected Physics m_Physics = null;
 	protected BaseMuzzleComponent m_Muzzle = null;
+	protected vector m_vOriginMat[4];
 	private int m_iPreviousAmmoCount = 0;
 	
 	override void OnPostInit(IEntity owner)
@@ -24,8 +25,13 @@ class R3D_WeaponRecoilComponent : ScriptComponent
 		
 		m_Owner = owner;
 		m_Physics = owner.GetPhysics();
-		m_vRecoilPosition.Init(owner);
-		
+			
+		if (m_vRecoilPosition)	
+		{
+			m_vRecoilPosition.Init(owner);
+			m_vRecoilPosition.GetModelTransform(m_vOriginMat);
+		}
+			
 		SetEventMask(owner, EntityEvent.INIT | EntityEvent.SIMULATE);
 	}
 	
@@ -61,11 +67,8 @@ class R3D_WeaponRecoilComponent : ScriptComponent
 		
 		if (deltaAmmo < 0)
 		{
-			vector originMat[4];			
-			m_vRecoilPosition.GetModelTransform(originMat);
-			
-			vector position = owner.CoordToParent(originMat[3]);
-			vector force = owner.VectorToParent(originMat[2]) * -1 * m_fRecoilForce;
+			vector position = owner.CoordToParent(m_vOriginMat[3]);
+			vector force = owner.VectorToParent(m_vOriginMat[2]) * -1 * m_fRecoilForce;
 			m_Physics.ApplyImpulseAt(position, force * timeSlice);
 		}
 		

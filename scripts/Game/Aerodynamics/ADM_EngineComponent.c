@@ -58,12 +58,15 @@ class ADM_EngineComponent : ScriptComponent
 		owner.SetFlags(EntityFlags.ACTIVE, true);
 		m_Physics = owner.GetPhysics();
 		
-		m_vThrustInfo.Init(owner);
-		
-		vector thrustMat[4];
-		m_vThrustInfo.GetModelTransform(thrustMat);
-		m_vNozzleExit = thrustMat[3];
-		m_vExhaustDirection = thrustMat[2];
+		if (m_vThrustInfo)
+		{
+			m_vThrustInfo.Init(owner);
+			
+			vector thrustMat[4];
+			m_vThrustInfo.GetModelTransform(thrustMat);
+			m_vNozzleExit = thrustMat[3];
+			m_vExhaustDirection = thrustMat[2];
+		}
 		
 		m_input = ADM_AirplaneInput.Cast(GetOwner().FindComponent(ADM_AirplaneInput));
 		m_SignalManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));

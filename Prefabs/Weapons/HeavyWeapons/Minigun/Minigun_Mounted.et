@@ -9,8 +9,6 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
   MeshObject "{CFBAA4B701F95D69}" {
    Object "{A49BC653982A4E09}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Mounted.xob"
   }
-  SCR_DamageManagerComponent "{506CDB924EC124FE}" {
-  }
   SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
    Enabled 1
    Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {

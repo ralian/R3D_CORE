@@ -104,7 +104,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		m_NwkMovement = NwkCarMovementComponent.Cast(owner.FindComponent(NwkCarMovementComponent));
 		m_LightManager = BaseLightManagerComponent.Cast(owner.FindComponent(BaseLightManagerComponent));
-		m_Physics.SetActive(true);
+		
+		if (m_Physics)
+			m_Physics.SetActive(true);
 		
 		// Find all engines
 		array<Managed> components = {};
@@ -238,6 +240,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			m_SignalsManager.SetSignalValue(signalIndex, (int)(!m_bGearState));
 		}
 		
+		// TODO: only do this if all gear retract
 		if (!m_bGearState)
 		{
 			m_VehicleBaseSim.Deactivate(m_Owner);
@@ -298,6 +301,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
+			if (gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0)
+			{
+				continue;
+			}
+				
 			if (m_bGearState && gear.GetState() < 1)
 			{
 				gear.RotateGear(gear.m_fRotationRate * timeSlice);
@@ -470,6 +478,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_Physics.SetAngularVelocity(angularVelocity);
 	}
 	
+	float turningAcceleration = 0;
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		super.EOnSimulate(owner, timeSlice);
@@ -578,6 +587,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 		
 		m_SignalsManager.SetSignalValue(m_iSpeedSignal, absoluteVelocity.Length());
+		
+		turningAcceleration = vector.Dot(owner.VectorToParent("0 1 0"), m_Physics.GetTotalForce() / m_Physics.GetMass());
 	}
 	
 	// Only calculated once since panels are static
@@ -759,9 +770,14 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			if (m_ShowDbgUI)
 			{
 				float mach = GetMachNumber();
+				float turningRadius = 0;
+				if (turningAcceleration > 0) {
+					turningRadius = (vel.LengthSq()/turningAcceleration) * 3.28;
+				}
 				
 				DbgUI.Text(string.Format("Velocity: %1 m/s", Math.Round(vel.Length() * 100)/100));
 				DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
+				DbgUI.Text(string.Format("Turning Radius: %1 ft", Math.Round(turningRadius*100)/100));
 				DbgUI.Text("");
 			}
 			DbgUI.End();
