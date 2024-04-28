@@ -55,12 +55,9 @@ class R3D_LoopedGunSound : ScriptGameComponent
 				m_fReleaseTime = System.GetTickCount();
 			}
 			
-			bool didRelease = (System.GetTickCount() - m_fReleaseTime) < m_fSignalReleaseDelay && (System.GetTickCount() - m_fLastFireTime) > 50;
+			bool didRelease = (System.GetTickCount() - m_fReleaseTime) < m_fSignalReleaseDelay && (System.GetTickCount() - m_fLastFireTime) > 50 && !vehicleFire;
 			m_WeaponSignalsManager.SetSignalValue(m_iWeaponSignal, (int)vehicleFire);
 			m_WeaponSignalsManager.SetSignalValue(m_iWeaponWasFiringSignal, (int)didRelease);
-			
-			Print(vehicleFire);
-			Print(didRelease);
 			
 			if (deltaAmmo < 0)
 			{
