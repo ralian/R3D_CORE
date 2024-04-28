@@ -1,0 +1,360 @@
+AudioClass {
+ signals {
+  SignalClass {
+   id 474125
+   name "Signal 463"
+   tl -592.692 2311.602
+   res "{729F1D0E75A7EC40}Sounds/Weapons/HeavyWeapons/Minigun/M134NEW.sig"
+   inputsport {
+    4 5 7
+   }
+   outputsport {
+    3 6 8
+   }
+   inputvalues {
+    0.5 0 0
+   }
+   inputvaluesmin {
+    0 0 0
+   }
+   inputvaluesmax {
+    1 1 1
+   }
+  }
+ }
+ sounds {
+  SoundClass {
+   id 463881
+   name "Sound 1"
+   version 5
+   tl -339.234 2220.981
+   ins {
+    ConnectionsClass connections {
+     id 0
+     links {
+      ConnectionClass connection {
+       id 474125
+       port 3
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 64
+     links {
+      ConnectionClass connection {
+       id 465938
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1
+   }
+   speedOfSoundSimulation 1
+  }
+  SoundClass {
+   id 467977
+   name "Sound 21"
+   version 5
+   tl -329.89 2464.655
+   ins {
+    ConnectionsClass connections {
+     id 0
+     links {
+      ConnectionClass connection {
+       id 474125
+       port 8
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 64
+     links {
+      ConnectionClass connection {
+       id 461842
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1
+   }
+  }
+ }
+ constants {
+  ConstantClass {
+   id 472076
+   name "Constant 14"
+   version 5
+   tl -1076.922 2387.429
+   "Constant values" {
+    IOPConstantsValueClass delay {
+     Key "delay"
+     Value 200
+     Port 1
+    }
+   }
+  }
+ }
+ shaders {
+  ShaderClass {
+   id 461842
+   name "Shader 20"
+   version 5
+   tl -593.223 2451.322
+   ins {
+    ConnectionsClass connections {
+     id 0
+     links {
+      ConnectionClass connection {
+       id 464924
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 1
+     links {
+      ConnectionClass connection {
+       id 473107
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 2
+     links {
+      ConnectionClass connection {
+       id 471061
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 64
+     links {
+      ConnectionClass connection {
+       id 477188
+       port 65
+      }
+      ConnectionClass connection {
+       id 462852
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    7
+   }
+  }
+  ShaderClass {
+   id 465938
+   name "Shader 5"
+   version 5
+   tl -591.279 2151.877
+   ins {
+    ConnectionsClass connections {
+     id 0
+     links {
+      ConnectionClass connection {
+       id 464924
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 1
+     links {
+      ConnectionClass connection {
+       id 473107
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 2
+     links {
+      ConnectionClass connection {
+       id 471061
+       port 65
+      }
+     }
+    }
+    ConnectionsClass connections {
+     id 64
+     links {
+      ConnectionClass connection {
+       id 475140
+       port 65
+      }
+      ConnectionClass connection {
+       id 470020
+       port 65
+      }
+      ConnectionClass connection {
+       id 468996
+       port 65
+      }
+      ConnectionClass connection {
+       id 478212
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    7
+   }
+  }
+ }
+ amplitudes {
+  AmplitudeClass {
+   id 473107
+   name "Amplitude 7"
+   version 5
+   tl -1075.751 2182.822
+   curve Linear
+   innerRange 10
+   outerRange 5000
+  }
+ }
+ frequency {
+  FrequencyClass {
+   id 471061
+   name "Frequency 6"
+   version 5
+   tl -1077.001 2250.183
+   dynamicUpdate 1
+   enableDistanceAtt 1
+   type AirAbsorption
+   terrainEffects 1
+  }
+ }
+ banks_local {
+  BankLocalClass {
+   id 462852
+   name "BRRT_End"
+   version 7
+   tl -847.253 2527.061
+   pu {
+    2
+   }
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{C1E86131F7B785DE}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Minigun_END.wav"
+    }
+   }
+  }
+  BankLocalClass {
+   id 468996
+   name "BRRT_Start"
+   version 7
+   tl -849.408 2427.287
+   pu {
+    2
+   }
+   Volume 5
+   "Termination Fade Out" 0
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{F444EF4A1B32E8A2}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Minigun_START.wav"
+    }
+   }
+  }
+  BankLocalClass {
+   id 470020
+   name "BRRT_Loop"
+   version 7
+   tl -848.95 2325.825
+   ins {
+    ConnectionsClass connections {
+     id 5
+     links {
+      ConnectionClass connection {
+       id 472076
+       port 1
+      }
+     }
+    }
+   }
+   pi {
+    32
+   }
+   pu {
+    2
+   }
+   Volume 5
+   "Loop count" 255
+   "Infinite loop" 1
+   "Random start offset" 1
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{3E41B9B915EBEE68}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Minigun_LOOP.wav"
+    }
+   }
+  }
+  BankLocalClass {
+   id 475140
+   name "Mech_Rotate_LOOP"
+   version 7
+   tl -851.987 2685.332
+   ins {
+    ConnectionsClass connections {
+     id 5
+     links {
+      ConnectionClass connection {
+       id 472076
+       port 1
+      }
+     }
+    }
+   }
+   pi {
+    32
+   }
+   "Volume variance" 3
+   "Pitch variance" 0.5
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{4C41F66DADD918FF}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Rotate_LOOP.wav"
+    }
+   }
+  }
+  BankLocalClass {
+   id 477188
+   name "Mech_Rotate_END"
+   version 7
+   tl -848.889 2757.884
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{52CDB7C120185A82}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Rotate_END.wav"
+    }
+   }
+  }
+  BankLocalClass {
+   id 478212
+   name "Mech_Rotate_START"
+   version 7
+   tl -850.769 2603.076
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{01A87330215EBD9A}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Rotate_START.wav"
+    }
+   }
+  }
+ }
+ spatialities {
+  SpatialityClass {
+   id 464924
+   name "Spatiality 8"
+   version 5
+   tl -1077.251 2318.683
+   spatialFactor 0.5
+  }
+ }
+ version 1
+ sourcesLimit 32
+}
