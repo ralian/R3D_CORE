@@ -3,11 +3,13 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
  components {
   WeaponSoundComponent "{5A8685198A9AEEDD}" {
    Filenames {
-    "{3E28601CBE736F22}Sounds/Weapons/HeavyWeapons/Minigun/Weapons_HeavyWeapons_M134_Shot_02.acp" "{6616B1A0537FC180}Sounds/Vehicles/Wheeled/M151A2/Vehicles_M151A2_Turret.acp" "{EC7E8631CBC17F15}Sounds/Weapons/HeavyWeapons/M2/Weapons_HeavyWeapons_M2_Handling.acp"
+    "{8D76A9AD0C406872}Sounds/Weapons/HeavyWeapons/Minigun/Weapons_HeavyWeapons_M134_Shot.acp" "{6616B1A0537FC180}Sounds/Vehicles/Wheeled/M151A2/Vehicles_M151A2_Turret.acp" "{EC7E8631CBC17F15}Sounds/Weapons/HeavyWeapons/M2/Weapons_HeavyWeapons_M2_Handling.acp"
    }
   }
   MeshObject "{CFBAA4B701F95D69}" {
    Object "{A49BC653982A4E09}Assets/Weapons/HeavyWeapons/Minigun/Minigun_Mounted.xob"
+  }
+  R3D_LoopedGunSound "{6137432A94BA18B1}" {
   }
   SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
    Enabled 1
