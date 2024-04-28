@@ -89,7 +89,7 @@ AudioClass {
    id 472076
    name "Constant 14"
    version 5
-   tl -1076.922 2386.179
+   tl -1076.922 2387.429
    "Constant values" {
     IOPConstantsValueClass delay {
      Key "delay"
@@ -328,7 +328,7 @@ AudioClass {
    id 477188
    name "Mech_Rotate_END"
    version 7
-   tl -846.667 2764.551
+   tl -848.889 2757.884
    Samples {
     AudioBankSampleClass Sample {
      Filename "{52CDB7C120185A82}Sounds/Weapons/HeavyWeapons/Minigun/samples/M134_Rotate_END.wav"
