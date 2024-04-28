@@ -81,7 +81,6 @@ AudioClass {
    pi {
     1
    }
-   speedOfSoundSimulation 1
   }
  }
  constants {
