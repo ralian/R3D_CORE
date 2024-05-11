@@ -23,6 +23,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	[Attribute(params: "0 inf", category: "Fixed Wing Simulation")]
 	protected float m_fSideDragCoefficient;
 	
+	[Attribute(params: "0 1", defvalue: "1", category: "Fixed Wing Simulation")]
+	protected float m_fWindStrength;
+	
 	[Attribute(uiwidget: UIWidgets.Object, category: "Fixed Wing Simulation")]
 	ref array<ref ADM_LandingGear> m_Gear;
 	
@@ -284,7 +287,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
 		
-		return speed * mat[2];
+		return speed * mat[2] * m_fWindStrength;
 	}
 	
 	override event protected bool OnTicksOnRemoteProxy() 
@@ -470,6 +473,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 	}
 	
+	// this is awful, how can I get the got damn server authorative stuff working correctly with the plane???
 	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
 	void Rpc_Server_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
 	{
