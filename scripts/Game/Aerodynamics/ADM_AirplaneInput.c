@@ -50,7 +50,7 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	protected float m_Freelook = 0.0;
 	
-	protected ADM_FixedWingSimulation m_FixedWingSim;
+	protected ADM_AirplaneControllerComponent_SA m_AirplaneController;
 	
 	void ResetTrim()
 	{
@@ -222,7 +222,7 @@ class ADM_AirplaneInput : ScriptComponent
 	{ 
 		if (!IsControlActive()) return;
 		
-		if (m_TrimModifier > 0.5)
+		/*if (m_TrimModifier > 0.5)
 		{
 			InputManager im = g_Game.GetInputManager();
 			if (im && !im.IsUsingMouseAndKeyboard())
@@ -232,7 +232,7 @@ class ADM_AirplaneInput : ScriptComponent
 				m_fFlapInput = Math.Clamp(m_fFlapInput, 0, 1);
 				return;
 			}
-		}
+		}*/
 		
 		m_fThrustInput += thrust * m_fThrustVelocity; 
 		m_fThrustInput = Math.Clamp(m_fThrustInput, 0, 1);
@@ -266,7 +266,7 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void ToggleGear(float gear = 0.0, EActionTrigger reason = 0)
 	{
-		m_FixedWingSim.ToggleGear();
+		m_AirplaneController.ToggleGear();
 	}
 	
 	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
@@ -292,7 +292,6 @@ class ADM_AirplaneInput : ScriptComponent
 				}
 				
 				r3dSlotInfo.TriggerPylon();
-				Print("trigger pylon");
 				
 				return;
 			}
@@ -367,14 +366,14 @@ class ADM_AirplaneInput : ScriptComponent
 		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,  WeaponRelease);
 		inputManager.AddActionListener("R3D_AirplaneTrimReset",			EActionTrigger.DOWN,  TrimReset);
 		
-		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
+		m_AirplaneController = ADM_AirplaneControllerComponent_SA.Cast(owner.FindComponent(ADM_AirplaneControllerComponent_SA));
 	}
 	
 	override void EOnFrame(IEntity owner, float timeSlice)
 	{
 		super.EOnFrame(owner, timeSlice);
 		
-		if (!m_FixedWingSim) return;
+		if (!m_AirplaneController) return;
 		if (IsControlActive())
 		{
 			GetGame().GetInputManager().ActivateContext("R3D_AirplaneContext");
