@@ -8,9 +8,14 @@ class ADM_AirplaneControllerComponent_SAClass : SCR_CarControllerComponent_SACla
 */
 class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 {
-	[RplProp()] protected bool m_bIsEngineOn = false; //Set the engine to be off by default
-	[RplProp()] protected bool m_bGearDeployed = true; // true = deployed, false = retracted
+	[RplProp()] 
+	protected bool m_bIsEngineOn = false; //Set the engine to be off by default
+	
+	[RplProp()] 
+	protected bool m_bGearDeployed = true; // true = deployed, false = retracted
+	
 	protected ref array<ADM_EngineComponent> m_Engines = {};
+	protected ADM_FixedWingSimulation m_FixedWingSim;
 	
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
@@ -22,6 +27,14 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 			ADM_EngineComponent engCmp = ADM_EngineComponent.Cast(cmp);
 			if (engCmp) m_Engines.Insert(engCmp);
 		}
+		
+		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	ADM_FixedWingSimulation GetFixedWingSimulation()
+	{
+		return m_FixedWingSim;
 	}
 	
 	//------------------------------------------------------------------------------------------------
