@@ -1,5 +1,5 @@
-AnimSetInstanceSource {
- Template "{4EB3147FA1ED89BD}Assets/Weapons/MachineGuns/workspaces/M249.ast"
+AnimSetInstanceSource "{61821CC3206CADCB}" {
+ Template "{3E19E915D2DF7300}Assets/Weapons/MachineGuns/workspaces/M60.ast"
  Lines {
   AnimSetInstanceSource_Line "Reload.Erc.Fire" {
    Resource "{B5D47FBEC0E211AB}Assets/Weapons/HeavyWeapons/Minigun/anims/anm/MinigunSpin.anm"

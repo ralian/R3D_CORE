@@ -9,6 +9,8 @@ MetaFileClass {
   }
   AnimWorkspaceResourceClass PS4 : PC {
   }
+  AnimWorkspaceResourceClass PS5 : PC {
+  }
   AnimWorkspaceResourceClass HEADLESS : PC {
   }
  }

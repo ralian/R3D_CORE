@@ -1,5 +1,5 @@
-AnimSetInstanceSource {
- Template "{4EB3147FA1ED89BD}Assets/Weapons/MachineGuns/workspaces/M249.ast"
+AnimSetInstanceSource "{61821CC345CA01D0}" {
+ Template "{3E19E915D2DF7300}Assets/Weapons/MachineGuns/workspaces/M60.ast"
  RBF AnimSetInstanceSourceRBFArray "{5AAC1BE38121AE29}" {
  }
 }
