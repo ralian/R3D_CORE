@@ -1,0 +1,40 @@
+MetaFileClass {
+ Name "{3F1F7C7C99F6A92D}Assets/Weapons/HeavyWeapons/AGM114/AGM-114_Missile.xob"
+ Configurations {
+  FBXResourceClass PC {
+   ExportSkinning 1
+   MaterialAssigns {
+    MaterialAssignClass "{61876536701DB9FA}" {
+     SourceMaterial "helicopter_nato_weapons"
+     AssignedMaterial "{DB5ACD62E63495A7}Assets/Weapons/HeavyWeapons/AGM114/Data/AGM114.emat"
+    }
+   }
+   MeshParams {
+    MeshParam "agm-114_missile.001" {
+    }
+   }
+   Common TXOCommonClass "{61876536706DDDC2}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{61876536706DDFD8}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{61876536706DDF61}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{61876536706DDEE3}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS5 : PC {
+   Common TXOCommonClass "{61876536706DDEBE}" : "{F62AA8E7B8EA9D26}configs/ResourceTypes/PS5/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{61876536706DD197}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

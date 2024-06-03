@@ -1,0 +1,25 @@
+GenericEntity : "{827296411F006FC1}Prefabs/Weapons/HeavyWeapons/AGM114/AGM114.et" {
+ ID "5CE7195F5D8E4495"
+ components {
+  SCR_EditableEntityComponent "{61876B45A9D67FBA}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{61876B44E493BA52}" {
+    Name "AGM-114"
+    m_aAuthoredLabels {
+     1001
+    }
+    m_aAutoLabels {
+     1 121 27
+    }
+   }
+   m_bAutoRegister ALWAYS
+  }
+  SCR_PreviewEntityComponent "{61876B45B75CCB24}" {
+   m_bRuntime 0
+   m_aEntries {
+    SCR_BasePreviewEntry "{61876B4426190260}" {
+     m_Mesh "{3F1F7C7C99F6A92D}Assets/Weapons/HeavyWeapons/AGM114/AGM-114_Missile.xob"
+    }
+   }
+  }
+ }
+}

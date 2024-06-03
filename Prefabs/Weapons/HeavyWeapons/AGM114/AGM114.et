@@ -1,0 +1,70 @@
+GenericEntity {
+ ID "5CE7195F5D8E4495"
+ components {
+  CollisionTriggerComponent "{5CE74210D091C801}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{5CE74210DCDA0956}" {
+     TriggerOnce 1
+     EffectPrefab "{7D969E6B3209529C}Prefabs/Weapons/Warheads/Warhead_Grenade_HEDP_M433.et"
+     ParticleEffect "{3F44C118CB6C3EFB}Particles/Explosions/Rockets/Explosion_AGM_114Hellfire.ptc"
+     SoundEvent "SOUND_EXPLOSION"
+     ExitEffectPrefab "{4E168888868FE6C7}Prefabs/Weapons/Core/ExitEffect.et"
+    }
+   }
+  }
+  MeshObject "{5CE7195E3ABC67DB}" {
+   Object "{3F1F7C7C99F6A92D}Assets/Weapons/HeavyWeapons/AGM114/AGM-114_Missile.xob"
+  }
+  R3D_MissileGuidanceComponent "{5CE7195E3ABC67E6}" {
+   m_TriggerMode R3D_MissileTriggerModeCollision "{5CE7546E3FE91201}" {
+   }
+   m_TargetPos 5000 95 6500
+   m_TargetingMode DirectPointing
+   KpX 0.1
+   KiX 0
+   KdX 0.01
+   KpY 0.1
+   KiY 0
+   KdY 0.01
+  }
+  R3D_PylonTriggerComponent "{618765369CCC14E5}" {
+  }
+  R3D_RocketMoveComponent "{5CE7195E3ABC6451}" {
+   m_fStructuralMass 5
+   m_fPropellantMass 33
+   m_fPayloadMass 9
+   m_fMaxConeAngle 10
+   m_ExhaustParticle "{67564664379C0793}Particles/Weapons/Effects/Trail/Trail_PG7VL.ptc"
+   m_fIsp 100
+   m_fBurnTime 3
+   m_vExhaustLocation PointInfo "{5CE7195E3ABC679B}" {
+    Offset 0 0 -1.0405
+   }
+  }
+  RigidBody "{5CE7195E3ABC6447}" {
+   Layers 16908288
+   Mass 100
+   Gravity 0
+   LinearDamping 0.075
+   ResponseIndex "LargeMomentum"
+   ModelGeometry 1
+  }
+  ActionsManagerComponent "{5CE7195E3ABC6469}" {
+   ActionContexts {
+    UserActionContext "{5CE7195E3ABC6467}" {
+     ContextName "launch"
+     Position PointInfo "{5CE7195E3ABC6466}" {
+     }
+    }
+   }
+  }
+  RplComponent "{5CE7195E3ABC6413}" {
+  }
+  Hierarchy "{5CE7195E3ABC67CF}" {
+  }
+ }
+ coords 5534.997 90.734 5882.365
+ angleX 23.847
+ angleY -9.56
+ angleZ 6.067
+}
