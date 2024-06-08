@@ -6,11 +6,11 @@ MetaFileClass {
    MaterialAssigns {
     MaterialAssignClass "{5E481AF293A90B33}" {
      SourceMaterial "texture"
-     AssignedMaterial "{B8549D6CCE31A20F}Assets/Weapons/HeavyWeapons/AGM65/data/texture.emat"
+     AssignedMaterial "{B8549D6CCE31A20F}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_Body.emat"
     }
     MaterialAssignClass "{5E481AF293A90B2B}" {
      SourceMaterial "glass"
-     AssignedMaterial "{F314A460298E1CD3}Assets/Weapons/HeavyWeapons/AGM65/data/glass.emat"
+     AssignedMaterial "{F314A460298E1CD3}Assets/Weapons/HeavyWeapons/AGM65/data/AGM65_Glass.emat"
     }
    }
    MeshParams {
@@ -67,6 +67,8 @@ MetaFileClass {
   FBXResourceClass HEADLESS : PC {
    Common TXOCommonClass "{5E481AF293BB70B6}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
    }
+  }
+  FBXResourceClass PS5 : PC {
   }
  }
 }

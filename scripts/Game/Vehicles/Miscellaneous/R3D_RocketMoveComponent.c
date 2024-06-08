@@ -160,8 +160,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 			return;
 		
 		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
-		
-		Launch();
 	}
 	
 	vector CalculateTrajectoryCollision(IEntity object)
@@ -277,9 +275,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		Shape.CreateArrow(aeroCenter, aeroCenter + lift * m_Owner.CoordToParent("0 1 0") * 1000, 1, Color.RED, ShapeFlags.NOZBUFFER);
 		
-		Print(alpha);
-		Print(lift);
-		
 		previousVelocity = m_Physics.GetVelocity();
 		
 		// Use Z as it is
@@ -345,7 +340,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		DbgUI.End();
 		
 		DbgUI.Begin(string.Format("RocketComponent: %1", owner.GetName()));
-		if (m_ShowDbgUI)
+		if (m_ShowDbgUI && m_Physics)
 		{
 			Physics ownerPhysics = owner.GetPhysics();
 			
