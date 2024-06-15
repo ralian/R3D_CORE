@@ -14,8 +14,12 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 	[RplProp()] 
 	protected bool m_bGearDeployed = true; // true = deployed, false = retracted
 	
+	[Attribute(category: "Airplane", desc: "[km/h, deg/s, -]")]
+	protected array<vector> m_fSteeringStrength;
+	
 	protected ref array<ADM_EngineComponent> m_Engines = {};
 	protected ADM_FixedWingSimulation m_FixedWingSim;
+	protected RplComponent m_RplComponent = null;
 	
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
@@ -29,6 +33,9 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 		}
 		
 		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
+		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
+		
+		SetEventMask(owner, EntityEvent.FRAME);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -60,6 +67,9 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
 		}
+		
+		Print("engine toggle");
+		Print(m_bIsEngineOn);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -73,6 +83,7 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 	void Rpc_Owner_ToggleGear()
 	{
 		m_bGearDeployed = !m_bGearDeployed;
+		Replication.BumpMe();
 		
 		// TODO: only do this if all gear retract
 		/*if (!m_bGearState)
@@ -83,6 +94,9 @@ class ADM_AirplaneControllerComponent_SA: SCR_CarControllerComponent_SA
 			m_VehicleBaseSim.Activate(m_Owner);
 		}*/
 			
-		Replication.BumpMe();
+		Print("gear toggle");
+		Print(m_bGearDeployed);
 	}
+	
+	
 }

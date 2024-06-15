@@ -19,7 +19,7 @@ class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 	
 	override bool GetActionNameScript(out string outName)
 	{
-		if (m_AirplaneController.IsEngineOn())
+		if (m_AirplaneController.IsAirplaneEngineOn())
 		{
 			outName = "Stop Engine";
 		}
