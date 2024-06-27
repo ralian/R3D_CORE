@@ -1,3 +1,7 @@
+v1.2.4
+Fixed: BuoyancyComponent updated for 1.2
+Fixed: M134 anim graph fix
+
 v1.2.3
 Updated: R3D_WeaponRecoilComponent optimization
 Updated: ADM_FixedWingSimulation gear NULL check added
@@ -6,9 +10,6 @@ Added: New M134 audio samples/SIG/ACP
 Added: New audio signal for VehicleFire and VehicleFireReleased
 Removed: Old ADM_Airfoil.c
 Removed: GAU-8 audio moved to A-10 mod
-
-
-
 
 v1.2.2
 Fixed: Cleanup GAU-8 ACPs
