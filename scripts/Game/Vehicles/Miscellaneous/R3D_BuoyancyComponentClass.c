@@ -23,7 +23,7 @@ class R3D_BuoyancyComponentClass : R3D_VehiclePartBaseComponentClass
 	float m_Volume;
 	float m_Area;
 
-	void R3D_BuoyancyComponentClass(BaseContainer prefab)
+	void R3D_BuoyancyComponentClass(IEntityComponentSource componentSource, IEntitySource parentSource, IEntitySource prefabSource)
 	{
 		Load();
 	}
