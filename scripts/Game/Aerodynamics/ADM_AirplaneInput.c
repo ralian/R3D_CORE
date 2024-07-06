@@ -53,7 +53,7 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	//protected float m_Freelook = 0.0;
 	
-	protected ADM_AirplaneControllerComponent_SA m_AirplaneController;
+	protected ADM_AirplaneControllerComponent m_AirplaneController;
 	
 	void ResetTrim()
 	{
@@ -364,7 +364,7 @@ class ADM_AirplaneInput : ScriptComponent
 		#endif
 				
 		InputManager inputManager = GetGame().GetInputManager();
-		m_AirplaneController = ADM_AirplaneControllerComponent_SA.Cast(owner.FindComponent(ADM_AirplaneControllerComponent_SA));
+		m_AirplaneController = ADM_AirplaneControllerComponent.Cast(owner.FindComponent(ADM_AirplaneControllerComponent));
 		if (!inputManager || !m_AirplaneController)
 			return;
 		
@@ -395,10 +395,9 @@ class ADM_AirplaneInput : ScriptComponent
 		InputManager inputManager = GetGame().GetInputManager();
 		if (inputManager && IsControlActive())
 		{
-			inputManager.ActivateContext("R3D_AirplaneContext");
-			
 			// Attempt to ignore car inputs
 			inputManager.ResetContext("CarContext");
+			inputManager.ActivateContext("R3D_AirplaneContext");
 			
 			// Apply custom car inputs (steering, brakes)
 			inputManager.SetActionValue("CarSteering", m_fSteering);

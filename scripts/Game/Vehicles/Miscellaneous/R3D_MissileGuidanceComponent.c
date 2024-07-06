@@ -49,6 +49,7 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 {
 	protected IEntity m_Owner;
 	protected R3D_RocketMoveComponent m_Rocket;
+	protected ADM_AirplaneInput m_AirplaneInput;
 	bool m_DidCollide;
 	
 	[Attribute(uiwidget: UIWidgets.Auto)]
@@ -143,7 +144,7 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 			case EMissileTargetingMode.Trajectory:
 			{
 				// error left-right should be based on velocity
-				vector velocity = m_Owner.GetPhysics().GetVelocity();
+				/*vector velocity = m_Owner.GetPhysics().GetVelocity();
 				vector errorVelDir = (posError - velocity).Normalized();
 				vector localError = m_Owner.VectorToLocal(errorVelDir);	
 				errorX = localError[0];
@@ -159,7 +160,7 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 				errorY = dotProd;
 				
 				Shape.CreateSphere(COLOR_RED, ShapeFlags.ONCE, collision, 1);
-				Shape.CreateArrow(collision, collision + collisionError, 0.1, COLOR_BLUE, ShapeFlags.ONCE);
+				Shape.CreateArrow(collision, collision + collisionError, 0.1, COLOR_BLUE, ShapeFlags.ONCE);*/				
 			}
 			case EMissileTargetingMode.High:
 			{
@@ -186,15 +187,14 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 		previousErrorX = errorX;
 		previousErrorY = errorY;
 		
-		if (m_Rocket.GetTimeUntilBurnout() > 0)
+		if (m_Rocket && m_Rocket.GetTimeUntilBurnout() > 0)
 		{
 			// Thrust Vectoring
 			m_Rocket.SetThrustAngleX(uY);
 			m_Rocket.SetThrustAngleY(uX);
-		} else {
-			// Map control signal to control surfaces to glide to destination
-			
 		}
+		m_AirplaneInput.ElevatorInput(uX);
+		m_AirplaneInput.AileronInput(uY);
 				
 		// Integral stuff
 		//errorHistoryX.InsertAt(0, errorX * timeSlice);
@@ -215,13 +215,19 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 		DbgUI.Begin("Direct Guidance", 0, 0);
 		
 		DbgUI.Text(string.Format("errorX: %1", errorX));
-		DbgUI.PlotLive("errorX", 500, 250, errorX, timeSlice, 1000);
+		DbgUI.PlotLive("errorX", 500, 200, errorX, timeSlice, 1000);
 		
 		DbgUI.Text(string.Format("errorY: %1", errorY));
-		DbgUI.PlotLive("errorY", 500, 250, errorY, timeSlice, 1000);
+		DbgUI.PlotLive("errorY", 500, 200, errorY, timeSlice, 1000);
 		
 		DbgUI.Text(string.Format("minDistance: %1", Math.Round(minDistance*1000)/1000));
-		DbgUI.PlotLive("distance", 500, 250, distance, timeSlice, 1000);
+		DbgUI.PlotLive("distance", 500, 200, distance, timeSlice, 1000);
+		
+		DbgUI.Text(string.Format("ux: %1", Math.Round(uX*1000)/1000));
+		DbgUI.PlotLive("ux", 500, 200, uX, timeSlice, 1000);
+		
+		DbgUI.Text(string.Format("uy: %1", Math.Round(uY*1000)/1000));
+		DbgUI.PlotLive("uy", 500, 200, uY, timeSlice, 1000);
 		
 		DbgUI.End();
 #endif
@@ -244,9 +250,10 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 	}
 	
 	override void EOnInit(IEntity owner)
-	{
+	{	
 		m_Owner = owner;
 		m_Rocket = R3D_RocketMoveComponent.Cast(owner.FindComponent(R3D_RocketMoveComponent));
+		m_AirplaneInput = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
 	}
 	
 	override void OnPostInit(IEntity owner)

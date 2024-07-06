@@ -1,11 +1,11 @@
 class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 {
-	ADM_AirplaneControllerComponent_SA m_AirplaneController;
+	ADM_AirplaneControllerComponent m_AirplaneController;
 	ADM_AirplaneInput m_Input;
 	
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
 	{
-		m_AirplaneController = ADM_AirplaneControllerComponent_SA.Cast(pOwnerEntity.FindComponent(ADM_AirplaneControllerComponent_SA));
+		m_AirplaneController = ADM_AirplaneControllerComponent.Cast(pOwnerEntity.FindComponent(ADM_AirplaneControllerComponent));
 		m_Input = ADM_AirplaneInput.Cast(pOwnerEntity.FindComponent(ADM_AirplaneInput));
 	}
 	

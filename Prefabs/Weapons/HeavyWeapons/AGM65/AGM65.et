@@ -1,10 +1,217 @@
 GenericEntity {
  ID "5E481AF34F54E105"
  components {
+  ADM_AirplaneInput "{61B052428533E227}" {
+  }
+  ADM_FixedWingSimulation "{619E51DF1540CC63}" {
+   m_Wings {
+    ADM_Wing "{61BC563563678851}" {
+     m_Sections {
+      ADM_WingSection "{61BC563566B69421}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC5635700E6342}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC56357BDF87BA}" {
+     m_vRootPosition 0.5 0 0
+     m_Sections {
+      ADM_WingSection "{61BC56357C7EAB3E}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle 180
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC56354215DC14}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC5636AFF51E0A}" {
+     m_vRootPosition -0.5 0 0
+     m_Sections {
+      ADM_WingSection "{61BC5636B1822F45}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC5636B83CE4FB}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC624089A955C3}" {
+     m_Sections {
+      ADM_WingSection "{61BC62408BC6E090}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle 180
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC5636B83CE4FB}" {
+         m_Type Aileron
+         m_fChordPercent 0.33
+         m_fMinAngle 0
+         m_fMaxAngle 0
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC62409F13B092}" {
+     m_Sections {
+      ADM_WingSection "{61BC6240E03ADE16}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle 90
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC6240F8D78909}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC6240FF84B7DD}" {
+     m_vRootPosition 0 -0.5 0
+     m_Sections {
+      ADM_WingSection "{61BC6240C19E0E01}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle -90
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC6240F8D78909}" {
+         m_Type Aileron
+         m_fChordPercent 0.33
+         m_fMinAngle 0
+         m_fMaxAngle 0
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC624020453282}" {
+     m_Sections {
+      ADM_WingSection "{61BC624022ACCAFE}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle -90
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC62402A4AFFA5}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+    ADM_Wing "{61BC624034BE4A2F}" {
+     m_vRootPosition 0 0.5 0
+     m_Sections {
+      ADM_WingSection "{61BC6240364590E2}" {
+       m_Span 0.5
+       m_Chord 1.25
+       m_ACPosition 0.55
+       m_DihedralAngle 90
+       m_vLiftCurve {
+        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
+       }
+       m_vDragCurve {
+        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
+       }
+       m_ControlSurfaces {
+        ADM_ControlSurface "{61BC62403E5CC1A1}" {
+         m_fChordPercent 0.33
+        }
+       }
+      }
+     }
+    }
+   }
+   m_fFrontalDragArea 0.1
+   m_fFrontalDragCoefficient 1
+   m_fSideDragArea 1
+   m_fSideDragCoefficient 0.1
+   m_fWindStrength 0
+  }
   MeshObject "{5E481AF34F54E132}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
   }
+  R3D_MissileGuidanceComponent "{619E538445A004E3}" {
+   Enabled 1
+   m_TriggerMode R3D_MissileTriggerModeCollision "{619E53844FD481DA}" {
+   }
+   m_TargetingMode DirectVelocity
+   KpX 2
+   KiX 0.05
+   KdX 0
+   KpY 2
+   KiY 0.05
+   KdY 0
+  }
   R3D_PylonTriggerComponent "{5E481AF34F54E125}" {
+  }
+  R3D_RocketMoveComponent "{619E53871871048F}" {
+   m_fMaxConeAngle 0
+   m_fBurnTime 10
+   m_vExhaustLocation PointInfo "{619E53871D8A309B}" {
+    Offset 0 0 -1.2271
+    Angles 180 0 0
+   }
   }
   R3D_UIInfo "{5E481AF34F54E126}" {
    m_uiInfo SCR_UIInfo "{5E481AF34F54E123}" {
@@ -14,7 +221,9 @@ GenericEntity {
   RigidBody "{5E481AF34F54E12D}" {
    Active Active
    Mass 240
-   CenterOfMass 0 -0.234 -0.2
+   CenterOfMass 0 0 -0.243
+   AngularDamping 0.25
+   ResponseIndex "LargeMomentum"
    ModelGeometry 1
   }
   SCR_EditableEntityComponent "{5E481AF34F54E12E}" {
@@ -25,6 +234,7 @@ GenericEntity {
      1 27
     }
    }
+   m_bAutoRegister ALWAYS
   }
   SCR_PreviewEntityComponent "{5E481AF34F54E12B}" {
    m_aEntries {

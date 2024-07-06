@@ -35,14 +35,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	
 	//------------------------------------------------------------------------------------------------
 	protected ADM_FixedWingSimulationSystem m_UpdateSystem = null;
-	protected ADM_AirplaneControllerComponent_SA m_AirplaneController = null;
+	protected ADM_AirplaneControllerComponent m_AirplaneController = null;
 	protected IEntity m_Owner = null;
 	protected Physics m_Physics = null;
 	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	protected ChimeraWorld m_World = null;
-	protected ADM_AirplaneInput m_Input = null;
+	protected SignalsManagerComponent m_SignalsManager;
 	
-	protected ref array<ADM_EngineComponent> m_Engines = {};
 	protected vector m_vAerodynamicCenter = vector.Zero;
 	protected vector m_vAerodynamicCenterOffset = vector.Zero;
 	
@@ -71,10 +70,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	{
 		m_Owner = owner;
 		m_Physics = owner.GetPhysics();
-		m_AirplaneController = ADM_AirplaneControllerComponent_SA.Cast(owner.FindComponent(ADM_AirplaneControllerComponent_SA));
-		m_World = m_Owner.GetWorld();
-		m_Input = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
-		if (m_pAerodynamicCenterOffset) m_pAerodynamicCenterOffset.Init(owner);
+		m_World = owner.GetWorld();
+		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
 		
 		if (m_World) 
 		{
@@ -82,13 +79,10 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			m_TimeManager = m_World.GetTimeAndWeatherManager();
 		}
 		
-		if (!m_AirplaneController)
+		if (m_pAerodynamicCenterOffset) 
 		{
-			Print("Error! ADM_FixedWingSimulation requires ADM_AirplaneControllerComponent_SA!", LogLevel.ERROR);
-			return;
+			m_pAerodynamicCenterOffset.Init(owner);
 		}
-		
-		m_Engines = m_AirplaneController.GetEngines();
 		
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
@@ -102,6 +96,19 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		#endif
 		
 		SetEventMask(owner, EntityEvent.INIT | EntityEvent.PHYSICSACTIVE);
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	override void EOnInit(IEntity owner)
+	{		
+		m_AirplaneController = ADM_AirplaneControllerComponent.Cast(owner.FindComponent(ADM_AirplaneControllerComponent));
+		if (!m_AirplaneController)
+		{
+			Print("Error! ADM_FixedWingSimulation requires ADM_AirplaneControllerComponent!", LogLevel.ERROR);
+			return;
+		}
+
+		//m_HullHitZone = m_DamageManager.GetHitZoneByName(m_sHullHitzone);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -128,7 +135,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	//------------------------------------------------------------------------------------------------
 	void Simulate(float timeSlice)
 	{
-		if (!m_Physics || !m_Physics.IsActive() || !m_Input)
+		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
 			return;
 		
 		#ifdef WORKBENCH
@@ -177,13 +184,21 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				{
 					foreach(ADM_ControlSurface controlSurface: curSection.m_ControlSurfaces)
 					{
-						float deflectionAngle = controlSurface.GetAngle(m_Input.GetInput(controlSurface.m_Type));
+						float deflectionAngle = controlSurface.GetAngle(m_AirplaneController.GetAirplaneInput().GetInput(controlSurface.m_Type));
 					
 						// Control surfaces effect to wing section
 						angleOfAttack += controlSurface.GetDeltaAoA(curSection, deflectionAngle, angleOfAttack);
 						CL += controlSurface.GetDeltaCL(curSection, deflectionAngle, angleOfAttack);
 						CD += controlSurface.GetDeltaCD(curSection, deflectionAngle, angleOfAttack);
 						
+						if (m_SignalsManager)
+						{
+							if (controlSurface.m_iSignalIndex == -1)
+							{
+								controlSurface.m_iSignalIndex = m_SignalsManager.AddOrFindMPSignal(controlSurface.m_sSignal, 0.1, 30, 0, SignalCompressionFunc.RotDEG);
+							}
+							m_SignalsManager.SetSignalValue(controlSurface.m_iSignalIndex, deflectionAngle);
+						}
 					}
 				}
 				
@@ -259,7 +274,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			}
 		}
 		
-		foreach (ADM_EngineComponent engine : m_Engines)
+		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
 		{
 			engine.Simulate(owner, timeSlice);
 		}
@@ -524,225 +539,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	}
 }
 
-/*[EntityEditorProps(category: "GameScripted/Aerodynamics", description: "")]
-class ADM_FixedWingSimulationClass: ScriptGameComponentClass
-{
-}
-
-class ADM_FixedWingSimulation : ScriptGameComponent
-{
-	[Attribute(defvalue: "", uiwidget: UIWidgets.Object, "Contains wing sections which form the entire wing", category: "Fixed Wing Simulation")]
-	ref array<ref ADM_Wing> m_Wings;
+/*
 	
-	[Attribute(category: "Fixed Wing Simulation", desc: "Offset for aerodynamic center. For drag calculation.")]
-	protected vector m_vAerodynamicCenterOffset;
-	
-	[Attribute(params: "0 inf", category: "Fixed Wing Simulation")]
-	protected float m_fFrontalDragArea;
-	
-	[Attribute(params: "0 inf", category: "Fixed Wing Simulation")]
-	protected float m_fFrontalDragCoefficient;
-	
-	[Attribute(params: "0 inf", category: "Fixed Wing Simulation")]
-	protected float m_fSideDragArea;
-	
-	[Attribute(params: "0 inf", category: "Fixed Wing Simulation")]
-	protected float m_fSideDragCoefficient;
-	
-	[Attribute(params: "0 1", defvalue: "1", category: "Fixed Wing Simulation")]
-	protected float m_fWindStrength;
-	
-	[Attribute(uiwidget: UIWidgets.Object, category: "Fixed Wing Simulation")]
-	ref array<ref ADM_LandingGear> m_Gear;
-	
-	[Attribute(category: "Fixed Wing Simulation")]
-	protected string m_sHullHitzone;
-	
-	[RplProp()]
-	protected bool m_bIsEngineOn = false; //Set the engine to be off by default
-	
-	[RplProp()]
-	protected bool m_bGearState = true; // true = deployed, false = retracted
-	
-	// Required Component References
-	private IEntity m_Owner = null;
-	private Physics m_Physics = null;
-	private ADM_AirplaneInput m_Input = null;
-	private vector m_vAerodynamicCenter;
-	private SignalsManagerComponent m_SignalsManager = null;
-	private VehicleBaseSimulation m_VehicleBaseSim = null;
-	private RplComponent m_RplComponent = null;
-	private SCR_PlayerController m_LocalPlayerController = null;
-	private CameraHandlerComponent m_LocalCameraHandler = null;
-	private CameraManager m_CameraManager = null;
-	private ref array<ADM_EngineComponent> m_Engines = {}; 
-	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
-	private HitZone m_HullHitZone = null;
-	private NwkCarMovementComponent m_NwkMovement = null;
-	private BaseLightManagerComponent m_LightManager = null;
-	protected TimeAndWeatherManagerEntity m_TimeManager = null;
-	protected ChimeraWorld m_World = null;
-	private bool m_bPreviousHeadlightState = false;
-	
-	// Animation signals
-	private int m_iPitchSignal = -1;
-	private int m_iRollSignal = -1;
-	private int m_iAltitudeSignal = -1;
-	private int m_iClimbRateSignal = -1;
-	private int m_iHeadingSignal = -1;
-	private int m_iAccSignal = -1;
-	private int m_iAirspeedSignal = -1;
-	private int m_iFlapsNeedleSignal = -1;
-	private int m_iSpeedSignal = -1;
-	private int m_iRPMSignal = -1;
-	private int m_iAircraftIsEngineOnSignal = -1;
-	private int m_iThirdPersonSignal = -1;
-	private int m_iFirstPersonSignal = -1;
-	private int m_iViewAngleSignal = -1;
-	
-	// Hand IK
-	protected CharacterAnimationComponent m_CharacterAnim = null;
-	protected IEntity m_Pilot;
-	protected int m_iCharacterAileronInput = -1;
-	protected int m_iCharacterElevatorInput = -1;
-	protected int m_iCharacterThrottleInput = -1;
-	
-	//------------------------------------------------------------------------------------------------
-	override void OnPostInit(IEntity owner)
-	{
-		super.OnPostInit(owner);
-		
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE | EntityEvent.POSTFRAME);
-		ConnectToDiagSystem(owner);
-		
-		EventHandlerManagerComponent ev = EventHandlerManagerComponent.Cast(owner.FindComponent(EventHandlerManagerComponent));
-		if (ev)
-		{
-			ev.RegisterScriptHandler("OnCompartmentEntered", this, OnCompartmentEntered);
-			ev.RegisterScriptHandler("OnCompartmentLeft", this, OnCompartmentLeft);
-		}
-		
-		// Required Components
-		m_Owner = owner;
-		m_Physics = owner.GetPhysics();
-		m_Input = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
-		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));
-		m_VehicleBaseSim = VehicleBaseSimulation.Cast(owner.FindComponent(VehicleBaseSimulation));
-		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
-		m_CameraManager = GetGame().GetCameraManager();
-		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
-		m_NwkMovement = NwkCarMovementComponent.Cast(owner.FindComponent(NwkCarMovementComponent));
-		m_LightManager = BaseLightManagerComponent.Cast(owner.FindComponent(BaseLightManagerComponent));
-		
-		if (m_Physics)
-			m_Physics.SetActive(true);
-		
-		// Find all engines
-		array<Managed> components = {};
-		owner.FindComponents(ADM_EngineComponent, components);
-		foreach (Managed cmp : components)
-		{
-			ADM_EngineComponent engCmp = ADM_EngineComponent.Cast(cmp);
-			if (engCmp)
-			{
-				m_Engines.Insert(engCmp);
-			}
-		}
-		
-		// Signals
-		if (m_SignalsManager)
-		{
-			// Instruments
-			m_iPitchSignal = m_SignalsManager.AddOrFindSignal("Pitch");
-			m_iRollSignal = m_SignalsManager.AddOrFindSignal("Roll");
-			m_iAltitudeSignal = m_SignalsManager.AddOrFindSignal("Altitude");
-			m_iClimbRateSignal = m_SignalsManager.AddOrFindSignal("ClimbRate");
-			m_iHeadingSignal = m_SignalsManager.AddOrFindSignal("Heading");
-			m_iAccSignal = m_SignalsManager.AddOrFindSignal("AccelerationG");
-			m_iAirspeedSignal = m_SignalsManager.AddOrFindSignal("Airspeed");
-			m_iFlapsNeedleSignal = m_SignalsManager.AddOrFindSignal("FlapsNeedle");
-			
-			// System stuff
-			m_iRPMSignal = m_SignalsManager.AddOrFindMPSignal("RPM", 1, 30, 0, SignalCompressionFunc.Range01);
-			m_iSpeedSignal = m_SignalsManager.AddOrFindMPSignal("Speed", 1, 30, 0, SignalCompressionFunc.None);
-			m_iAircraftIsEngineOnSignal = m_SignalsManager.AddOrFindSignal("AircraftIsEngineOn", 0);
-			m_iThirdPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftThirdPersonAndEngine", 0);
-			m_iFirstPersonSignal = m_SignalsManager.AddOrFindSignal("AircraftFirstPersonAndEngine", 0);
-			m_iViewAngleSignal = m_SignalsManager.AddOrFindSignal("AircraftViewAngle", 0);
-		}
-		
-		foreach (ADM_LandingGear gear: m_Gear)
-		{
-			gear.m_vPosition.Init(owner);
-		}
-		
-		CalculatePanels();
-	}
-	
-	override void EOnInit(IEntity owner)
-	{		
-		m_HullHitZone = m_DamageManager.GetHitZoneByName(m_sHullHitzone);
-	}
-	
-	void OnCompartmentEntered(IEntity vehicle, BaseCompartmentManagerComponent mgr, IEntity occupant, int managerId, int slotID)
-	{
-		m_CharacterAnim = CharacterAnimationComponent.Cast(occupant.FindComponent(CharacterAnimationComponent));
-		if (m_CharacterAnim)
-		{
-			m_iCharacterAileronInput = m_CharacterAnim.BindVariableFloat("AircraftAileronInput");
-			m_iCharacterElevatorInput = m_CharacterAnim.BindVariableFloat("AircraftElevatorInput");
-			m_iCharacterThrottleInput = m_CharacterAnim.BindVariableFloat("AircraftThrottleInput");
-		}
-		
-		m_Pilot = occupant;
-		m_Owner.GetPhysics().SetActive(true);
-		
-		if (m_NwkMovement && m_RplComponent)
-		{
-			if(!m_RplComponent.IsProxy())
-			{
-				m_NwkMovement.SetAllowance(false, 100, 100, 100, 100);
-			} else if(m_RplComponent.IsProxy() && m_RplComponent.IsOwner()) {
-				m_NwkMovement.SetPrediction(false);
-			} 
-		}
-	}
-	
-	void OnCompartmentLeft(IEntity vehicle, BaseCompartmentManagerComponent mgr, IEntity occupant, int managerId, int slotID)
-	{		
-		m_CharacterAnim = null;	
-		m_iCharacterAileronInput = -1;
-		m_iCharacterElevatorInput = -1;
-		m_iCharacterThrottleInput = -1;
-		m_Pilot = null;
-	}
-	
-	bool IsEngineOn()
-	{
-		return m_bIsEngineOn;
-	}
-	
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void Rpc_Server_ToggleEngine()
-	{
-		m_bIsEngineOn = !m_bIsEngineOn;
-		Replication.BumpMe();
-		
-		float signalValue = 0;
-		if (m_bIsEngineOn)
-			signalValue = 1.0;
-		
-		m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, signalValue);
-		foreach(ADM_EngineComponent engine : m_Engines)
-		{
-			engine.SetEngineStatus(m_bIsEngineOn);
-		}
-	}
-	
-	void ToggleGear()
-	{
-		Rpc(Rpc_Owner_ToggleGear);	
-	}
 	
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_ToggleGear()
@@ -766,21 +564,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 			
 		Replication.BumpMe();
-	}
-	
-	void FindLocalPlayerController()
-	{
-		m_LocalPlayerController = SCR_PlayerController.Cast(GetGame().GetPlayerController());
-		if (!m_LocalPlayerController) return;
-		
-		IEntity mainEntity = m_LocalPlayerController.GetMainEntity();
-		if (!mainEntity) return;
-		m_LocalCameraHandler = CameraHandlerComponent.Cast(mainEntity.FindComponent(CameraHandlerComponent));
-	}
-	
-	override event protected bool OnTicksOnRemoteProxy() 
-	{ 
-		return true; 
 	}
 	
 	void OwnerTick(IEntity owner, float timeSlice)
@@ -820,128 +603,4 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 	}
 	
-	void ProxyTick(IEntity owner, float timeSlice)
-	{
-		if (!m_LocalCameraHandler) FindLocalPlayerController();
-		
-		if (m_CameraManager && m_CameraManager.CurrentCamera())
-		{
-			vector camMat[4];
-			m_CameraManager.CurrentCamera().GetTransform(camMat);
-			
-			vector planeForward = m_Owner.VectorToParent(vector.Forward);
-			vector planeToCamera = camMat[3] - m_Owner.GetOrigin();
-			planeToCamera.Normalize();
-			
-			float n_angle = 1 - 0.5 * Math.AbsFloat(vector.Dot(planeForward, planeToCamera) - 1);
-			m_SignalsManager.SetSignalValue(m_iViewAngleSignal, n_angle);
-		}
-		
-		// Cockpit Animation Signals
-		vector velocity = m_Physics.GetVelocity();
-		vector flowVelocity = velocity + GetWindVector();
-		if (m_SignalsManager)
-		{
-			vector angles = m_Owner.GetAngles();
-			float climbRate = m_Physics.GetVelocity()[1];
-			
-			m_SignalsManager.SetSignalValue(m_iPitchSignal, angles[0]);
-			m_SignalsManager.SetSignalValue(m_iRollSignal, angles[2]);
-			m_SignalsManager.SetSignalValue(m_iAltitudeSignal, GetAltitude());
-			m_SignalsManager.SetSignalValue(m_iClimbRateSignal, climbRate);
-			m_SignalsManager.SetSignalValue(m_iHeadingSignal, angles[1]);
-			m_SignalsManager.SetSignalValue(m_iAccSignal, m_VehicleBaseSim.GetGForceMagnitude());
-			m_SignalsManager.SetSignalValue(m_iAirspeedSignal, flowVelocity.Length());
-			m_SignalsManager.SetSignalValue(m_iFlapsNeedleSignal, m_Input.GetInput(ADM_InputType.Flap));
-			
-			if (m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iAircraftIsEngineOnSignal) != 1)
-			{
-				m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 1);
-			}
-			
-			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iAircraftIsEngineOnSignal) != 0)
-			{
-				m_SignalsManager.SetSignalValue(m_iAircraftIsEngineOnSignal, 0);
-			}
-			
-			bool cockpitSound = m_LocalCameraHandler && !m_LocalCameraHandler.IsInThirdPerson() && m_Input.IsControlActive();
-			if (m_bIsEngineOn && !cockpitSound && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 1)
-			{
-				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 1);
-			}
-			
-			if (m_bIsEngineOn && cockpitSound && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 0)
-			{
-				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 0);
-			}
-			
-			if (m_bIsEngineOn && !cockpitSound && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 0)
-			{
-				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 0);
-			}
-			
-			if (m_bIsEngineOn && cockpitSound && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 1)
-			{
-				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 1);
-			}
-			
-			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iFirstPersonSignal) != 0)
-			{
-				m_SignalsManager.SetSignalValue(m_iFirstPersonSignal, 0);
-			}
-			
-			if (!m_bIsEngineOn && m_SignalsManager.GetSignalValue(m_iThirdPersonSignal) != 0)
-			{
-				m_SignalsManager.SetSignalValue(m_iThirdPersonSignal, 0);
-			}
-		}
-		
-		if (m_CharacterAnim)
-		{
-			m_CharacterAnim.SetVariableFloat(m_iCharacterAileronInput, m_Input.GetInput(ADM_InputType.Aileron));
-			m_CharacterAnim.SetVariableFloat(m_iCharacterElevatorInput, m_Input.GetInput(ADM_InputType.Elevator));
-			m_CharacterAnim.SetVariableFloat(m_iCharacterThrottleInput, m_Input.GetInput(ADM_InputType.Thrust));
-		}
-	}
-	
-	override event protected void EOnFrame(IEntity owner, float timeSlice)
-	{
-		super.EOnFrame(owner, timeSlice);
-		
-		ProxyTick(owner, timeSlice);
-		if (m_RplComponent.IsOwner())
-		{
-			OwnerTick(owner, timeSlice);
-		}
-	}
-
-	override void EOnSimulate(IEntity owner, float timeSlice)
-	{
-		
-		for (int i = 0; i < m_Wings.Count(); i++)
-		{
-			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
-			{
-				
-				
-				if (curSection.m_ControlSurfaces && curSection.m_ControlSurfaces.Count() > 0)
-				{
-					foreach(ADM_ControlSurface controlSurface: curSection.m_ControlSurfaces)
-					{
-						if (m_SignalsManager)
-						{
-							if (controlSurface.m_iSignalIndex == -1)
-							{
-								controlSurface.m_iSignalIndex = m_SignalsManager.AddOrFindMPSignal(controlSurface.m_sSignal, 0.1, 30, 0, SignalCompressionFunc.RotDEG);
-							}
-							m_SignalsManager.SetSignalValue(controlSurface.m_iSignalIndex, deflectionAngle);
-						}
-					}
-				}
-				
-			}
-		}
-		
-		m_SignalsManager.SetSignalValue(m_iSpeedSignal, absoluteVelocity.Length());
-	}
 }*/
