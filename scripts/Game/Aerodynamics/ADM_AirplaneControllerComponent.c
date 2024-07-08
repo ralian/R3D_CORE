@@ -36,8 +36,6 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
 		m_AirplaneInput = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
-		
-		SetEventMask(owner, EntityEvent.FRAME);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -76,8 +74,6 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		{
 			engine.SetEngineStatus(m_bIsEngineOn);
 		}
-		
-		Print(m_bIsEngineOn);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -94,6 +90,7 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		Replication.BumpMe();
 		
 		// TODO: only do this if all gear retract
+		Print(m_bGearDeployed);
 		/*if (!m_bGearState)
 		{
 			m_VehicleBaseSim.Deactivate(m_Owner);

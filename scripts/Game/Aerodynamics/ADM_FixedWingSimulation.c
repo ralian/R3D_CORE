@@ -41,6 +41,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	protected ChimeraWorld m_World = null;
 	protected SignalsManagerComponent m_SignalsManager;
+	private int m_iRPMSignal = -1;
 	
 	protected vector m_vAerodynamicCenter = vector.Zero;
 	protected vector m_vAerodynamicCenterOffset = vector.Zero;
@@ -72,7 +73,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_Physics = owner.GetPhysics();
 		m_World = owner.GetWorld();
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
-		
+			
 		if (m_World) 
 		{
 			m_UpdateSystem = ADM_FixedWingSimulationSystem.Cast(m_World.FindSystem(ADM_FixedWingSimulationSystem));
@@ -82,6 +83,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (m_pAerodynamicCenterOffset) 
 		{
 			m_pAerodynamicCenterOffset.Init(owner);
+		}
+		
+		if (m_SignalsManager) 
+		{
+			m_iRPMSignal = m_SignalsManager.AddOrFindMPSignal("RPM", 1, 30, 0, SignalCompressionFunc.Range01);
 		}
 		
 		foreach (ADM_LandingGear gear: m_Gear)
@@ -277,6 +283,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
 		{
 			engine.Simulate(owner, timeSlice);
+		}
+		
+		if (m_SignalsManager)
+		{
+			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
 		}
 	}
 	
@@ -535,8 +546,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	{
 		super.EOnDiag(owner, timeSlice);
 		DebugMenu(owner, timeSlice);
-#endif
 	}
+#endif
 }
 
 /*
