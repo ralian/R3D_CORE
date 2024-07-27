@@ -1,284 +1,37 @@
 GenericEntity {
- ID "5E481AF34F54E105"
+ ID "0000000000000001"
  components {
-<<<<<<< HEAD
-  ADM_AirplaneInput "{61B052428533E227}" {
+  CollisionTriggerComponent "{61F6456A6C902888}" {
   }
-  ADM_FixedWingSimulation "{619E51DF1540CC63}" {
-   m_Wings {
-    ADM_Wing "{61BC563563678851}" {
-     m_Sections {
-      ADM_WingSection "{61BC563566B69421}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC5635700E6342}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC56357BDF87BA}" {
-     m_vRootPosition 0.5 0 0
-     m_Sections {
-      ADM_WingSection "{61BC56357C7EAB3E}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle 180
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC56354215DC14}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC5636AFF51E0A}" {
-     m_vRootPosition -0.5 0 0
-     m_Sections {
-      ADM_WingSection "{61BC5636B1822F45}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC5636B83CE4FB}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC624089A955C3}" {
-     m_Sections {
-      ADM_WingSection "{61BC62408BC6E090}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle 180
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC5636B83CE4FB}" {
-         m_Type Aileron
-         m_fChordPercent 0.33
-         m_fMinAngle 0
-         m_fMaxAngle 0
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC62409F13B092}" {
-     m_Sections {
-      ADM_WingSection "{61BC6240E03ADE16}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle 90
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC6240F8D78909}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC6240FF84B7DD}" {
-     m_vRootPosition 0 -0.5 0
-     m_Sections {
-      ADM_WingSection "{61BC6240C19E0E01}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle -90
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC6240F8D78909}" {
-         m_Type Aileron
-         m_fChordPercent 0.33
-         m_fMinAngle 0
-         m_fMaxAngle 0
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC624020453282}" {
-     m_Sections {
-      ADM_WingSection "{61BC624022ACCAFE}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle -90
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC62402A4AFFA5}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-    ADM_Wing "{61BC624034BE4A2F}" {
-     m_vRootPosition 0 0.5 0
-     m_Sections {
-      ADM_WingSection "{61BC6240364590E2}" {
-       m_Span 0.5
-       m_Chord 1.25
-       m_ACPosition 0.55
-       m_DihedralAngle 90
-       m_vLiftCurve {
-        0.361 0.5 0.433 0.435 0.5 0.5 0.567 0.565 0.639 0.5
-       }
-       m_vDragCurve {
-        0 0.82 0.389 0.687 0.444 0.58 0.456 0.54 0.467 0.52 0.478 0.51 0.5 0.505 0.522 0.51 0.533 0.52 0.544 0.54 0.556 0.58 0.611 0.687 1 0.82
-       }
-       m_ControlSurfaces {
-        ADM_ControlSurface "{61BC62403E5CC1A1}" {
-         m_fChordPercent 0.33
-        }
-       }
-      }
-     }
-    }
-   }
-   m_fFrontalDragArea 0.1
-   m_fFrontalDragCoefficient 1
-   m_fSideDragArea 1
-   m_fSideDragCoefficient 0.1
-   m_fWindStrength 0
-=======
-  SignalsManagerComponent "{619010FA79B9E306}" {
-  }
-  CollisionTriggerComponent "{619010FA7AB09002}" {
->>>>>>> 9b1cc13 (Set mavs up to trigger properly)
-  }
-  MeshObject "{5E481AF34F54E132}" {
+  MeshObject "{61F6456A749A4C9C}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
   }
-  R3D_MissileGuidanceComponent "{619E538445A004E3}" {
-   Enabled 1
-   m_TriggerMode R3D_MissileTriggerModeCollision "{619E53844FD481DA}" {
-   }
-   m_TargetingMode DirectVelocity
-   KpX 2
-   KiX 0.05
-   KdX 0
-   KpY 2
-   KiY 0.05
-   KdY 0
+  R3D_MissileGuidanceComponent "{61F6456A78505837}" {
   }
-  R3D_PylonTriggerComponent "{5E481AF34F54E125}" {
+  R3D_PylonTriggerComponent "{61F6456A462EF7B7}" {
   }
-<<<<<<< HEAD
-  R3D_RocketMoveComponent "{619E53871871048F}" {
-   m_fMaxConeAngle 0
-   m_fBurnTime 10
-   m_vExhaustLocation PointInfo "{619E53871D8A309B}" {
-    Offset 0 0 -1.2271
-    Angles 180 0 0
-   }
+  R3D_RocketMoveComponent "{61F6456A7D28CF04}" {
   }
-  R3D_UIInfo "{5E481AF34F54E126}" {
-   m_uiInfo SCR_UIInfo "{5E481AF34F54E123}" {
-    Name "MK-82"
-=======
-  R3D_RocketMoveComponent "{619010FBED1F4308}" {
-   m_fMaxConeAngle 0
-   m_ExhaustParticle "{CDEF2A8C0120FFD4}Particles/Weapons/HeavyWeapons/GAU8/Muzzle_GAU8_1.ptc"
-   m_fBurnTime 4.5
-   m_vExhaustLocation PointInfo "{619010FE0BD10B5F}" {
-    Offset 0 0 -1.2
->>>>>>> 9b1cc13 (Set mavs up to trigger properly)
-   }
-  }
-  RigidBody "{5E481AF34F54E12D}" {
-   Active Active
-<<<<<<< HEAD
-   Mass 240
-   CenterOfMass 0 0 -0.243
-   AngularDamping 0.25
+  RigidBody "{61F6456A4A288892}" {
+   Layers 16908288
+   Mass 100
+   Gravity 0
+   LinearDamping 0.075
    ResponseIndex "LargeMomentum"
-=======
-   Mass 210
-   CenterOfMass 0 -0.234 -0.2
-   LinearDamping 0
-   AngularDamping 0
-   LinearSleepingThreashold 0.1
-   AngularSleepingThreashold 0.1
-   ResponseIndex "HugeDestructible"
->>>>>>> 9b1cc13 (Set mavs up to trigger properly)
    ModelGeometry 1
   }
-  SCR_EditableEntityComponent "{5E481AF34F54E12E}" {
-   m_UIInfo SCR_EditableEntityUIInfo "{5E481AF34F54E129}" {
-    Name "Mk82"
-    m_Image "{91F00974E11967B4}UI/Textures/EditorPreviews/gbu.edds"
-    m_aAuthoredLabels {
-     1 27
-    }
-   }
-   m_bAutoRegister ALWAYS
-  }
-  SCR_PreviewEntityComponent "{61876B459B556D02}" {
-   m_bRuntime 0
-   m_aEntries {
-    SCR_BasePreviewEntry "{61876B444981F7C0}" {
-     m_Mesh "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
+  ActionsManagerComponent "{61F6456A4E2AE9F2}" {
+   ActionContexts {
+    UserActionContext "{61F6456AFB21061A}" {
+     ContextName "launch"
+     Position PointInfo "{61F6456ACB339E51}" {
+     }
     }
    }
   }
-  ActionsManagerComponent "{619010FA3C1B9113}" {
-   additionalActions {
-    R3D_SetExplosionLiveAction "{619010FA01CDCE79}" {
-    }
-   }
+  RplComponent "{61F6456A5204CAC6}" {
   }
-  RplComponent "{5E481AF34F54E156}" {
-   "Rpl State Override" Runtime
-  }
-  Hierarchy "{619010F9D900500C}" {
+  Hierarchy "{61F6456A569D1D05}" {
   }
  }
 }
