@@ -1,0 +1,16 @@
+GenericEntity : "{988C010D4E446F4E}Prefabs/Weapons/HeavyWeapons/AGM65/AGM65.et" {
+ ID "5E481AF34F54E105"
+ components {
+  SCR_EditableEntityComponent "{61876B446B9191D1}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{61876B44D4B78FC1}" {
+    Name "AGM-65"
+    m_aAuthoredLabels {
+     1001
+    }
+    m_aAutoLabels {
+     1 121 27
+    }
+   }
+  }
+ }
+}

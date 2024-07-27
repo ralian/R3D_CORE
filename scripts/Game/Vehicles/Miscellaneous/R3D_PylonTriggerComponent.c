@@ -63,6 +63,12 @@ class R3D_PylonTriggerComponent : ScriptComponent
 			if (setLiveAction)
 				actionPerformer.PerformAction(setLiveAction);
 			
+			R3D_RocketMoveComponent rmc = R3D_RocketMoveComponent.Cast(attachedEntity.FindComponent(R3D_RocketMoveComponent));
+			if (rmc)
+			{
+				rmc.Launch();
+			}
+			
 			return true;
 		}
 		

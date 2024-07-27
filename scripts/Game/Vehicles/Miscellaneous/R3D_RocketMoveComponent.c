@@ -144,8 +144,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 			return;
 		
 		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
-		
-		Launch();
 	}
 	
 	vector CalculateTrajectoryCollision(IEntity object)
@@ -289,7 +287,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 #ifdef WORKBENCH		
 		DbgUI.Begin(string.Format("RocketComponent: %1", owner.GetName()));
-		if (m_ShowDbgUI)
+		if (m_ShowDbgUI && m_Physics)
 		{
 			Physics ownerPhysics = owner.GetPhysics();
 			
