@@ -50,7 +50,6 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		return m_AirplaneInput;
 	}
 	
-	
 	//------------------------------------------------------------------------------------------------
 	array<ADM_EngineComponent> GetEngines()
 	{
@@ -79,6 +78,7 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	//------------------------------------------------------------------------------------------------
 	void ToggleGear()
 	{
+		Print("ToggleGear");
 		Rpc(Rpc_Owner_ToggleGear);	
 	}
 	
@@ -86,19 +86,17 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_ToggleGear()
 	{
+		Print("Rpc_Owner_ToggleGear");
 		m_bGearDeployed = !m_bGearDeployed;
 		Replication.BumpMe();
 		
-		// TODO: only do this if all gear retract
-		Print(m_bGearDeployed);
-		/*if (!m_bGearState)
+		if (!m_FixedWingSim)
+			return;
+		
+		foreach (ADM_LandingGear gear: m_FixedWingSim.GetGear())
 		{
-			m_VehicleBaseSim.Deactivate(m_Owner);
-			m_Physics.EnableGravity(true);
-		} else {
-			m_VehicleBaseSim.Activate(m_Owner);
-		}*/
+			gear.SetGearDeployed(m_bGearDeployed);
+		}
 	}
-	
 	
 }

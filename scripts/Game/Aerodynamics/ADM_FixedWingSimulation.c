@@ -41,7 +41,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	protected ChimeraWorld m_World = null;
 	protected SignalsManagerComponent m_SignalsManager;
-	private int m_iRPMSignal = -1;
+	protected int m_iRPMSignal = -1;
 	
 	protected vector m_vAerodynamicCenter = vector.Zero;
 	protected vector m_vAerodynamicCenterOffset = vector.Zero;
@@ -113,8 +113,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			Print("Error! ADM_FixedWingSimulation requires ADM_AirplaneControllerComponent!", LogLevel.ERROR);
 			return;
 		}
-
-		//m_HullHitZone = m_DamageManager.GetHitZoneByName(m_sHullHitzone);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -278,6 +276,18 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				m_iDebugForceColor.Insert(Color.RED);
 				#endif
 			}
+			
+			gear.Update(timeSlice);
+			if (m_SignalsManager)
+			{
+				if (gear.m_iSignalIndex == -1)
+				{
+					gear.m_iSignalIndex = m_SignalsManager.AddOrFindMPSignal(gear.m_sSignal, 0.05, 30, 0, SignalCompressionFunc.RotDEG);
+				}
+				
+				float signal = (1 - gear.GetState()) * gear.m_fRotationAngle;
+				m_SignalsManager.SetSignalValue(gear.m_iSignalIndex, signal);
+			}
 		}
 		
 		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
@@ -361,6 +371,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	vector GetTrueAirVelocity(vector pos = vector.Zero)
 	{
 		return GetWorldVelocity(pos) + GetWindVector();
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	array<ref ADM_LandingGear> GetGear()
+	{
+		return m_Gear;
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -551,8 +567,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 }
 
 /*
-	
-	
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Owner_ToggleGear()
 	{
