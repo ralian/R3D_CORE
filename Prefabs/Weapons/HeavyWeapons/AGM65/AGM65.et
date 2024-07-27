@@ -236,12 +236,11 @@ GenericEntity {
    }
    m_bAutoRegister ALWAYS
   }
-  SCR_PreviewEntityComponent "{5E481AF34F54E12B}" {
+  SCR_PreviewEntityComponent "{61876B459B556D02}" {
+   m_bRuntime 0
    m_aEntries {
-    SCR_BasePreviewEntry "{5E481AF0BD2F6408}" {
-     m_iParentID -1
-     m_Mesh "{988C010D4E446F4E}Prefabs/Weapons/HeavyWeapons/AGM65/AGM65.et"
-     m_Shape MESH
+    SCR_BasePreviewEntry "{61876B444981F7C0}" {
+     m_Mesh "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
     }
    }
   }

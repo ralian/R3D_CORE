@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{F743985BD1A46BEC}Assets/Weapons/HeavyWeapons/AGM114/helicopter_nato_weapons_base_BCR.edds"
+ NMOMap "{CF9B23C908D33972}Assets/Weapons/HeavyWeapons/AGM114/helicopter_nato_weapons_base_NMO.edds"
+}
