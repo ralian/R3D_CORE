@@ -144,8 +144,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 			return;
 		
 		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
-		
-		Launch();
 	}
 	
 	vector CalculateTrajectoryCollision(IEntity object)
@@ -189,6 +187,29 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		//if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
 		//	m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
+		
+		// Calculate Aerodynamics
+		float altitude = GetAltitude();
+		vector velocity = m_Physics.GetVelocity();
+		float rho = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
+		float dynamicPressure = 1/2 * rho * velocity.LengthSq();
+		
+		// Assuming flat plate supersonic newtonian theory
+		// https://ntrs.nasa.gov/api/citations/19870002265/downloads/19870002265.pdf
+		float alpha = Math.Acos( vector.Dot(velocity.Normalized(), owner.VectorToParent("0 0 1")) );
+		float sinAlpha = Math.Sin(alpha);
+		float cosAlpha = Math.Cos(alpha);
+		float CD = 2 * sinAlpha * sinAlpha * sinAlpha + m_fCF0 * cosAlpha * m_fCD0;	
+		float CL = 2 * sinAlpha * sinAlpha * cosAlpha - m_fCF0 * sinAlpha;
+		
+		vector aeroCenter = m_Owner.CoordToParent(m_aerodynamicCenter);
+		float drag = dynamicPressure * m_fDragSurfaceArea * CD;
+		m_Physics.ApplyForceAt(aeroCenter, drag * velocity.Normalized() * -1);
+		
+		float lift = dynamicPressure * m_fLiftSurfaceArea * CL;
+		//m_Physics.ApplyForceAt(aeroCenter, lift * m_Owner.CoordToParent("0 1 0"));
+		
+		Shape.CreateArrow(aeroCenter, aeroCenter + lift * m_Owner.CoordToParent("0 1 0") * 1000, 1, Color.RED, ShapeFlags.NOZBUFFER);
 		
 		previousVelocity = m_Physics.GetVelocity();
 		
@@ -289,7 +310,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 #ifdef WORKBENCH		
 		DbgUI.Begin(string.Format("RocketComponent: %1", owner.GetName()));
-		if (m_ShowDbgUI)
+		if (m_ShowDbgUI && m_Physics)
 		{
 			Physics ownerPhysics = owner.GetPhysics();
 			

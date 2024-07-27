@@ -1,6 +1,7 @@
 GenericEntity {
  ID "5E481AF34F54E105"
  components {
+<<<<<<< HEAD
   ADM_AirplaneInput "{61B052428533E227}" {
   }
   ADM_FixedWingSimulation "{619E51DF1540CC63}" {
@@ -187,6 +188,11 @@ GenericEntity {
    m_fSideDragArea 1
    m_fSideDragCoefficient 0.1
    m_fWindStrength 0
+=======
+  SignalsManagerComponent "{619010FA79B9E306}" {
+  }
+  CollisionTriggerComponent "{619010FA7AB09002}" {
+>>>>>>> 9b1cc13 (Set mavs up to trigger properly)
   }
   MeshObject "{5E481AF34F54E132}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
@@ -205,6 +211,7 @@ GenericEntity {
   }
   R3D_PylonTriggerComponent "{5E481AF34F54E125}" {
   }
+<<<<<<< HEAD
   R3D_RocketMoveComponent "{619E53871871048F}" {
    m_fMaxConeAngle 0
    m_fBurnTime 10
@@ -216,14 +223,32 @@ GenericEntity {
   R3D_UIInfo "{5E481AF34F54E126}" {
    m_uiInfo SCR_UIInfo "{5E481AF34F54E123}" {
     Name "MK-82"
+=======
+  R3D_RocketMoveComponent "{619010FBED1F4308}" {
+   m_fMaxConeAngle 0
+   m_ExhaustParticle "{CDEF2A8C0120FFD4}Particles/Weapons/HeavyWeapons/GAU8/Muzzle_GAU8_1.ptc"
+   m_fBurnTime 4.5
+   m_vExhaustLocation PointInfo "{619010FE0BD10B5F}" {
+    Offset 0 0 -1.2
+>>>>>>> 9b1cc13 (Set mavs up to trigger properly)
    }
   }
   RigidBody "{5E481AF34F54E12D}" {
    Active Active
+<<<<<<< HEAD
    Mass 240
    CenterOfMass 0 0 -0.243
    AngularDamping 0.25
    ResponseIndex "LargeMomentum"
+=======
+   Mass 210
+   CenterOfMass 0 -0.234 -0.2
+   LinearDamping 0
+   AngularDamping 0
+   LinearSleepingThreashold 0.1
+   AngularSleepingThreashold 0.1
+   ResponseIndex "HugeDestructible"
+>>>>>>> 9b1cc13 (Set mavs up to trigger properly)
    ModelGeometry 1
   }
   SCR_EditableEntityComponent "{5E481AF34F54E12E}" {
@@ -244,7 +269,16 @@ GenericEntity {
     }
    }
   }
+  ActionsManagerComponent "{619010FA3C1B9113}" {
+   additionalActions {
+    R3D_SetExplosionLiveAction "{619010FA01CDCE79}" {
+    }
+   }
+  }
   RplComponent "{5E481AF34F54E156}" {
+   "Rpl State Override" Runtime
+  }
+  Hierarchy "{619010F9D900500C}" {
   }
  }
 }
