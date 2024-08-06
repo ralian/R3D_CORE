@@ -183,13 +183,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				
 				float CL = 0;
 				float CD = 0;
-				
 				if (curSection.m_ControlSurfaces && curSection.m_ControlSurfaces.Count() > 0)
 				{
 					foreach(ADM_ControlSurface controlSurface: curSection.m_ControlSurfaces)
 					{
-						float deflectionAngle = controlSurface.GetAngle(m_AirplaneController.GetAirplaneInput().GetInput(controlSurface.m_Type));
-					
+						controlSurface.Update(timeSlice, m_AirplaneController.GetAirplaneInput().GetInput(controlSurface.m_Type));
+						float deflectionAngle = controlSurface.GetAngle();
+						
 						// Control surfaces effect to wing section
 						angleOfAttack += controlSurface.GetDeltaAoA(curSection, deflectionAngle, angleOfAttack);
 						CL += controlSurface.GetDeltaCL(curSection, deflectionAngle, angleOfAttack);

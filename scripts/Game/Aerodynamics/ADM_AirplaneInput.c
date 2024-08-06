@@ -25,15 +25,6 @@ class ADM_AirplaneInput : ScriptComponent
 	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.01")]
 	protected float m_fThrustVelocity;
 	
-	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.005")]
-	protected float m_fSpeedBrakeVelocity;
-	
-	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.005")]
-	protected float m_fFlapVelocity;
-	
-	[Attribute(defvalue: "0.02", category: "Fixed Wing Simulation")]
-	protected float m_trimVelocity;
-	
 	protected float m_fAileronInput = 0.0;
 	protected float m_fElevatorInput = 0.0;
 	protected float m_fRudderInput = 0.0;
@@ -50,8 +41,6 @@ class ADM_AirplaneInput : ScriptComponent
 	protected float m_fAileronTrim = 0.0;
 	protected float m_fElevatorTrim = 0.0;
 	protected float m_fRudderTrim = 0.0;
-	
-	//protected float m_Freelook = 0.0;
 	
 	protected ADM_AirplaneControllerComponent m_AirplaneController;
 	
@@ -117,7 +106,7 @@ class ADM_AirplaneInput : ScriptComponent
 		return 0.0;
 	}
 	
-	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
+	/*[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
 	void Rpc_UpdateInput(ADM_InputType input, float value, bool trim)
 	{
 		if (input == ADM_InputType.Aileron)
@@ -164,7 +153,7 @@ class ADM_AirplaneInput : ScriptComponent
 		{
 			m_fThrustInput = value;
 		}
-	}
+	}*/
 	
 	//void AirplaneTrimModifier(float trimModifier = 0.0, EActionTrigger reason = 0) 
 	//{ 
@@ -176,7 +165,6 @@ class ADM_AirplaneInput : ScriptComponent
 	void AileronInput(float aileron = 0.0, EActionTrigger reason = 0) 
 	{
 		if (!IsControlActive()) return;
-		//if (IsFreelookActiveForLocalPlayer()) return;
 		
 		//if (m_TrimModifier > 0.5)
 		//{
@@ -193,7 +181,6 @@ class ADM_AirplaneInput : ScriptComponent
 	void ElevatorInput(float elevator = 0.0, EActionTrigger reason = 0) 
 	{ 
 		if (!IsControlActive()) return;
-		//if (IsFreelookActiveForLocalPlayer()) return;
 		
 		//if (m_TrimModifier > 0.5) {
 		//	m_fElevatorTrim += m_trimVelocity * elevator * 0.1;
@@ -234,8 +221,8 @@ class ADM_AirplaneInput : ScriptComponent
 	{ 
 		if (!IsControlActive()) return;
 		
-		m_fSpeedBrakeInput += airBrake * m_fSpeedBrakeVelocity; 
-		m_fSpeedBrakeInput = Math.Clamp(m_fSpeedBrakeInput, 0, 1);
+		m_fSpeedBrakeInput = airBrake; 
+		m_fSpeedBrakeInput = Math.Clamp(m_fSpeedBrakeInput, -1, 1);
 		
 		if (airBrake > 0) 
 		{
@@ -250,8 +237,8 @@ class ADM_AirplaneInput : ScriptComponent
 	{
 		if (!IsControlActive()) return;
 		
-		m_fFlapInput += flap * m_fFlapVelocity;
-		m_fFlapInput = Math.Clamp(m_fFlapInput, 0, 1);
+		m_fFlapInput = flap;
+		m_fFlapInput = Math.Clamp(m_fFlapInput, -1, 1);
 		//Rpc(Rpc_UpdateInput, ADM_InputType.Flap, m_fFlapInput, false);
 	}
 	
@@ -314,11 +301,6 @@ class ADM_AirplaneInput : ScriptComponent
 		m_bParkingBrake = !m_bParkingBrake;
 	}
 	
-	//void AirplaneFreelook(float freelook = 0.0, EActionTrigger reason = 0)
-	//{
-	//	m_Freelook = freelook;
-	//}
-	
 	bool IsControlActive()
 	{
 		ArmaReforgerScripted game = GetGame();
@@ -336,26 +318,6 @@ class ADM_AirplaneInput : ScriptComponent
 		IEntity parent = player.GetParent();
 		return (parent && parent == GetOwner());
 	}
-	
-	/*bool IsFreelookActiveForLocalPlayer()
-	{
-		if (!g_Game) return false;
-		
-		InputManager im = g_Game.GetInputManager();
-		if (!im) return false;
-		if (im.IsUsingMouseAndKeyboard()) m_Freelook = false; // M&K always freelooks independently, no need to freeze controls
-		
-		SCR_PlayerController pc = SCR_PlayerController.Cast(GetGame().GetPlayerController());
-		if (!pc) return false;
-		
-		SCR_ChimeraCharacter player = SCR_ChimeraCharacter.Cast(pc.GetLocalControlledEntity());
-		if (!player)
-			return false;
-		
-		CharacterControllerComponent.Cast(player.FindComponent(CharacterControllerComponent)).SetDisableViewControls(!(m_Freelook || im.IsUsingMouseAndKeyboard()));
-		
-		return m_Freelook;
-	}*/
 	
 	override void OnPostInit(IEntity owner)
 	{
@@ -375,7 +337,6 @@ class ADM_AirplaneInput : ScriptComponent
         inputManager.AddActionListener("R3D_AirplaneFlaps", 			EActionTrigger.VALUE, FlapInput);
         inputManager.AddActionListener("R3D_AirplaneSpeedBrake", 		EActionTrigger.VALUE, SpeedBrakeInput);
         inputManager.AddActionListener("R3D_AirplaneToggleGear", 		EActionTrigger.DOWN,  ToggleGear);
-		//inputManager.AddActionListener("R3D_Freelook", 					EActionTrigger.VALUE, AirplaneFreelook);
 		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,  WeaponRelease);
 		inputManager.AddActionListener("R3D_AirplaneTrimReset",			EActionTrigger.DOWN,  TrimReset);
 		inputManager.AddActionListener("R3D_AirplaneSteering",			EActionTrigger.VALUE,  Steering);
@@ -405,13 +366,6 @@ class ADM_AirplaneInput : ScriptComponent
 			inputManager.SetActionValue("CarHandBrake", m_fHandBrake);
 			m_AirplaneController.SetPersistentHandBrake(m_bParkingBrake);
 		}
-		
-			
-		if (m_fSpeedBrakeInput > 0 && !m_bSpeedBrakeToggle)
-		{
-			m_fSpeedBrakeInput -= m_fSpeedBrakeVelocity;
-			m_fSpeedBrakeInput = Math.Clamp(m_fSpeedBrakeInput, 0, 1);
-		}
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -433,7 +387,6 @@ class ADM_AirplaneInput : ScriptComponent
 			DbgUI.Text(string.Format("m_fAileronTrim: %1", m_fAileronTrim));
 			DbgUI.Text(string.Format("m_fElevatorTrim: %1", m_fElevatorTrim));
 			DbgUI.Text(string.Format("m_fRudderTrim: %1", m_fRudderTrim));
-			//DbgUI.Text(string.Format("m_Freelook: %1", m_Freelook));
 			DbgUI.Text(string.Format("m_fSteering: %1", m_fSteering));
 			DbgUI.Text(string.Format("m_fWheelBrake: %1", m_fWheelBrake));
 			DbgUI.Text(string.Format("m_fHandBrake: %1", m_fHandBrake));

@@ -7,25 +7,33 @@ class ADM_ControlSurface
 	[Attribute()]
 	bool m_bInvertInput;
 	
+	[Attribute(desc: "Automatically return to zero when no input", defvalue: "1")]
+	bool m_bAutoZero;
+	
 	[Attribute(params: "0 1", desc: "Width of control surface in terms of % chord")]
 	float m_fChordPercent;
 	
 	// degrees
-	[Attribute()]
+	[Attribute(desc: "degrees")]
 	float m_fMinAngle;
 	
 	// degrees
-	[Attribute()]
+	[Attribute(desc: "degrees")]
 	float m_fMaxAngle;
+	
+	[Attribute(desc: "degrees/sec")]
+	float m_fMaxActuationRate;
 	
 	[Attribute()]
 	string m_sSignal;
 	
 	int m_iSignalIndex = -1;
+	float m_fCurAngle = 0;
+	float m_fZeroAngle = 0; // zero input angle, trim
 	
 	// input from -1 to 1
 	// output is in degrees
-	float GetAngle(float input)
+	/*float GetAngle(float input)
 	{
 		if (m_bInvertInput)
 			input *= -1;
@@ -34,6 +42,40 @@ class ADM_ControlSurface
 			return (input*-1) * m_fMinAngle;
 		else
 			return input * m_fMaxAngle;
+	}*/
+	
+	void Update(float timeSlice, float input)
+	{
+		if (m_bInvertInput)
+			input *= -1;
+		
+		float targetAngle = m_fMaxAngle;
+		if (input < 0)
+			targetAngle = m_fMinAngle;
+		
+		if (input == 0 && m_bAutoZero)
+			targetAngle = m_fZeroAngle;
+		
+		if (input == 0 && !m_bAutoZero)
+			targetAngle = m_fCurAngle;
+		
+		targetAngle *= Math.AbsFloat(input);
+		
+		float delta = m_fMaxActuationRate*timeSlice;
+		float error = targetAngle - m_fCurAngle;
+		if (delta > Math.AbsFloat(error))
+			delta = Math.AbsFloat(error);
+		
+		if (error < 0)
+			delta *= -1;
+		
+		m_fCurAngle += delta;
+		m_fCurAngle = Math.Clamp(m_fCurAngle, m_fMinAngle, m_fMaxAngle);
+	}
+	
+	float GetAngle()
+	{
+		return m_fCurAngle;
 	}
 	
 	// Control surfaces essentially change the camberline of the airfoil, resulting in a new AoA.
