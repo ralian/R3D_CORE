@@ -31,19 +31,6 @@ class ADM_ControlSurface
 	float m_fCurAngle = 0;
 	float m_fZeroAngle = 0; // zero input angle, trim
 	
-	// input from -1 to 1
-	// output is in degrees
-	/*float GetAngle(float input)
-	{
-		if (m_bInvertInput)
-			input *= -1;
-		
-		if (input < 0)
-			return (input*-1) * m_fMinAngle;
-		else
-			return input * m_fMaxAngle;
-	}*/
-	
 	void Update(float timeSlice, float input)
 	{
 		if (m_bInvertInput)

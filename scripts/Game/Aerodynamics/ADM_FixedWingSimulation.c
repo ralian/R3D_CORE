@@ -41,6 +41,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	protected ChimeraWorld m_World = null;
 	protected SignalsManagerComponent m_SignalsManager;
+	protected RplComponent m_RplComponent;
 	protected int m_iRPMSignal = -1;
 	
 	protected vector m_vAerodynamicCenter = vector.Zero;
@@ -73,6 +74,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_Physics = owner.GetPhysics();
 		m_World = owner.GetWorld();
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
+		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 			
 		if (m_World) 
 		{
@@ -139,7 +141,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	//------------------------------------------------------------------------------------------------
 	void Simulate(float timeSlice)
 	{
-		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
+		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput() || !m_RplComponent.IsOwner())
 			return;
 		
 		#ifdef WORKBENCH
