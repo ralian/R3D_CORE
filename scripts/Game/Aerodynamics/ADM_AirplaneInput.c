@@ -173,7 +173,7 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void TrimReset(float trimReset = 0.0, EActionTrigger reason = 0)
 	{
-		//ResetTrim();
+		m_AirplaneController.ResetTrim();
 	}
 	
 	void Steering(float steering = 0.0, EActionTrigger reason = 0)

@@ -139,6 +139,25 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
+	void ResetTrim()
+	{
+		for (int i = 0; i < m_Wings.Count(); i++)
+		{
+			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
+			{
+				ADM_WingSection curSection = m_Wings[i].m_Sections[j];
+				if (curSection.m_ControlSurfaces && curSection.m_ControlSurfaces.Count() > 0)
+				{
+					foreach(ADM_ControlSurface controlSurface: curSection.m_ControlSurfaces)
+					{
+						controlSurface.ResetZeroAngle();	
+					}
+				}
+			}
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
 	override event protected bool OnTicksOnRemoteProxy() { return true; };
 	
 	//------------------------------------------------------------------------------------------------

@@ -81,6 +81,12 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
+	void ResetTrim()
+	{
+		m_FixedWingSim.ResetTrim();
+	}
+	
+	//------------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Server_ToggleEngine()
 	{
