@@ -90,15 +90,7 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 		}
 	}
 	
-	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
-	void Rpc_Server_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
-	{
-		m_Owner.SetTransform(mat);
-		Rpc(Rpc_Broadcast_ReceiveNewStates, mat, velocity, angularVelocity);
-	}
-	
-	[RplRpc(RplChannel.Unreliable, RplRcver.Broadcast)]
-	void Rpc_Broadcast_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
+	void UpdateStateInformation(vector mat[4], vector velocity, vector angularVelocity)
 	{
 		if (m_RplComponent.IsOwner())
 			return;
@@ -123,5 +115,18 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 			curVelocity = velocity;
 			curAngularVelocity = angularVelocity;
 		}
+	}
+	
+	[RplRpc(RplChannel.Unreliable, RplRcver.Server)]
+	void Rpc_Server_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
+	{
+		UpdateStateInformation(mat, velocity, angularVelocity);
+		Rpc(Rpc_Broadcast_ReceiveNewStates, mat, velocity, angularVelocity);
+	}
+	
+	[RplRpc(RplChannel.Unreliable, RplRcver.Broadcast)]
+	void Rpc_Broadcast_ReceiveNewStates(vector mat[4], vector velocity, vector angularVelocity)
+	{
+		UpdateStateInformation(mat, velocity, angularVelocity);
 	}
 }

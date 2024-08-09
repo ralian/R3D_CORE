@@ -75,7 +75,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_World = owner.GetWorld();
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
-			
+		
 		if (m_World) 
 		{
 			m_UpdateSystem = ADM_FixedWingSimulationSystem.Cast(m_World.FindSystem(ADM_FixedWingSimulationSystem));
@@ -139,8 +139,16 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
+	override event protected bool OnTicksOnRemoteProxy() { return true; };
+	
+	//------------------------------------------------------------------------------------------------
 	void Simulate(float timeSlice)
 	{
+		foreach (ADM_LandingGear gear: m_Gear)
+		{
+			gear.Update(timeSlice);
+		}
+		
 		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput() || !m_RplComponent.IsOwner())
 			return;
 		
@@ -189,8 +197,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				{
 					foreach(ADM_ControlSurface controlSurface: curSection.m_ControlSurfaces)
 					{
-						controlSurface.Update(timeSlice, m_AirplaneController.GetAirplaneInput().GetInput(controlSurface.m_Type));
 						float deflectionAngle = controlSurface.GetAngle();
+						float trimModifier = m_AirplaneController.GetAirplaneInput().GetTrimModifier();
+						controlSurface.Update(timeSlice, m_AirplaneController.GetAirplaneInput().GetInput(controlSurface.m_Type), trimModifier > 0, m_AirplaneController.m_fTrimVelocityAdjustment);
 						
 						// Control surfaces effect to wing section
 						angleOfAttack += controlSurface.GetDeltaAoA(curSection, deflectionAngle, angleOfAttack);

@@ -31,7 +31,12 @@ class ADM_ControlSurface
 	float m_fCurAngle = 0;
 	float m_fZeroAngle = 0; // zero input angle, trim
 	
-	void Update(float timeSlice, float input)
+	void ResetZeroAngle()
+	{
+		m_fZeroAngle = 0;
+	}
+	
+	void Update(float timeSlice, float input, bool trim = false, float trimAdjVel = 1)
 	{
 		if (m_bInvertInput)
 			input *= -1;
@@ -40,15 +45,18 @@ class ADM_ControlSurface
 		if (input < 0)
 			targetAngle = m_fMinAngle;
 		
+		targetAngle *= Math.AbsFloat(input);
+		
 		if (input == 0 && m_bAutoZero)
 			targetAngle = m_fZeroAngle;
 		
 		if (input == 0 && !m_bAutoZero)
 			targetAngle = m_fCurAngle;
 		
-		targetAngle *= Math.AbsFloat(input);
-		
 		float delta = m_fMaxActuationRate*timeSlice;
+		if (trim)
+			delta *= trimAdjVel;
+		
 		float error = targetAngle - m_fCurAngle;
 		if (delta > Math.AbsFloat(error))
 			delta = Math.AbsFloat(error);
@@ -56,6 +64,12 @@ class ADM_ControlSurface
 		if (error < 0)
 			delta *= -1;
 		
+		if (trim)
+		{
+			m_fZeroAngle += delta;
+			m_fZeroAngle = Math.Clamp(m_fCurAngle, m_fMinAngle, m_fMaxAngle);
+		}
+		 
 		m_fCurAngle += delta;
 		m_fCurAngle = Math.Clamp(m_fCurAngle, m_fMinAngle, m_fMaxAngle);
 	}

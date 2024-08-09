@@ -34,6 +34,7 @@ class ADM_AirplaneInput : ScriptComponent
 	protected float m_fWheelBrakeInput = 0.0;
 	protected float m_fHandBrakeInput = 0.0;
 	protected bool m_bParkingBrakeInput = true;
+	protected float m_fTrimModifierInput = 0.0;
 	
 	protected float m_fSteeringAngle = 0.0;
 	
@@ -195,6 +196,16 @@ class ADM_AirplaneInput : ScriptComponent
 		m_bParkingBrakeInput = !m_bParkingBrakeInput;
 	}
 	
+	void TrimModifier(float trimModifier = 0.0, EActionTrigger reason = 0)
+	{
+		m_fTrimModifierInput = trimModifier;
+	}
+	
+	float GetTrimModifier()
+	{
+		return m_fTrimModifierInput;
+	}
+	
 	bool IsControlActive()
 	{
 		ArmaReforgerScripted game = GetGame();
@@ -234,6 +245,7 @@ class ADM_AirplaneInput : ScriptComponent
         inputManager.AddActionListener("R3D_AirplaneSpeedBrake", 		EActionTrigger.VALUE,  SpeedBrakeInput);
         inputManager.AddActionListener("R3D_AirplaneToggleGear", 		EActionTrigger.DOWN,   ToggleGear);
 		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,   WeaponRelease);
+		inputManager.AddActionListener("R3D_AirplaneTrimModifier",		EActionTrigger.VALUE,  TrimModifier);
 		inputManager.AddActionListener("R3D_AirplaneTrimReset",			EActionTrigger.DOWN,   TrimReset);
 		inputManager.AddActionListener("R3D_AirplaneSteering",			EActionTrigger.VALUE,  Steering);
 		inputManager.AddActionListener("R3D_AirplaneWheelBrake",		EActionTrigger.VALUE,  WheelBrake);
@@ -349,6 +361,7 @@ class ADM_AirplaneInput : ScriptComponent
 			DbgUI.Text(string.Format("m_fWheelBrakeInput: %1", m_fWheelBrakeInput));
 			DbgUI.Text(string.Format("m_fHandBrakeInput: %1", m_fHandBrakeInput));
 			DbgUI.Text(string.Format("m_bParkingBrakeInput: %1", m_bParkingBrakeInput));
+			DbgUI.Text(string.Format("m_fTrimModifierInput: %1", m_fTrimModifierInput));
 			DbgUI.Text("");
 			DbgUI.End();
 		}

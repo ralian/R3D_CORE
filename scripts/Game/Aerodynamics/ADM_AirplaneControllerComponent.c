@@ -14,6 +14,9 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	[RplProp()] 
 	protected bool m_bGearDeployed = true; // true = deployed, false = retracted
 
+	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.1", desc: "Adjustment on actuation velocity when applying trim")]
+	float m_fTrimVelocityAdjustment;
+	
 	[Attribute(category: "Fixed Wing Simulation", defvalue: "0.01")]
 	float m_fThrustVelocity;
 	
@@ -103,9 +106,6 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		Print("Rpc_Server_ToggleGear");
 		m_bGearDeployed = !m_bGearDeployed;
 		Replication.BumpMe();
-		
-		if (!m_FixedWingSim)
-			return;
 		
 		foreach (ADM_LandingGear gear: m_FixedWingSim.GetGear())
 		{
