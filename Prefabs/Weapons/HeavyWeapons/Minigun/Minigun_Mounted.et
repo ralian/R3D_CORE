@@ -142,6 +142,9 @@ GenericEntity : "{9CF19D872D4D1C00}Prefabs/Weapons/HeavyWeapons/HMG_M2HB_pintle.
      AnimVariablesToBind {
      }
     }
+    WeaponAnimationComponent "{60B4EA76EB15F6E0}" {
+     Enabled 0
+    }
    }
    UIInfo WeaponUIInfo "{CC3BA6A2C42F09F4}" {
     Name "M134"
