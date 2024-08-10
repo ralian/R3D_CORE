@@ -35,6 +35,7 @@ class ADM_AirplaneInput : ScriptComponent
 	protected float m_fHandBrakeInput = 0.0;
 	protected bool m_bParkingBrakeInput = true;
 	protected float m_fTrimModifierInput = 0.0;
+	protected float m_fFOVZoom = 0.0;
 	
 	protected float m_fSteeringAngle = 0.0;
 	
@@ -139,11 +140,13 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void ToggleGear(float gear = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_AirplaneController.ToggleGear();
 	}
 	
 	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
 		if (!slotManager)
 		{
@@ -173,37 +176,57 @@ class ADM_AirplaneInput : ScriptComponent
 	
 	void TrimReset(float trimReset = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_AirplaneController.ResetTrim();
 	}
 	
 	void Steering(float steering = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_fSteeringInput = steering;
 	}
 	
 	void WheelBrake(float wheelBrake = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_fWheelBrakeInput = wheelBrake;
 	}
 	
 	void HandBrake(float handBrake = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_fHandBrakeInput = handBrake;
 	}
 	
 	void ParkingBrake(float parkingBrake = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_bParkingBrakeInput = !m_bParkingBrakeInput;
 	}
 	
 	void TrimModifier(float trimModifier = 0.0, EActionTrigger reason = 0)
 	{
+		if (!IsControlActive()) return;
 		m_fTrimModifierInput = trimModifier;
+	}
+	
+	void AdjustFOV(float input = 0.0, EActionTrigger reason = 0) 
+	{ 		
+		m_fFOVZoom += 0.05*input; 
+		m_fFOVZoom = Math.Clamp(m_fFOVZoom, 0, 1);
+		
+		if (input != 0)
+			m_AirplaneController.UpdateFOV(m_fFOVZoom);
 	}
 	
 	float GetTrimModifier()
 	{
 		return m_fTrimModifierInput;
+	}
+	
+	float GetFOVZoom()
+	{
+		return m_fFOVZoom;
 	}
 	
 	bool IsControlActive()
@@ -251,6 +274,7 @@ class ADM_AirplaneInput : ScriptComponent
 		inputManager.AddActionListener("R3D_AirplaneWheelBrake",		EActionTrigger.VALUE,  WheelBrake);
 		inputManager.AddActionListener("R3D_AirplaneHandBrake",			EActionTrigger.VALUE,  HandBrake);
 		inputManager.AddActionListener("R3D_AirplaneParkingBrake",		EActionTrigger.DOWN,   ParkingBrake);
+		inputManager.AddActionListener("R3D_AirplaneAdjustFOV",			EActionTrigger.VALUE,  AdjustFOV);
 		
 		for (int i = 0; i < m_AirplaneController.m_fSteeringForwardStrength.Count(); i++)
 		{
@@ -323,7 +347,6 @@ class ADM_AirplaneInput : ScriptComponent
 		super.EOnFrame(owner, timeSlice);
 		
 		if (!m_AirplaneController) return;
-		if (!m_RplComponent.IsOwner()) return;
 		
 		InputManager inputManager = GetGame().GetInputManager();
 		if (inputManager && IsControlActive())
@@ -362,6 +385,7 @@ class ADM_AirplaneInput : ScriptComponent
 			DbgUI.Text(string.Format("m_fHandBrakeInput: %1", m_fHandBrakeInput));
 			DbgUI.Text(string.Format("m_bParkingBrakeInput: %1", m_bParkingBrakeInput));
 			DbgUI.Text(string.Format("m_fTrimModifierInput: %1", m_fTrimModifierInput));
+			DbgUI.Text(string.Format("m_fFOVZoom: %1", m_fFOVZoom));
 			DbgUI.Text("");
 			DbgUI.End();
 		}

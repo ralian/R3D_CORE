@@ -35,10 +35,15 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	[Attribute(category: "Fixed Wing Simulation", uiwidget: UIWidgets.Auto, params: "100 100 0 0", desc: "Steering speed when no steering applied [km/h deg/s]")]
 	ref Curve m_fSteeringCenterStrength;
 	
+	[Attribute(category: "Fixed Wing Simulation", defvalue: "30", desc: "degrees")]
+	protected float m_fMinZoomFOV;
+	
 	protected ref array<ADM_EngineComponent> m_Engines = {};
 	protected ADM_FixedWingSimulation m_FixedWingSim;
 	protected ADM_AirplaneInput m_AirplaneInput;
-	protected RplComponent m_RplComponent = null;
+	protected RplComponent m_RplComponent;
+	protected CameraManager m_CameraManager;
+	protected float m_fFOVMax;
 	
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
@@ -54,6 +59,12 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 		m_FixedWingSim = ADM_FixedWingSimulation.Cast(owner.FindComponent(ADM_FixedWingSimulation));
 		m_AirplaneInput = ADM_AirplaneInput.Cast(owner.FindComponent(ADM_AirplaneInput));
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
+		m_CameraManager = GetGame().GetCameraManager();
+		
+		if (m_CameraManager)
+			m_fFOVMax = m_CameraManager.GetVehicleFOV();
+		else
+			m_fFOVMax = 75;
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -84,6 +95,13 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	void ResetTrim()
 	{
 		m_FixedWingSim.ResetTrim();
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	void UpdateFOV(float fovZoom)
+	{
+		float fov = m_fFOVMax + (m_fMinZoomFOV-m_fFOVMax)*fovZoom;
+		m_CameraManager.SetVehicleFOV(fov);
 	}
 	
 	//------------------------------------------------------------------------------------------------

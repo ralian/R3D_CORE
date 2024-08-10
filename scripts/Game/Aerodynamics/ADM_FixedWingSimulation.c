@@ -263,10 +263,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				m_vDebugForces.Insert(vDrag);
 				m_iDebugForceColor.Insert(Color.RED);
 				
-				Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-				Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-				Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-				Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPLANEDEBUG))
+				{
+					Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+					Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+					Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+					Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+				}
 				#endif
 			}
 		}

@@ -9,16 +9,6 @@ GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et
   BaseTriggerComponent "{55129E81CBAA1390}" {
    PROJECTILE_EFFECTS {
     ExplosionDamageContainer "{5E3E3536F71D4036}" {
-     ExplosionDamageEffects {
-      ExplosionImpulseEffect "{5E3E3536CAF353D3}" {
-      }
-      ExplosionFragmentationEffect "{5E3E3536C922A31D}" {
-       DamageFragmentCount 1000
-       CaseWeight 93000
-      }
-      BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" {
-      }
-     }
      ChargeWeight 87000
      TntEquivalent 230
     }
