@@ -97,6 +97,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			gear.m_vPosition.Init(owner);
 		}
 		
+		if (owner.GetPhysics())
+		{
+			owner.GetPhysics().SetActive(true);
+		}
+		
 		CalculatePanels();
 		
 		#ifdef WORKBENCH
@@ -383,15 +388,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	vector GetCenterOfAerodynamics()
-	{
-		if (!m_Owner)
-			return vector.Zero;
-		
-		return m_Owner.CoordToParent(m_vAerodynamicCenter + m_vAerodynamicCenterOffset); // world coordinates
-	}
-	
-	//------------------------------------------------------------------------------------------------
 	vector GetWorldVelocity(vector pos = vector.Zero)
 	{		
 		if (!m_Physics || !m_Owner)
@@ -523,7 +519,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			Draw(owner);
 		
 		vector com = GetCenterOfMass();
-		vector coa = GetCenterOfAerodynamics();
+		vector coa = owner.CoordToParent(m_vAerodynamicCenter + m_vAerodynamicCenterOffset);
 		vector flowVelocity = GetTrueAirVelocity(com);
 		vector wind = GetWindVector();
 		if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWWIND))
