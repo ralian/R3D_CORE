@@ -127,13 +127,12 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void Rpc_Server_ToggleGear()
 	{
-		Print("Rpc_Server_ToggleGear");
 		m_bGearDeployed = !m_bGearDeployed;
 		Replication.BumpMe();
 		
-		foreach (ADM_LandingGear gear: m_FixedWingSim.GetGear())
+		for (int i=0; i < m_FixedWingSim.m_bGearDeployed.Count(); i++)
 		{
-			gear.SetGearDeployed(m_bGearDeployed);
+			m_FixedWingSim.m_bGearDeployed[i] = m_bGearDeployed;
 		}
 	}
 	

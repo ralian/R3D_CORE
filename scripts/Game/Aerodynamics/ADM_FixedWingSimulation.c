@@ -47,11 +47,17 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	protected vector m_vAerodynamicCenter = vector.Zero;
 	protected vector m_vAerodynamicCenterOffset = vector.Zero;
 	
-	#ifdef WORKBENCH
+	[RplProp()]
+	ref array<float> m_fGearStates = {};
+	
+	[RplProp()]
+	ref array<bool> m_bGearDeployed = {};
+	
+	//#ifdef WORKBENCH
 	protected ref array<vector> m_vDebugForcePos = {};
 	protected ref array<vector> m_vDebugForces = {};
 	protected ref array<int> m_iDebugForceColor = {};
-	#endif
+	//#endif
 	
 	//------------------------------------------------------------------------------------------------
 	protected void ConnectToSystem()
@@ -95,6 +101,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
 			gear.m_vPosition.Init(owner);
+			m_fGearStates.Insert(1);
+			m_bGearDeployed.Insert(true);
 		}
 		
 		if (owner.GetPhysics())
@@ -104,11 +112,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		
 		CalculatePanels();
 		
-		#ifdef WORKBENCH
+		//#ifdef WORKBENCH
 		ConnectToDiagSystem(owner);
-		#endif
+		//#endif
 		
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.PHYSICSACTIVE);
+		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.PHYSICSACTIVE);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -127,9 +135,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	{
 		DisconnectFromSystem();
 		
-		#ifdef WORKBENCH
+		//#ifdef WORKBENCH
 		DisconnectFromDiagSystem(owner);
-		#endif
+		//#endif
 		
 		super.OnDelete(owner);
 	}
@@ -162,25 +170,21 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		}
 	}
 	
-	//------------------------------------------------------------------------------------------------
 	override event protected bool OnTicksOnRemoteProxy() { return true; };
 	
 	//------------------------------------------------------------------------------------------------
 	void Simulate(float timeSlice)
 	{
-		foreach (ADM_LandingGear gear: m_Gear)
-		{
-			gear.Update(timeSlice);
-		}
-		
-		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput() || !m_RplComponent.IsOwner())
+		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
 			return;
 		
-		#ifdef WORKBENCH
+		// if pilot is not rpl owner, make them owner
+		
+		//#ifdef WORKBENCH
 		m_vDebugForcePos.Clear();
 		m_vDebugForces.Clear();
 		m_iDebugForceColor.Clear();
-		#endif
+		//#endif
 		
 		IEntity owner = m_Owner;
 		vector com = owner.CoordToParent(m_Physics.GetCenterOfMass());
@@ -259,7 +263,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				m_Physics.ApplyImpulseAt(aerocenter, vLift * timeSlice);
 				m_Physics.ApplyImpulseAt(aerocenter, vDrag * timeSlice);
 				
-				#ifdef WORKBENCH
+				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(aerocenter);
 				m_vDebugForces.Insert(vLift);
 				m_iDebugForceColor.Insert(Color.GREEN);
@@ -275,7 +279,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
 					Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
 				}
-				#endif
+				//#endif
 			}
 		}
 		
@@ -286,7 +290,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_Physics.ApplyImpulseAt(coa, vLongitudinalDrag * timeSlice);
 		m_Physics.ApplyImpulseAt(coa, vSideslipDrag * timeSlice);
 		
-		#ifdef WORKBENCH
+		//#ifdef WORKBENCH
 		m_vDebugForcePos.Insert(coa);
 		m_vDebugForces.Insert(vLongitudinalDrag);
 		m_iDebugForceColor.Insert(Color.ORANGE);
@@ -294,11 +298,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_vDebugForcePos.Insert(coa);
 		m_vDebugForces.Insert(vSideslipDrag);
 		m_iDebugForceColor.Insert(Color.ORANGE);
-		#endif
-	
+		//#endif
+		
+		int i = 0;
 		foreach (ADM_LandingGear gear: m_Gear)
 		{
-			float fState = gear.GetState();
+			float fState = m_fGearStates[i];
 			if (fState > 0)
 			{
 				vector gearMat[4];
@@ -308,14 +313,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				vector vDrag = fDrag * -owner.VectorToParent(vector.Forward);
 				m_Physics.ApplyImpulseAt(gearMat[3], vDrag * timeSlice);
 				
-				#ifdef WORKBENCH
+				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(gearMat[3]);
 				m_vDebugForces.Insert(vDrag);
 				m_iDebugForceColor.Insert(Color.RED);
-				#endif
+				//#endif
 			}
 			
-			gear.Update(timeSlice);
 			if (m_SignalsManager)
 			{
 				if (gear.m_iSignalIndex == -1)
@@ -323,9 +327,23 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					gear.m_iSignalIndex = m_SignalsManager.AddOrFindMPSignal(gear.m_sSignal, 0.05, 30, 0, SignalCompressionFunc.RotDEG);
 				}
 				
-				float signal = (1 - gear.GetState()) * gear.m_fRotationAngle;
+				float signal = (1 - m_fGearStates[i]) * gear.m_fRotationAngle;
 				m_SignalsManager.SetSignalValue(gear.m_iSignalIndex, signal);
 			}
+			
+			if (m_bGearDeployed[i] && m_fGearStates[i] < 1 && !(gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0))
+			{
+				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] + gear.m_fRotationRate * timeSlice, 0, 1);
+				Replication.BumpMe();
+			}
+			
+			if (!m_bGearDeployed[i] && m_fGearStates[i] > 0 && !(gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0))
+			{
+				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] - gear.m_fRotationRate * timeSlice, 0, 1);
+				Replication.BumpMe();
+			}
+			
+			i++;
 		}
 		
 		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
@@ -336,7 +354,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (m_SignalsManager)
 		{
 			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
-		}
+		}		
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -409,7 +427,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
-#ifdef WORKBENCH
+//#ifdef WORKBENCH
 	vector debugPoints[6];
 	vector debugACLine[2];
 	vector debugPointsControlSurface[6];
@@ -556,9 +574,14 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			DbgUI.Text(string.Format("True Air Speed COM: %1 m/s", Math.Round(flowVelocity.Length() * 100)/100));
 			DbgUI.Text(string.Format("Turning Radius: %1 ft", Math.Round(turningRadius*100)/100));
 			DbgUI.Text("");
+			DbgUI.Text("Gear:");
+			for (int i=0; i < m_Gear.Count(); i++)
+			{
+				DbgUI.Text(string.Format(" - %1: %2", i, m_fGearStates[i]));
+			}
 			DbgUI.End();
 			
-			#ifdef WORKBENCH
+			//#ifdef WORKBENCH
 			float maxForce = 1;
 			for (int i = 0; i < m_vDebugForces.Count(); i++)
 			{
@@ -570,7 +593,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			{
 				Shape.CreateArrow(m_vDebugForcePos[i], m_vDebugForcePos[i] + 5*m_vDebugForces[i]/maxForce, 0.1, m_iDebugForceColor[i], ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
 			}
-			#endif
+			//#endif
 		}
 	}
 	
@@ -592,69 +615,5 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		super.EOnDiag(owner, timeSlice);
 		DebugMenu(owner, timeSlice);
 	}
-#endif
+//#endif
 }
-
-/*
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void Rpc_Owner_ToggleGear()
-	{
-		m_bGearState = !m_bGearState;
-		
-		if (m_SignalsManager)
-		{
-			int signalIndex = m_SignalsManager.AddOrFindMPSignal("ToggleGear", 0, 30, (int)(!m_bGearState), SignalCompressionFunc.RotDEG);
-			m_SignalsManager.SetSignalValue(signalIndex, (int)(!m_bGearState));
-		}
-		
-		// TODO: only do this if all gear retract
-		if (!m_bGearState)
-		{
-			m_VehicleBaseSim.Deactivate(m_Owner);
-			m_Physics.EnableGravity(true);
-			m_bPreviousHeadlightState = m_LightManager.GetLightsState(ELightType.Head);
-		} else {
-			m_VehicleBaseSim.Activate(m_Owner);
-		}
-			
-		Replication.BumpMe();
-	}
-	
-	void OwnerTick(IEntity owner, float timeSlice)
-	{
-		if (m_SignalsManager)
-		{
-			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_Input.GetInput(ADM_InputType.Thrust));
-		}
-		
-		foreach (ADM_LandingGear gear: m_Gear)
-		{
-			if (gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0)
-			{
-				continue;
-			}
-				
-			if (m_bGearState && gear.GetState() < 1)
-			{
-				gear.RotateGear(gear.m_fRotationRate * timeSlice);
-			}
-			
-			if (!m_bGearState && gear.GetState() > 0)
-			{
-				gear.RotateGear(-gear.m_fRotationRate * timeSlice);
-			}
-			
-			if (m_SignalsManager)
-			{
-				if (gear.m_iSignalIndex == -1)
-				{
-					gear.m_iSignalIndex = m_SignalsManager.AddOrFindMPSignal(gear.m_sSignal, 0.05, 30, 0, SignalCompressionFunc.RotDEG);
-				}
-				
-				float signal = (1 - gear.GetState()) * gear.m_fRotationAngle;
-				m_SignalsManager.SetSignalValue(gear.m_iSignalIndex, signal);
-			}
-		}
-	}
-	
-}*/
