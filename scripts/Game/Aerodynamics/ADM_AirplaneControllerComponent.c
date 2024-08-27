@@ -128,12 +128,12 @@ class ADM_AirplaneControllerComponent: CarControllerComponent
 	void Rpc_Server_ToggleGear()
 	{
 		m_bGearDeployed = !m_bGearDeployed;
-		Replication.BumpMe();
 		
 		for (int i=0; i < m_FixedWingSim.m_bGearDeployed.Count(); i++)
 		{
 			m_FixedWingSim.m_bGearDeployed[i] = m_bGearDeployed;
 		}
+		Replication.BumpMe();
 	}
 	
 }

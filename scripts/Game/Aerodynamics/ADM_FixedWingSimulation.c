@@ -333,13 +333,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			
 			if (m_bGearDeployed[i] && m_fGearStates[i] < 1 && !(gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0))
 			{
-				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] + gear.m_fRotationRate * timeSlice, 0, 1);
+				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] + gear.m_fRotationRate/gear.m_fRotationAngle * timeSlice, 0, 1);
 				Replication.BumpMe();
 			}
 			
 			if (!m_bGearDeployed[i] && m_fGearStates[i] > 0 && !(gear.m_fRotationRate <= 0 || gear.m_fRotationAngle == 0))
 			{
-				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] - gear.m_fRotationRate * timeSlice, 0, 1);
+				m_fGearStates[i] = Math.Clamp(m_fGearStates[i] - gear.m_fRotationRate/gear.m_fRotationAngle * timeSlice, 0, 1);
 				Replication.BumpMe();
 			}
 			
