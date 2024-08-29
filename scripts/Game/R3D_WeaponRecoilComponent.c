@@ -46,7 +46,7 @@ class R3D_WeaponRecoilComponent : ScriptComponent
 		
 		foreach(WeaponSlotComponent weaponSlot : weaponSlots)
 		{
-			if (weaponSlot.GetWeaponSlotIndex() == m_iWeaponIndex || weaponSlots.Count() <= 1)
+			if (weaponSlot.GetWeaponSlotIndex() == m_iWeaponIndex || weaponSlots.Count() == 1)
 			{
 				IEntity weapon = weaponSlot.GetWeaponEntity();
 				if (!weapon) return;

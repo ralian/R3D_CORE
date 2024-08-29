@@ -3,7 +3,7 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
  components {
   SCR_VehicleSoundComponent "{55C2E66AD4EF2CA6}" {
    Filenames {
-    "{7331B63EA1E25383}Sounds/Vehicles/_SharedData/Rain/Vehicles_Rain_MetalRoof.acp" "{D90F39F89E7BAADF}Sounds/Vehicles/Wheeled/UAZ469/Vehicles_UAZ469_Dampers.acp" "{BA8A5BD290F5FB34}Sounds/Vehicles/_SharedData/Destruction/Vehicles_Destruction.acp" "{5767E5671BFDBF00}Sounds/Vehicles/_SharedData/Crashes/Truck/Vehicles_Crashes_Truck.acp" "{F1030E91E4B33E24}Sounds/Vehicles/_SharedData/WaterInteractions/Vehicles_WaterInteractions.acp"
+    "{E3B548401E29F800}Sounds/Vehicles/Wheeled/M151A2/Vehicles_M151A2_Rain.acp" "{D90F39F89E7BAADF}Sounds/Vehicles/Wheeled/UAZ469/Vehicles_UAZ469_Dampers.acp" "{BA8A5BD290F5FB34}Sounds/Vehicles/_SharedData/Destruction/Vehicles_Destruction.acp" "{5767E5671BFDBF00}Sounds/Vehicles/_SharedData/Crashes/Truck/Vehicles_Crashes_Truck.acp" "{F1030E91E4B33E24}Sounds/Vehicles/_SharedData/WaterInteractions/Vehicles_WaterInteractions.acp"
    }
    OnFrameUpdate 0
    SoundPoints {
@@ -28,31 +28,8 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
      }
     }
    }
-   m_aSignalDefinition {
-    SCR_SignalDefinition "{5E604AE76FA59A4C}" {
-     m_sSignalName "CabinRattle"
-     m_aSignalPointDefinition {
-      SCR_SignalPointDefinition "{5AD4F813E67ECBB3}" {
-       m_fTimeMin 1000
-       m_fTimeMax 3000
-       m_fValueMin 1
-       m_fValueMax 1
-      }
-      SCR_SignalPointDefinition "{5AD4F813E67ECBB0}" {
-       m_fTimeMin 0
-       m_fTimeMax 0
-       m_fValueMin 0
-       m_fValueMax 0
-      }
-     }
-    }
-   }
-   m_vMins -1 3.2 -6
-   m_vMaxs 1 3.4 6.5
   }
   ADM_AirplaneInput "{5E0229CDF992456A}" {
-   m_fThrustVelocity 0.01
-   m_trimVelocity 0.05
   }
   ADM_EngineComponent "{5E0229CCC3D89988}" {
    m_EngIndex 0
@@ -61,7 +38,6 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
    m_fMaxRPM 0
   }
   ADM_FixedWingSimulation "{5E0229CE461A580D}" {
-   m_vAerodynamicCenterOffset 0 0 0
    m_fFrontalDragArea 0
    m_fFrontalDragCoefficient 0
    m_fSideDragArea 0
@@ -78,9 +54,10 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
   }
   BaseVehicleNodeComponent "{20FB66C5B2237133}" {
    components {
-    SCR_CarControllerComponent_SA "{20FB66C5BC92275B}" {
-     MaxStartupTime 0
-     MaxStartupAttempts 1
+    ADM_AirplaneControllerComponent "{621E324CE6A16026}" {
+    }
+    SCR_CarControllerComponent "{20FB66C5BC92275B}" {
+     Enabled 0
     }
     BaseHUDComponent "{5E9D64DFC4DE34A6}" {
      InfoDisplays {
@@ -266,8 +243,7 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
   }
   ClimbingDataComponent "{5E9D64DF130A3985}" {
   }
-  R3D_DynamicMassComponent "{5E2F38B89E2F3A60}" {
-   Enabled 1
+  NwkPlaneMovementComponent "{621E324C15881D2D}" {
   }
   SCR_BaseCompartmentManagerComponent "{20FB66C5DCB8DF72}" {
    CompartmentSlots {
@@ -278,18 +254,7 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
       PivotID "seat_pilot"
      }
      DoorInfoList {
-      CompartmentDoorInfo "{50B8D5DDA17EB35D}" {
-       EntryPositionInfo PointInfo "{50B8D5DD213DC00C}" {
-        Offset -1.828 2.0314 4.6896
-        Angles 0 90 0
-       }
-       ExitPositionInfo PointInfo "{5E3D795206CADCBC}" {
-        Offset -0.0001 3.221 4.6897
-        Angles 0 -90 0
-       }
-      }
-     }
-     AccessibilitySettings CompartmentAccessibilityContext "{5E604AE418631D99}" {
+      0 0
      }
      BaseCoverage 1
     }
@@ -355,30 +320,6 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
    UnitType Aircraft
    SoundPowerRpmMultiplierDb 28
   }
-  VehicleWheeledSimulation_SA "{731B26FCA2F19855}" {
-   Simulation Wheeled "{4D8B26DEA5F25978}" {
-    AllowRotationAgainstEngine 1
-    Engine Engine Engine {
-     Inertia 0.1
-     MaxPower 0.1
-     MaxTorque 0.1
-     RpmMaxPower 10
-     RpmMaxTorque 9
-     Steepness 0.1
-     Friction 0.1
-     RpmIdle 1
-     RpmRedline 12
-     RpmMax 15
-     Output "none"
-    }
-    Aerodynamics Aerodynamics "{5562A623B55A4C07}" {
-     ReferenceArea 0
-     DragCoefficient 0
-    }
-    Pacejka Pacejka "{5E604AE7FBA633D6}" : "{2D0D99CD3C443B5E}Prefabs/Vehicles/Core/Configs/PacejkaTire_Road.conf" {
-    }
-   }
-  }
   WeaponSlotComponent "{5E34056E3F251C5D}" {
    SignalsSourceAccess SignalsSourceAccessClass "{5E340568E4622047}" {
     signalsSuffix ""
@@ -440,7 +381,7 @@ Vehicle : "{62F416029692CE40}Prefabs/Vehicles/Core/Wheeled_Base.et" {
    }
   }
   NwkCarMovementComponent "{5D6CA5AFEC980F35}" {
-   Enabled 1
+   Enabled 0
   }
   RplComponent "{517AACDFA78F5EE7}" {
    "Rpl State Override" None

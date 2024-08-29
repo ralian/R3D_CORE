@@ -54,7 +54,7 @@ class ADM_InternationalStandardAtmosphere
 			}			
 			default:
 			{
-				Print("Unsupported ISA Property");
+				Print("Unsupported ISA Property", LogLevel.ERROR);
 				break;
 			}
 		}
@@ -67,7 +67,7 @@ class ADM_InternationalStandardAtmosphere
 		float returnValue = -float.MAX;
 		if (lookupArray.Count() != returnValueArray.Count())
 		{
-			Print("Lookup array and return value array are not the same length!");
+			Print("Lookup array and return value array are not the same length!", LogLevel.ERROR);
 			return returnValue;
 		}
 		

@@ -83,14 +83,13 @@ class ADM_EngineComponent : ScriptComponent
 		m_HitZone = m_DamageManager.GetHitZoneByName(m_sHitzone);
 	}
 	
-	override void EOnSimulate(IEntity owner, float timeSlice)
+	void Simulate(IEntity owner, float timeSlice)
 	{
 		if (m_fThrottle <= 0 || m_fThrottle > 2 || !m_Physics || !m_bIsEngineOn)
 			return;
 		
 		vector thrust = -owner.VectorToParent(m_vExhaustDirection) * m_fMaxThrust * m_fThrottle;
 		m_Physics.ApplyImpulseAt(owner.CoordToParent(m_vNozzleExit), thrust * timeSlice);
-		//Print(thrust);
 	}
 	
 	override void EOnFrame(IEntity owner, float timeSlice)

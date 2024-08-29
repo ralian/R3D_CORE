@@ -27,22 +27,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 	
 	[Attribute(category: "Engine Parameters", defvalue: "250", uiwidget: UIWidgets.Object, desc: "Exhaust particles & thrust location")]
 	protected ref PointInfo m_vExhaustLocation;
-
-	// Aerodynamics
-	[Attribute(category: "Aerodynamics", defvalue: "1", uiwidget: UIWidgets.EditBox, desc: "Reference drag surface area")]
-	protected float m_fDragSurfaceArea; // [m^2]
-	
-	[Attribute(category: "Aerodynamics", defvalue: "1", uiwidget: UIWidgets.EditBox, desc: "Reference lift surface area")]
-	protected float m_fLiftSurfaceArea; // [m^2]
-	
-	[Attribute(category: "Aerodynamics", defvalue: "1", uiwidget: UIWidgets.EditBox, desc: "Skin friction coefficient of vehicle")]
-	protected float m_fCF0; // [unitless]
-	
-	[Attribute(category: "Aerodynamics", defvalue: "1", uiwidget: UIWidgets.EditBox, desc: "Drag coefficient due to bluntness")]
-	protected float m_fCD0; // [unitless]
-	
-	[Attribute(category: "Aerodynamics")]
-	protected vector m_aerodynamicCenter;
 	
 	protected IEntity m_Owner;
 	protected Physics m_Physics;
@@ -160,8 +144,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 			return;
 		
 		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
-		
-		Launch();
 	}
 	
 	vector CalculateTrajectoryCollision(IEntity object)
@@ -185,6 +167,8 @@ class R3D_RocketMoveComponent: ScriptComponent
 		return collision;
 	}
 	
+	vector worldThrustPosition;
+	vector worldThrustDirection;
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		if (!m_Physics || m_fLaunchTime == -1)
@@ -196,56 +180,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 			float mass = m_fDryMass + m_fPropellantMass*timeUntilBurnout/m_fBurnTime;
 			float thrust = m_fIsp * m_fMassFlowRate * 9.81; // Isp = T/mdot/g_e
 			//Print(thrust);
-			
-			vector worldThrustPosition = m_Owner.CoordToParent(m_ExhaustPosition);
-			vector localThrustDirection = "0 0 1";
-			
-			// ------- Rotation
-			float sinX = Math.Sin(m_fThrustAngleX);
-			float cosX = Math.Cos(m_fThrustAngleX);
-			
-			float sinZ = Math.Sin(m_fThrustAngleY);
-			float cosZ = Math.Cos(m_fThrustAngleY);
-			
-			//rotation matrix start X-axis
-			vector rotMatX[3];
-			rotMatX[0][0] = 1;
-			rotMatX[0][1] = 0;
-			rotMatX[0][2] = 0;
-			
-			rotMatX[1][0] = 0;
-			rotMatX[1][1] = cosX;
-			rotMatX[1][2] = -sinX;
-			
-			rotMatX[2][0] = 0;
-			rotMatX[2][1] = sinX;
-			rotMatX[2][2] = cosX;	
-			//rotation matrix end X-axis
-			
-			//rotation matrix start Z-axis
-			vector rotMatZ[3];
-			rotMatZ[0][0] = cosZ;
-			rotMatZ[0][1] = -sinZ;
-			rotMatZ[0][2] = 0;
-			
-			rotMatZ[1][0] = sinZ;
-			rotMatZ[1][1] = cosZ;
-			rotMatZ[1][2] = 0;
-			
-			rotMatZ[2][0] = 0;
-			rotMatZ[2][1] = 0;
-			rotMatZ[2][2] = 1;	
-			//rotation matrix end Z-axis
-			
-			vector rotatedThrustDirectionX;
-			vector rotatedThrustDirectionXZ;
-			Math3D.MatrixMultiply3(rotMatX, localThrustDirection, rotatedThrustDirectionX);
-			Math3D.MatrixMultiply3(rotatedThrustDirectionX, rotMatZ, rotatedThrustDirectionXZ);
-			// ------- Rotation
-						
-			vector worldThrustDirection = m_Owner.VectorToParent(rotatedThrustDirectionXZ);
-			worldThrustDirection.Normalize();
-			Shape.CreateArrow(worldThrustPosition, m_Owner.CoordToParent(m_ExhaustPosition) + worldThrustDirection*-1, 0.1, COLOR_RED, ShapeFlags.ONCE); 
 		
 			m_Physics.ApplyForceAt(worldThrustPosition, thrust * worldThrustDirection);
 			m_Physics.SetMass(mass);
@@ -253,32 +187,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		//if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
 		//	m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
-		
-		// Calculate Aerodynamics
-		float altitude = GetAltitude();
-		vector velocity = m_Physics.GetVelocity();
-		float rho = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
-		float dynamicPressure = 1/2 * rho * velocity.LengthSq();
-		
-		// Assuming flat plate supersonic newtonian theory
-		// https://ntrs.nasa.gov/api/citations/19870002265/downloads/19870002265.pdf
-		float alpha = Math.Acos( vector.Dot(velocity.Normalized(), owner.VectorToParent("0 0 1")) );
-		float sinAlpha = Math.Sin(alpha);
-		float cosAlpha = Math.Cos(alpha);
-		float CD = 2 * sinAlpha * sinAlpha * sinAlpha + m_fCF0 * cosAlpha * m_fCD0;	
-		float CL = 2 * sinAlpha * sinAlpha * cosAlpha - m_fCF0 * sinAlpha;
-		
-		vector aeroCenter = m_Owner.CoordToParent(m_aerodynamicCenter);
-		float drag = dynamicPressure * m_fDragSurfaceArea * CD;
-		m_Physics.ApplyForceAt(aeroCenter, drag * velocity.Normalized() * -1);
-		
-		float lift = dynamicPressure * m_fLiftSurfaceArea * CL;
-		//m_Physics.ApplyForceAt(aeroCenter, lift * m_Owner.CoordToParent("0 1 0"));
-		
-		Shape.CreateArrow(aeroCenter, aeroCenter + lift * m_Owner.CoordToParent("0 1 0") * 1000, 1, Color.RED, ShapeFlags.NOZBUFFER);
-		
-		Print(alpha);
-		Print(lift);
 		
 		previousVelocity = m_Physics.GetVelocity();
 		
@@ -308,44 +216,78 @@ class R3D_RocketMoveComponent: ScriptComponent
 	{
 		super.EOnFrame(owner, timeSlice);
 	
+		worldThrustPosition = m_Owner.CoordToParent(m_ExhaustPosition);
+			
+		vector localThrustDirection = "0 0 1";
+		
+		// ------- Rotation
+		float sinX = Math.Sin(m_fThrustAngleX);
+		float cosX = Math.Cos(m_fThrustAngleX);
+		
+		float sinZ = Math.Sin(m_fThrustAngleY);
+		float cosZ = Math.Cos(m_fThrustAngleY);
+		
+		//rotation matrix start X-axis
+		vector rotMatX[3];
+		rotMatX[0][0] = 1;
+		rotMatX[0][1] = 0;
+		rotMatX[0][2] = 0;
+		
+		rotMatX[1][0] = 0;
+		rotMatX[1][1] = cosX;
+		rotMatX[1][2] = -sinX;
+		
+		rotMatX[2][0] = 0;
+		rotMatX[2][1] = sinX;
+		rotMatX[2][2] = cosX;	
+		//rotation matrix end X-axis
+		
+		//rotation matrix start Z-axis
+		vector rotMatZ[3];
+		rotMatZ[0][0] = cosZ;
+		rotMatZ[0][1] = -sinZ;
+		rotMatZ[0][2] = 0;
+		
+		rotMatZ[1][0] = sinZ;
+		rotMatZ[1][1] = cosZ;
+		rotMatZ[1][2] = 0;
+		
+		rotMatZ[2][0] = 0;
+		rotMatZ[2][1] = 0;
+		rotMatZ[2][2] = 1;	
+		//rotation matrix end Z-axis
+		
+		vector rotatedThrustDirectionX;
+		vector rotatedThrustDirectionXZ;
+		Math3D.MatrixMultiply3(rotMatX, localThrustDirection, rotatedThrustDirectionX);
+		Math3D.MatrixMultiply3(rotatedThrustDirectionX, rotMatZ, rotatedThrustDirectionXZ);
+		// ------- Rotation
+					
+		worldThrustDirection = m_Owner.VectorToParent(rotatedThrustDirectionXZ);
+		worldThrustDirection.Normalize();
+	
 		/*float amplitude = m_fMaxConeAngle;
 		float angleX = amplitude * Math.Sin(System.GetTickCount() / 1000 * 2 * Math.PI);
 		float angleY = amplitude * Math.Cos(System.GetTickCount() / 1000 * 2 * Math.PI);
 		SetThrustAngleX(angleX);
 		SetThrustAngleY(angleY);
-		owner.GetPhysics().SetActive(true);
+		
 		Print(angleX);
 		Print(angleY);*/
 		
-		//vector mat2[4];
-		//owner.GetTransform(mat2);	
+		vector mat2[4];
+		owner.GetTransform(mat2);	
 		
-		//vector pos = owner.GetOrigin();
-		//Shape.CreateArrow(pos, pos + mat2[0] * 2, 0.1, COLOR_RED, ShapeFlags.ONCE);
-		//Shape.CreateArrow(pos, pos + mat2[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.ONCE);
-		//Shape.CreateArrow(pos, pos + mat2[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.ONCE);
+		vector pos = owner.GetOrigin();
+		Shape.CreateArrow(pos, pos + mat2[0] * 2, 0.1, COLOR_RED, ShapeFlags.ONCE);
+		Shape.CreateArrow(pos, pos + mat2[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.ONCE);
+		Shape.CreateArrow(pos, pos + mat2[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.ONCE);
 		
-#ifdef WORKBENCH
-		DbgUI.Begin(string.Format("ISA Properties: %1", owner.GetName()));
-		if (m_ShowDbgUI)
-		{
-			float altitude = GetAltitude();
-			float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density);
-			float pressure = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Pressure);
-			float temperature = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Temperature);
-			float dynamicViscosity = ADM_InternationalStandardAtmosphere.GetDynamicViscosity(altitude);
-			
-			DbgUI.Text(string.Format("Altitude: %1 m", altitude));
-			DbgUI.Text(string.Format("Density: %1 kg/m^3", density));
-			DbgUI.Text(string.Format("Pressure: %1 Pa", pressure));
-			DbgUI.Text(string.Format("Temperature: %1 K", temperature));
-			DbgUI.Text(string.Format("Dynamic Viscosity: %1 Pa*s", dynamicViscosity));
-			DbgUI.Text("");
-		}
-		DbgUI.End();
+		Shape.CreateArrow(worldThrustPosition, m_Owner.CoordToParent(m_ExhaustPosition) + worldThrustDirection*-1, 0.1, COLOR_RED, ShapeFlags.ONCE); 
 		
+#ifdef WORKBENCH		
 		DbgUI.Begin(string.Format("RocketComponent: %1", owner.GetName()));
-		if (m_ShowDbgUI)
+		if (m_ShowDbgUI && m_Physics)
 		{
 			Physics ownerPhysics = owner.GetPhysics();
 			

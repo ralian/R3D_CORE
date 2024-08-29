@@ -9,18 +9,34 @@ GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et
   BaseTriggerComponent "{55129E81CBAA1390}" {
    PROJECTILE_EFFECTS {
     ExplosionDamageContainer "{5E3E3536F71D4036}" {
-     ExplosionDamageEffects {
-      ExplosionImpulseEffect "{5E3E3536CAF353D3}" {
+     ExplosionEffects {
+      BaseExplosionDamage "{62380D8DA3BBF92A}" : "{3BE7AB8C8BD42E9B}Prefabs/Weapons/Core/Damage/BlastDamageEffect.conf" {
+       DamageValue 1000
+       PerformTraces 0
+       DamageDistance 50
+       ExplosionEffectSpeed 343
+       DamageFalloffCurve +{
+       }
+       DamageEffect {
+        SCR_ExplosionDamageEffect "{611492CC3EF790B4}" {
+        }
+       }
       }
-      ExplosionFragmentationEffect "{5E3E3536C922A31D}" {
-       DamageFragmentCount 1000
-       CaseWeight 93000
+      ExplosionImpulseEffect "{62380D8D887F571F}" : "{FB1F33936312F72B}Prefabs/Weapons/Core/Damage/BlastImpulseEffect.conf" {
+       DamageDistance 50
       }
-      BaseExplosionDamageEffect "{5E3E3536C8D6F0A8}" {
+      ExplosionFragmentationEffect "{62380D8DEFBE0CD1}" : "{D865ECB9F1A819E9}Prefabs/Weapons/Core/Damage/FragmentationDamageEffect.conf" {
+       DamageValue 25
+       DamageDistance 100
+       FragDamageFactor 0.45
+      }
+      BaseExplosionDamage "{62380D8DE048BA06}" : "{ACBA86677A85EA46}Prefabs/Weapons/Core/Damage/IncendiaryDamageEffect.conf" {
+       DamageValue 35
+       DamageDistance 35
       }
      }
      ChargeWeight 87000
-     TntEquivalent 230
+     TntEquivalent 253
     }
     SpawnDistanceParticleEffect "{5E3E353673DF0347}" {
      SubEffects {
@@ -31,5 +47,8 @@ GenericEntity : "{14739638387A6B77}Prefabs/Weapons/Warheads/Warhead_Bomb_Base.et
     }
    }
   }
+  RplComponent "{62380D8D488CC331}" {
+  }
  }
+ coords 0 0 0
 }

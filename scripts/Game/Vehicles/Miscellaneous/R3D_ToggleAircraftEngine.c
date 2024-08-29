@@ -1,11 +1,11 @@
 class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 {
-	ADM_FixedWingSimulation m_FixedWing;
+	ADM_AirplaneControllerComponent m_AirplaneController;
 	ADM_AirplaneInput m_Input;
 	
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
 	{
-		m_FixedWing = ADM_FixedWingSimulation.Cast(pOwnerEntity.FindComponent(ADM_FixedWingSimulation));
+		m_AirplaneController = ADM_AirplaneControllerComponent.Cast(pOwnerEntity.FindComponent(ADM_AirplaneControllerComponent));
 		m_Input = ADM_AirplaneInput.Cast(pOwnerEntity.FindComponent(ADM_AirplaneInput));
 	}
 	
@@ -13,13 +13,13 @@ class R3D_ToggleAircraftEngineAction : ScriptedUserAction
 	{
 		if (Replication.IsServer())
 		{
-			m_FixedWing.Rpc_Server_ToggleEngine();
+			m_AirplaneController.Rpc_Server_ToggleEngine();
 		}
 	}
 	
 	override bool GetActionNameScript(out string outName)
 	{
-		if (m_FixedWing.IsEngineOn())
+		if (m_AirplaneController.IsAirplaneEngineOn())
 		{
 			outName = "Stop Engine";
 		}
