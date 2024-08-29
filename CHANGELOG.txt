@@ -1,3 +1,17 @@
+v1.2.5
+Updated: Input System
+Updated: Steering strength
+Updated: Client Auth networking
+Updated: Trim option for new control setup
+Updated: Base aircraft component setup
+Added: Adjustable FOV with scroll wheel
+Fixed: Multiple issues from 1.2
+Fixed: Mouse input signal fixes
+Fixed: Added correct anim component to M134
+Tweaked: Mk82 component and effects setup
+
+
+
 v1.2.4
 Fixed: BuoyancyComponent updated for 1.2
 Fixed: M134 anim graph fix
