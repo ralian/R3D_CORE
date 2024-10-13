@@ -144,18 +144,12 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 		Launch();
 	}
 	
-	float gravityGradientConstant = 3*5.972*6.67430*Math.Pow(10,13)/6378000/6378000/6378000; // G*M/R^3; gravitational constant * earth mass / (distance to earth center)^3
 	override void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
 	{
 		super.UpdateForcesAndMoments(owner);
 		
 		// gravity
 		forces += m_fMass * Physics.VGravity;
-		
-		// gravity-gradient torque, negligible.
-		//vector gravityGradient = gravityGradientConstant*"0 0 1"*(m_vInertia*"0 0 1");
-		//moments += gravityGradient;
-		//Print(gravityGradient);
 		
 		// thrust
 		float timeUntilBurnout = GetTimeUntilBurnout(curTime);
@@ -168,6 +162,7 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 			m_fMass = mass;
 		}
 		
+		// test
 		moments += "10 20 100";
 		
 	} 
