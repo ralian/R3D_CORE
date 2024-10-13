@@ -38,7 +38,7 @@ class ADM_RigidbodyComponent: ScriptComponent
 	}
 	
 	protected vector forces,moments = vector.Zero;
-	void UpdateForcesAndMoments()
+	void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
 	{
 		forces = vector.Zero;
 		moments = vector.Zero;
@@ -63,10 +63,12 @@ class ADM_RigidbodyComponent: ScriptComponent
 		v = m_Physics.GetVelocity();
 		w = m_Physics.GetAngularVelocity();
 		
-		// Start simple with spring
+		// TODO: replace GetTickCount with proper world time to include pausing/fast forward/etc.
+		float substepStartTime = System.GetTickCount();
 		float dt = timeSlice/m_iSubsteps;
 		for (int i=0; i<m_iSubsteps; i++)
 		{
+			float curTime = substepStartTime + dt*i;
 			// Verlet Velocity Integration at time t (conserve energy, euler method leaks energy)
 			// 1. calculate changes in position; t + dt
 			// 2. find acceleration at t + dt
@@ -102,11 +104,9 @@ class ADM_RigidbodyComponent: ScriptComponent
 			angles = Math3D.MatrixToAngles(Q);
 			
 			// ----------------- [ step 2: forces/moments] ------------------
-			UpdateForcesAndMoments();
+			UpdateForcesAndMoments(owner, curTime);
 			vector aNext = forces / m_fMass;
-			vector part1,alpha;
-			Math3D.MatrixMultiply3(m_vInertia,w,part1);
-			Math3D.MatrixMultiply3(m_vInertiaInv, moments - w*part1, alpha);
+			vector alpha = m_vInertiaInv.Multiply3(moments - w*(m_vInertia.Multiply3(w)));
 			
 			// ----------------- [ step 3 ] ------------------
 			v += (a+aNext)*0.5*dt;
@@ -124,6 +124,7 @@ class ADM_RigidbodyComponent: ScriptComponent
 		
 		m_Physics.SetVelocity(v);
 		m_Physics.SetAngularVelocity(w);
+		m_Physics.SetMass(m_fMass);
 		owner.SetTransform(transform);
 		
 	}

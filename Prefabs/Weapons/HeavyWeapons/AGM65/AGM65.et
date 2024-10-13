@@ -2,6 +2,7 @@ GenericEntity {
  ID "0000000000000001"
  components {
   ADM_SubstepSpringComponent "{629A43E9DAC9E1A2}" {
+   Enabled 0
    m_iSubsteps 100
    m_vInertiaDiag 10 10 10
    m_fStiffness 1000000
@@ -38,6 +39,14 @@ GenericEntity {
   RplComponent "{61F6456A5204CAC6}" {
   }
   Hierarchy "{61F6456A569D1D05}" {
+  }
+  R3D_RocketMoveComponent "{629A43E96BE89BA2}" {
+   m_iSubsteps 10
+   m_vInertiaDiag 100 100 10
+   m_fBurnTime 10
+   m_vExhaustLocation PointInfo "{629A43EBF7509442}" {
+    Offset 0 0 -1.2056
+   }
   }
  }
 }

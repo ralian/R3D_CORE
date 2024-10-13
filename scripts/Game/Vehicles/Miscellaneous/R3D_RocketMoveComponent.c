@@ -1,6 +1,6 @@
-class R3D_RocketMoveComponentClass: ScriptComponentClass {}
+class R3D_RocketMoveComponentClass: ADM_RigidbodyComponentClass {}
 
-class R3D_RocketMoveComponent: ScriptComponent
+class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 {
 	// Vehicle Specifications
 	[Attribute(category: "Mass Parameters", defvalue: "10", uiwidget: UIWidgets.EditBox)]
@@ -28,8 +28,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 	[Attribute(category: "Engine Parameters", defvalue: "250", uiwidget: UIWidgets.Object, desc: "Exhaust particles & thrust location")]
 	protected ref PointInfo m_vExhaustLocation;
 	
-	protected IEntity m_Owner;
-	protected Physics m_Physics;
+	//protected IEntity m_Owner;
 	
 	protected float m_fLaunchTime = -1;	
 	protected float m_fMassFlowRate;
@@ -39,33 +38,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 	protected float m_fThrustAngleX; // Thrust angle about body x axis [radians]
 	protected float m_fThrustAngleY; // Thrust angle about body y axis [radians]
 	
-	override void EOnInit(IEntity owner)
-	{
-		m_Owner = owner;
-		m_Physics = m_Owner.GetPhysics();
-		
-		Setup();
-	}
-	
-	override void OnPostInit(IEntity owner)
-	{
-		owner.SetFlags(EntityFlags.ACTIVE, false);
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE);
-	}
-	
-	static vector CrossProduct(vector v1, vector v2)
-	{
-		// Right hand coordinate system
-		// a_2 * b_3 - a_3 * b_2
-		// -(a_1 * b_3 - a_3 * b_1)
-		// a_1 * b_2 - a_2 * b_1
-		vector cross;
-		cross[0] = v1[1] * v2[2] - v1[2] * v2[1];
-		cross[1] = v1[0] * v2[2] - v1[2] * v2[0];
-		cross[2] = v1[0] * v2[1] - v1[1] * v2[0];
-		
-		return cross;
-	}
 	
 	float GetThrustAngleX()
 	{
@@ -95,25 +67,21 @@ class R3D_RocketMoveComponent: ScriptComponent
 		m_fThrustAngleY = angle;
 	}
 	
-	float GetAltitude()
+	float GetAltitude(IEntity owner)
 	{
-		if (!m_Owner)
-			return -1;
-		
-		return m_Owner.GetOrigin()[1];
+		return owner.GetOrigin()[1];
 	}
 	
-	float GetTimeUntilBurnout()
+	float GetTimeUntilBurnout(float curTime = System.GetTickCount())
 	{
-		float timeSinceLaunch = (System.GetTickCount() - m_fLaunchTime)/1000; // [s]
+		float timeSinceLaunch = (curTime - m_fLaunchTime)/1000; // [s]
 		return m_fBurnTime - timeSinceLaunch;
 	}
 	
-	float GetMachNumber()
+	float GetMachNumber(IEntity owner, float speed)
 	{
-		float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(), ADM_ISAProperties.SpeedOfSound);
-		vector vel = m_Physics.GetVelocity();
-		float mach = vel.Length() / speedOfSound;
+		float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(owner), ADM_ISAProperties.SpeedOfSound);
+		float mach = speed / speedOfSound;
 		
 		return mach;
 	}
@@ -127,14 +95,14 @@ class R3D_RocketMoveComponent: ScriptComponent
 		m_Physics.SetActive(true);
 	}
 	
-	void Setup()
+	void Setup(IEntity owner)
 	{
 		m_fMassFlowRate = m_fPropellantMass / m_fBurnTime;
 		m_fDryMass = m_fStructuralMass + m_fPayloadMass;
 		m_fMaxConeAngle = m_fMaxConeAngle * Math.DEG2RAD;
 		
 		if (m_vExhaustLocation) {
-			m_vExhaustLocation.Init(m_Owner);
+			m_vExhaustLocation.Init(owner);
 			vector exhaustTransform[4];
 			m_vExhaustLocation.GetLocalTransform(exhaustTransform);
 			m_ExhaustPosition = exhaustTransform[3];
@@ -167,7 +135,75 @@ class R3D_RocketMoveComponent: ScriptComponent
 		return collision;
 	}
 	
-	vector worldThrustPosition;
+	override event void OnPostInit(IEntity owner)
+	{
+		Setup(owner);
+		super.OnPostInit(owner);
+		SetEventMask(owner, EntityEvent.FRAME);
+		
+		Launch();
+	}
+	
+	float gravityGradientConstant = 3*5.972*6.67430*Math.Pow(10,13)/6378000/6378000/6378000; // G*M/R^3; gravitational constant * earth mass / (distance to earth center)^3
+	override void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
+	{
+		super.UpdateForcesAndMoments(owner);
+		
+		// gravity
+		forces += m_fMass * Physics.VGravity;
+		
+		// gravity-gradient torque, negligible.
+		//vector gravityGradient = gravityGradientConstant*"0 0 1"*(m_vInertia*"0 0 1");
+		//moments += gravityGradient;
+		//Print(gravityGradient);
+		
+		// thrust
+		float timeUntilBurnout = GetTimeUntilBurnout(curTime);
+		if (timeUntilBurnout >= 0) {
+			float mass = m_fDryMass + m_fPropellantMass*timeUntilBurnout/m_fBurnTime;
+			vector thrust = m_fIsp * m_fMassFlowRate * 9.81 * "0 0 1"; // Isp = T/mdot/g_e
+		
+			forces += owner.VectorToParent(thrust);
+			moments += m_ExhaustPosition * thrust;
+			m_fMass = mass;
+		}
+		
+		moments += "10 20 100";
+		
+	} 
+	
+	override void EOnFrame(IEntity owner, float timeSlice)
+	{
+		super.EOnFrame(owner, timeSlice);
+		
+		//float timeUntilBurnout = GetTimeUntilBurnout();
+		//if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
+		//	m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
+		
+		DbgUI.Begin("Rocket Move Component", 0, 0);
+		
+		DbgUI.Text(string.Format("m_fMass: %1 kg", Math.Round(m_fMass*100)/100));
+		DbgUI.PlotLive("m_fMass", 500, 200, m_fMass, timeSlice, 1000);
+		
+		DbgUI.Text(string.Format("Y: %1 m", Math.Round(COM[1]*100)/100));
+		DbgUI.PlotLive("Y", 500, 200, Math.Round(COM[1]*100)/100, timeSlice, 1000);
+		
+		DbgUI.Text(string.Format("vy: %1 m/s", Math.Round(v[1]*100)/100));
+		DbgUI.PlotLive("vy", 500, 200, Math.Round(v[1]*100)/100, timeSlice, 1000);
+		
+		DbgUI.End();
+		
+		vector mat2[4];
+		owner.GetTransform(mat2);	
+
+		vector pos = owner.GetOrigin();
+		Shape.CreateArrow(pos, pos + mat2[0] * 2, 0.1, COLOR_RED, ShapeFlags.ONCE);
+		Shape.CreateArrow(pos, pos + mat2[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.ONCE);
+		Shape.CreateArrow(pos, pos + mat2[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.ONCE);
+		
+	}
+	
+	/*vector worldThrustPosition;
 	vector worldThrustDirection;
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
@@ -200,7 +236,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		// calculate x as cross product
 		vector z = mat[2];
-		vector y = CrossProduct(z, x);
+		vector y = z*x;
 		
 		vector newMat[4];
 		newMat[0] = x;
@@ -208,9 +244,9 @@ class R3D_RocketMoveComponent: ScriptComponent
 		newMat[2] = z;
 		newMat[3] = mat[3];
 		owner.SetTransform(mat);
-	}
+	}*/
 	
-	bool m_ShowDbgUI = true;
+	/*bool m_ShowDbgUI = true;
 	vector previousVelocity = vector.Zero;
 	override void EOnFrame(IEntity owner, float timeSlice)
 	{
@@ -273,7 +309,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		SetThrustAngleY(angleY);
 		
 		Print(angleX);
-		Print(angleY);*/
+		Print(angleY);
 		
 		vector mat2[4];
 		owner.GetTransform(mat2);	
@@ -304,5 +340,5 @@ class R3D_RocketMoveComponent: ScriptComponent
 		}
 		DbgUI.End();
 #endif
-	}
+	}*/
 }

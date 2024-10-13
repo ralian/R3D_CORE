@@ -21,9 +21,9 @@ class ADM_SubstepSpringComponent: ADM_RigidbodyComponent
 	
 	protected float m_fNeutralXposition; 
 	protected float rotationalDisplacement,displacement = 0.0;
-	override void UpdateForcesAndMoments()
+	override void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
 	{
-		super.UpdateForcesAndMoments();
+		super.UpdateForcesAndMoments(owner);
 		
 		// spring force
 		displacement = COM[0] - m_fNeutralXposition;
