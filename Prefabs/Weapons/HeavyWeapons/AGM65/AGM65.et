@@ -15,6 +15,15 @@ GenericEntity {
   }
   R3D_PylonTriggerComponent "{61F6456A462EF7B7}" {
   }
+  R3D_RocketMoveComponent "{629A43E96BE89BA2}" {
+   Enabled 0
+   m_iSubsteps 10
+   m_vInertiaDiag 100 100 10
+   m_fBurnTime 10
+   m_vExhaustLocation PointInfo "{629A43EBF7509442}" {
+    Offset 0 0 -1.2056
+   }
+  }
   RigidBody "{61F6456A4A288892}" {
    Layers 16908288
    Active AlwaysActive
@@ -40,13 +49,8 @@ GenericEntity {
   }
   Hierarchy "{61F6456A569D1D05}" {
   }
-  R3D_RocketMoveComponent "{629A43E96BE89BA2}" {
-   m_iSubsteps 10
-   m_vInertiaDiag 100 100 10
-   m_fBurnTime 10
-   m_vExhaustLocation PointInfo "{629A43EBF7509442}" {
-    Offset 0 0 -1.2056
-   }
+  R3D_ThermalReceiverComponent "{629AFB982FD1EA3A}" {
+   origin 0 0 1.187
   }
  }
 }
