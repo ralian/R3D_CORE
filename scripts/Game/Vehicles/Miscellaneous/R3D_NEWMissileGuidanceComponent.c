@@ -51,13 +51,30 @@ class R3D_NEWMissileGuidanceComponent: ScriptComponent
 		// initial conditions
 		COM = owner.CoordToParent(m_Physics.GetCenterOfMass());
 		m_fNeutralXposition = COM[0] - m_fInitialDisplacement;
+		
+		// add checks here for rigidbody, disable collision and any normal behavior since this is essentially custom rigidbody class
 	}
+	
+	private vector forces,moments = vector.Zero;
+	private float rotationalDisplacement,displacement = 0.0;
+	void UpdateForcesAndMoments()
+	{
+		forces = vector.Zero;
+		moments = vector.Zero;
+		
+		// spring force
+		displacement = COM[0] - m_fNeutralXposition;
+		forces += -m_fStiffness*displacement *vector.Right;
+			
+		// spring moment
+		rotationalDisplacement = angles[1];
+		moments += -m_fRotationalStiffness*rotationalDisplacement *vector.Right;
+	} 
 	
 	private vector transform[4];
 	private vector Q[3];
 	private vector COM = vector.Zero;
-	private vector v,w,a = vector.Zero;
-	private float rotationalDisplacement,displacement = 0.0;
+	private vector v,w,a,angles = vector.Zero;
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		if (!m_Physics)
@@ -109,27 +126,11 @@ class R3D_NEWMissileGuidanceComponent: ScriptComponent
 			Q[1] = vec1.Normalized();
 			Q[2] = vec2.Normalized();	
 			
-			vector angles = Math3D.MatrixToAngles(Q);
+			angles = Math3D.MatrixToAngles(Q);
 			
-			// ----------------- [ step 2: forces] ------------------
-			
-			vector forces = vector.Zero; // [N]
-			
-			// spring force
-			displacement = COM[0] - m_fNeutralXposition;
-			forces += -m_fStiffness*displacement *vector.Right;
-			
-			// get t+dt acceleration			
+			// ----------------- [ step 2: forces/moments] ------------------
+			UpdateForcesAndMoments();
 			vector aNext = forces / m_fMass;
-			
-			// ----------------- [ step 2: moments ] ------------------
-			vector moments = vector.Zero; // [N*m]
-			
-			// spring force
-			rotationalDisplacement = angles[1];
-			moments += -m_fRotationalStiffness*rotationalDisplacement *vector.Right;
-			
-			// get t+dt angular acceleration
 			vector part1,alpha;
 			Math3D.MatrixMultiply3(m_vInertia,w,part1);
 			Math3D.MatrixMultiply3(m_vInertiaInv, moments - w*part1, alpha);
@@ -140,7 +141,6 @@ class R3D_NEWMissileGuidanceComponent: ScriptComponent
 			
 			// TODO: implement verlet, can't find formulation that works.
 			w += alpha*dt;
-			
 		}
 		
 		// update state from substepping
