@@ -1,17 +1,16 @@
 GenericEntity {
  ID "0000000000000001"
  components {
+  ADM_SubstepSpringComponent "{629A43E9DAC9E1A2}" {
+   m_iSubsteps 100
+   m_vInertiaDiag 10 10 10
+   m_fStiffness 1000000
+   m_fRotationalStiffness 1000000
+  }
   CollisionTriggerComponent "{61F6456A6C902888}" {
   }
   MeshObject "{61F6456A749A4C9C}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
-  }
-  R3D_NEWMissileGuidanceComponent "{629965D4F674E377}" {
-   m_iSubsteps 1000
-   m_fStiffness 10000000
-   m_fInitialDisplacement 1
-   m_fRotationalStiffness 10000000
-   m_vInertiaDiag 20 20 20
   }
   R3D_PylonTriggerComponent "{61F6456A462EF7B7}" {
   }
