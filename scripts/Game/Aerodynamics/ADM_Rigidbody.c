@@ -13,9 +13,18 @@ class ADM_RigidbodyComponent: ScriptComponent
 	protected vector m_vInertiaInv[3]; // 1/[kg*m^2]
 	protected Physics m_Physics;
 	
+	// ASSUMPTION: center of mass equals origin of model space!
 	override event protected void OnPostInit(IEntity owner)
 	{
-		SetEventMask(owner, EntityEvent.SIMULATE);
+		SetEventMask(owner, EntityEvent.SIMULATE | EntityEvent.INIT);
+		
+		// add checks here for rigidbody, disable collision and any normal behavior since this is essentially custom rigidbody class
+		// just using base rigidbody for fixed simulation loop and define some properties
+	}
+	
+	override event protected void EOnInit(IEntity owner)
+	{
+		super.EOnInit(owner);
 		
 		if (owner.GetPhysics())
 		{
@@ -33,8 +42,24 @@ class ADM_RigidbodyComponent: ScriptComponent
 		m_vInertiaInv[1][1] = 1/m_vInertiaDiag[1];
 		m_vInertiaInv[2][2] = 1/m_vInertiaDiag[2];
 		
-		// add checks here for rigidbody, disable collision and any normal behavior since this is essentially custom rigidbody class
-		// just using base rigidbody for fixed simulation loop and define some properties
+		// Initial State, for some reason if I initialize this in OnPostInit simulation will get NaN in transformation occasionally
+		COM = owner.CoordToParent(m_Physics.GetCenterOfMass());
+		owner.GetTransform(transform);
+		Q[0] = transform[0];
+		Q[1] = transform[1];
+		Q[2] = transform[2];
+		
+		Qinv[0][0] = Q[0][0];
+		Qinv[0][1] = Q[1][0];
+		Qinv[0][2] = Q[2][0];
+		
+		Qinv[1][0] = Q[0][1];
+		Qinv[1][1] = Q[1][1];
+		Qinv[1][2] = Q[2][1];
+		
+		Qinv[2][0] = Q[0][2];
+		Qinv[2][1] = Q[1][2];
+		Qinv[2][2] = Q[2][2];
 	}
 	
 	protected vector forces,moments = vector.Zero;
@@ -44,8 +69,28 @@ class ADM_RigidbodyComponent: ScriptComponent
 		moments = vector.Zero;
 	} 
 	
+	vector CoordToLocal(vector worldCoord)
+	{
+		return (worldCoord - COM).Multiply3(Qinv);
+	}
+	
+	vector CoordToWorld(vector localCoord)
+	{
+		return localCoord.Multiply3(Q) + COM;
+	}
+	
+	vector VectorToLocal(vector worldVector)
+	{
+		return worldVector.Multiply3(Qinv);
+	}
+	
+	vector VectorToWorld(vector localVector)
+	{
+		return localVector.Multiply3(Q);
+	}
+	
 	protected vector transform[4];
-	protected vector Q[3];
+	protected vector Q[3], Qinv[3];
 	protected vector COM = vector.Zero;
 	protected vector v,w,a,angles = vector.Zero;
 	override void EOnSimulate(IEntity owner, float timeSlice)
@@ -53,7 +98,7 @@ class ADM_RigidbodyComponent: ScriptComponent
 		if (!m_Physics)
 			return;
 		
-		// get current frame state
+		// get current frame state		
 		owner.GetTransform(transform);
 		Q[0] = transform[0];
 		Q[1] = transform[1];
@@ -100,6 +145,18 @@ class ADM_RigidbodyComponent: ScriptComponent
 			Q[0] = vec0.Normalized();
 			Q[1] = vec1.Normalized();
 			Q[2] = vec2.Normalized();	
+			
+			Qinv[0][0] = Q[0][0];
+			Qinv[0][1] = Q[1][0];
+			Qinv[0][2] = Q[2][0];
+			
+			Qinv[1][0] = Q[0][1];
+			Qinv[1][1] = Q[1][1];
+			Qinv[1][2] = Q[2][1];
+			
+			Qinv[2][0] = Q[0][2];
+			Qinv[2][1] = Q[1][2];
+			Qinv[2][2] = Q[2][2];
 			
 			angles = Math3D.MatrixToAngles(Q);
 			
