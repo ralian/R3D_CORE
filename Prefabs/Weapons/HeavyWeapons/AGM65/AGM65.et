@@ -16,12 +16,14 @@ GenericEntity {
   R3D_PylonTriggerComponent "{61F6456A462EF7B7}" {
   }
   R3D_RocketMoveComponent "{629A43E96BE89BA2}" {
+   Enabled 0
    m_iSubsteps 10
    m_vInertiaDiag 100 100 10
    m_fBurnTime 10
    m_vExhaustLocation PointInfo "{629A43EBF7509442}" {
     Offset 0 0 -1.2056
    }
+
    m_AeroSurfaces {
     ADM_MissileAerodynamicSurface "{629AF6FC50BA8612}" {
      m_vCoordinateSystem PointInfo "{629AF6FC5FD22126}" {
@@ -82,6 +84,9 @@ GenericEntity {
   RplComponent "{61F6456A5204CAC6}" {
   }
   Hierarchy "{61F6456A569D1D05}" {
+  }
+  R3D_ThermalReceiverComponent "{629AFB982FD1EA3A}" {
+   origin 0 0 1.187
   }
  }
 }
