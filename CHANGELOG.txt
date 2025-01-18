@@ -1,3 +1,6 @@
+v1.2.6
+Hotfix: Fix Minigun audio encoding
+
 v1.2.5
 Updated: Input System
 Updated: Steering strength
@@ -9,8 +12,6 @@ Fixed: Multiple issues from 1.2
 Fixed: Mouse input signal fixes
 Fixed: Added correct anim component to M134
 Tweaked: Mk82 component and effects setup
-
-
 
 v1.2.4
 Fixed: BuoyancyComponent updated for 1.2
