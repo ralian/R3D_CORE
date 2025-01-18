@@ -11,5 +11,7 @@ MetaFileClass {
   }
   WAVResourceClass HEADLESS : "{D63592CA950AF3A8}Configs/System/ResourceTypes/HEADLESS/Sound.conf" {
   }
+  WAVResourceClass PS5 : PC {
+  }
  }
 }
