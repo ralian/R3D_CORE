@@ -42,7 +42,11 @@ class ADM_RigidbodyComponent: ScriptComponent
 		m_vInertiaInv[1][1] = 1/m_vInertiaDiag[1];
 		m_vInertiaInv[2][2] = 1/m_vInertiaDiag[2];
 		
-		// Initial State, for some reason if I initialize this in OnPostInit simulation will get NaN in transformation occasionally
+		UpdateStoredTransform(owner);
+	}
+	
+	void UpdateStoredTransform(IEntity owner)
+	{
 		COM = owner.CoordToParent(m_Physics.GetCenterOfMass());
 		owner.GetTransform(transform);
 		Q[0] = transform[0];
@@ -62,12 +66,18 @@ class ADM_RigidbodyComponent: ScriptComponent
 		Qinv[2][2] = Q[2][2];
 	}
 	
-	protected vector forces,moments = vector.Zero;
-	void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
+	void UpdateTransformFromStored(IEntity owner)
 	{
-		forces = vector.Zero;
-		moments = vector.Zero;
-	} 
+		// update state from substepping
+		transform[0] = Q[0];
+		transform[1] = Q[1];
+		transform[2] = Q[2];
+		transform[3] = COM;
+		owner.SetTransform(transform);
+		m_Physics.SetVelocity(v);
+		m_Physics.SetAngularVelocity(w);
+		m_Physics.SetMass(m_fMass);
+	}
 	
 	vector CoordToLocal(vector worldCoord)
 	{
@@ -93,17 +103,18 @@ class ADM_RigidbodyComponent: ScriptComponent
 	protected vector Q[3], Qinv[3];
 	protected vector COM = vector.Zero;
 	protected vector v,w,a,angles = vector.Zero;
+	protected vector forces,moments = vector.Zero;
+	
+	void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
+	{
+		forces = vector.Zero;
+		moments = vector.Zero;
+	} 
+	
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
 		if (!m_Physics)
 			return;
-		
-		// get current frame state		
-		owner.GetTransform(transform);
-		Q[0] = transform[0];
-		Q[1] = transform[1];
-		Q[2] = transform[2];
-		COM = owner.CoordToParent(m_Physics.GetCenterOfMass());
 		
 		v = m_Physics.GetVelocity();
 		w = m_Physics.GetAngularVelocity();
@@ -173,17 +184,7 @@ class ADM_RigidbodyComponent: ScriptComponent
 			w += alpha*dt;
 		}
 		
-		// update state from substepping
-		transform[0] = Q[0];
-		transform[1] = Q[1];
-		transform[2] = Q[2];
-		transform[3] = COM;
-		
-		m_Physics.SetVelocity(v);
-		m_Physics.SetAngularVelocity(w);
-		m_Physics.SetMass(m_fMass);
-		owner.SetTransform(transform);
-		
+		UpdateTransformFromStored(owner);
 	}
 	
 }
