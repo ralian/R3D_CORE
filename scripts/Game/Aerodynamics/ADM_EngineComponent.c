@@ -119,6 +119,11 @@ class ADM_EngineComponent : ScriptComponent
 		#endif
 	}
 	
+	bool GetEngineStatus()
+	{
+		return m_bIsEngineOn;
+	}
+	
 	void SetEngineStatus(bool status)
 	{
 		Rpc(Rpc_Owner_SetEngineStatus, status);
