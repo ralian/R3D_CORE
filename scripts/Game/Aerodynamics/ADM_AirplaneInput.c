@@ -144,34 +144,56 @@ class ADM_AirplaneInput : ScriptComponent
 		m_AirplaneController.ToggleGear();
 	}
 	
-	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
+	R3D_PylonSlotInfo activeSlot = null;
+	
+	R3D_PylonSlotInfo SelectNextAvailablePylon()
 	{
-		if (!IsControlActive()) return;
 		SlotManagerComponent slotManager = SlotManagerComponent.Cast(GetOwner().FindComponent(SlotManagerComponent));
-		if (!slotManager)
-		{
-			return;
-		}
+		if (!slotManager) return null;
 		
-		// TODO: allow user to define order/precedence/manually select which pylon to trigger
 		array<EntitySlotInfo> outSlotInfos = {};
 		slotManager.GetSlotInfos(outSlotInfos);
 		
+		bool seen = false;
+		R3D_PylonSlotInfo firstSlot = null;
 		foreach (EntitySlotInfo slotInfo : outSlotInfos)
 		{
 			if (slotInfo.Type() == R3D_PylonSlotInfo)
 			{
 				R3D_PylonSlotInfo r3dSlotInfo = R3D_PylonSlotInfo.Cast(slotInfo);
-				if (!r3dSlotInfo || !r3dSlotInfo.CanUnload())
-				{
-					continue;
+				if (!r3dSlotInfo || !r3dSlotInfo.CanUnload()) continue;
+				
+				if (!firstSlot) firstSlot = r3dSlotInfo;
+				
+				if (seen) {
+					activeSlot = r3dSlotInfo;
+					return activeSlot;
 				}
 				
-				r3dSlotInfo.TriggerPylon();
-				
-				return;
+				seen = (activeSlot == r3dSlotInfo);
 			}
 		}
+		
+		if (firstSlot)
+			activeSlot = firstSlot;
+		
+		return activeSlot;
+	}
+	
+	void WeaponRelease(float release = 0.0, EActionTrigger reason = 0)
+	{
+		if (!IsControlActive()) return;
+		if (!activeSlot && !SelectNextAvailablePylon()) return;
+		
+		activeSlot.TriggerPylon();
+	}
+	
+	void WeaponLock(float release = 0.0, EActionTrigger reason = 0)
+	{
+		if (!IsControlActive()) return;
+		if (!activeSlot && !SelectNextAvailablePylon()) return;
+		
+		activeSlot.LockPylon();
 	}
 	
 	void TrimReset(float trimReset = 0.0, EActionTrigger reason = 0)
@@ -268,6 +290,8 @@ class ADM_AirplaneInput : ScriptComponent
         inputManager.AddActionListener("R3D_AirplaneSpeedBrake", 		EActionTrigger.VALUE,  SpeedBrakeInput);
         inputManager.AddActionListener("R3D_AirplaneToggleGear", 		EActionTrigger.DOWN,   ToggleGear);
 		inputManager.AddActionListener("R3D_WeaponRelease", 			EActionTrigger.DOWN,   WeaponRelease);
+		inputManager.AddActionListener("R3D_WeaponLock",				EActionTrigger.DOWN,   WeaponLock);
+		inputManager.AddActionListener("CharacterNextFireMode",			EActionTrigger.DOWN,   SelectNextAvailablePylon);
 		inputManager.AddActionListener("R3D_AirplaneTrimModifier",		EActionTrigger.VALUE,  TrimModifier);
 		inputManager.AddActionListener("R3D_AirplaneTrimReset",			EActionTrigger.DOWN,   TrimReset);
 		inputManager.AddActionListener("R3D_AirplaneSteering",			EActionTrigger.VALUE,  Steering);

@@ -100,10 +100,7 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 	bool TriggerPylon()
 	{
 		IEntity item = GetAttachedEntity();
-		if (!item) 
-		{
-			return false;
-		}
+		if (!item) return false;
 		
 		R3D_PylonTriggerComponent pylonTriggerComp = R3D_PylonTriggerComponent.Cast(item.FindComponent(R3D_PylonTriggerComponent));
 		if (!pylonTriggerComp)
@@ -114,6 +111,27 @@ class R3D_PylonSlotInfo: EntitySlotInfo
 		
 		pylonTriggerComp.Trigger(this);
 		Print("pylon triggered");
+		return true;
+	}
+	
+	bool LockPylon()
+	{
+		IEntity item = GetAttachedEntity();
+		if (!item) return false;
+		
+		R3D_ThermalReceiverComponent trComp = R3D_ThermalReceiverComponent.Cast(item.FindComponent(R3D_ThermalReceiverComponent));
+		if (!trComp)
+		{
+			Print("Pylon has no lockable component!");
+			return false;
+		}
+		
+		auto target = trComp.TryLock();
+		/*if (target) {
+			item.SetFlags(EntityFlags.ACTIVE);
+			item.SetEventMask(EntityEvent.SIMULATE);
+		}*/
+		
 		return true;
 	}
 	

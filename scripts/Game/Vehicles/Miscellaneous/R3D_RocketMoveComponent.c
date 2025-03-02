@@ -1,6 +1,57 @@
-class R3D_RocketMoveComponentClass: ScriptComponentClass {}
+[BaseContainerProps()]
+class ADM_MissileAerodynamicSurface
+{
+	
+	[Attribute(desc: "Aerodynamic Center and Orientation of Surface. +Y should be normal, +Z should be chord")]
+	protected ref PointInfo m_vCoordinateSystem;
+	
+	[Attribute(params: "0 inf")]
+	protected float m_fSurfaceArea; 
+	
+	protected float m_fSweepAngle;
+	protected float m_fDihedralAngle;
+	protected float m_fTwistAngle;
+	
+	void Init(IEntity owner)
+	{
+		if (m_vCoordinateSystem)
+		{
+			m_vCoordinateSystem.Init(owner);
+			vector mat[4];
+			m_vCoordinateSystem.GetTransform(mat);
+			
+			vector Q[3];
+			Q[0] = mat[0];
+			Q[1] = mat[1];
+			Q[2] = mat[2];
+			vector angles = Math3D.MatrixToAngles(Q);
+			
+			m_fSweepAngle = angles[0];
+			m_fDihedralAngle = angles[1];
+			m_fTwistAngle = angles[2];
+		}
+	}
+	
+	
+	float GetSweepAngle()
+	{
+		return m_fSweepAngle;
+	}
+	
+	float GetDihedralAngle()
+	{
+		return m_fDihedralAngle;
+	}
+	
+	float GetTwistAngle()
+	{
+		return m_fSweepAngle;
+	}
+	
+}
 
-class R3D_RocketMoveComponent: ScriptComponent
+class R3D_RocketMoveComponentClass: ADM_RigidbodyComponentClass {}
+class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 {
 	// Vehicle Specifications
 	[Attribute(category: "Mass Parameters", defvalue: "10", uiwidget: UIWidgets.EditBox)]
@@ -28,44 +79,38 @@ class R3D_RocketMoveComponent: ScriptComponent
 	[Attribute(category: "Engine Parameters", defvalue: "250", uiwidget: UIWidgets.Object, desc: "Exhaust particles & thrust location")]
 	protected ref PointInfo m_vExhaustLocation;
 	
-	protected IEntity m_Owner;
-	protected Physics m_Physics;
+	// Aerodynamic Surfaces
+	[Attribute(category: "Aerodynamics")]
+	protected ref array<ref ADM_MissileAerodynamicSurface> m_AeroSurfaces;
 	
-	protected float m_fLaunchTime = -1;	
+	[Attribute("0 0 0", UIWidgets.EditBox, params: "inf inf 0 purpose=coords space=entity", category: "Aerodynamics")]
+	protected vector m_vAeroCenter;
+	
+	[Attribute(params: "0 1", defvalue: "1", category: "Aerodynamics")]
+	protected float m_fWindStrength;
+	
+	[Attribute(params: "0 inf", category: "Aerodynamics")]
+	protected float m_fFrontalDragArea;
+	
+	[Attribute(params: "0 inf", category: "Aerodynamics")]
+	protected float m_fFrontalDragCoefficient;
+	
+	[Attribute(params: "0 inf", category: "Aerodynamics")]
+	protected float m_fSideDragArea;
+	
+	[Attribute(params: "0 inf", category: "Aerodynamics")]
+	protected float m_fSideDragCoefficient;
+	
+	protected WorldTimestamp m_fLaunchTime;	
 	protected float m_fMassFlowRate;
 	protected float m_fDryMass;
-	protected vector m_ExhaustPosition;
+	protected vector m_vExhaustPosition;
+	protected vector m_vWorldThrustDirection;
+	protected ChimeraWorld m_World;
+	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	
 	protected float m_fThrustAngleX; // Thrust angle about body x axis [radians]
 	protected float m_fThrustAngleY; // Thrust angle about body y axis [radians]
-	
-	override void EOnInit(IEntity owner)
-	{
-		m_Owner = owner;
-		m_Physics = m_Owner.GetPhysics();
-		
-		Setup();
-	}
-	
-	override void OnPostInit(IEntity owner)
-	{
-		owner.SetFlags(EntityFlags.ACTIVE, false);
-		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.SIMULATE);
-	}
-	
-	static vector CrossProduct(vector v1, vector v2)
-	{
-		// Right hand coordinate system
-		// a_2 * b_3 - a_3 * b_2
-		// -(a_1 * b_3 - a_3 * b_1)
-		// a_1 * b_2 - a_2 * b_1
-		vector cross;
-		cross[0] = v1[1] * v2[2] - v1[2] * v2[1];
-		cross[1] = v1[0] * v2[2] - v1[2] * v2[0];
-		cross[2] = v1[0] * v2[1] - v1[1] * v2[0];
-		
-		return cross;
-	}
 	
 	float GetThrustAngleX()
 	{
@@ -95,25 +140,21 @@ class R3D_RocketMoveComponent: ScriptComponent
 		m_fThrustAngleY = angle;
 	}
 	
-	float GetAltitude()
+	float GetAltitude(IEntity owner)
 	{
-		if (!m_Owner)
-			return -1;
-		
-		return m_Owner.GetOrigin()[1];
+		return COM[1];
 	}
 	
 	float GetTimeUntilBurnout()
 	{
-		float timeSinceLaunch = (System.GetTickCount() - m_fLaunchTime)/1000; // [s]
+		float timeSinceLaunch = m_World.GetTimestamp().DiffMilliseconds(m_fLaunchTime)/1000; // [s]
 		return m_fBurnTime - timeSinceLaunch;
 	}
 	
-	float GetMachNumber()
+	float GetMachNumber(IEntity owner, float speed)
 	{
-		float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(), ADM_ISAProperties.SpeedOfSound);
-		vector vel = m_Physics.GetVelocity();
-		float mach = vel.Length() / speedOfSound;
+		float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(owner), ADM_ISAProperties.SpeedOfSound);
+		float mach = speed / speedOfSound;
 		
 		return mach;
 	}
@@ -123,21 +164,21 @@ class R3D_RocketMoveComponent: ScriptComponent
 		if (!m_Physics)
 			return;
 		
-		m_fLaunchTime = System.GetTickCount();
+		m_fLaunchTime = m_World.GetTimestamp();
 		m_Physics.SetActive(true);
 	}
 	
-	void Setup()
+	void Setup(IEntity owner)
 	{
 		m_fMassFlowRate = m_fPropellantMass / m_fBurnTime;
 		m_fDryMass = m_fStructuralMass + m_fPayloadMass;
 		m_fMaxConeAngle = m_fMaxConeAngle * Math.DEG2RAD;
 		
 		if (m_vExhaustLocation) {
-			m_vExhaustLocation.Init(m_Owner);
+			m_vExhaustLocation.Init(owner);
 			vector exhaustTransform[4];
 			m_vExhaustLocation.GetLocalTransform(exhaustTransform);
-			m_ExhaustPosition = exhaustTransform[3];
+			m_vExhaustPosition = exhaustTransform[3];
 		}
 			
 		if (!m_Physics)
@@ -145,6 +186,140 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
 	}
+	
+	vector GetWindVector()
+	{		
+		if (!m_TimeManager) 
+			return vector.Zero;
+		
+		vector windAngles = vector.Zero;
+		float speed = m_TimeManager.GetWindSpeed();
+		windAngles[0] = m_TimeManager.GetWindDirection();
+		
+		vector mat[3];
+		Math3D.AnglesToMatrix(windAngles, mat);
+		
+		return speed * mat[2] * m_fWindStrength;
+	}
+	
+	override event void OnPostInit(IEntity owner)
+	{
+		Setup(owner);
+		super.OnPostInit(owner);
+		SetEventMask(owner, EntityEvent.FRAME);
+		
+		foreach(ADM_MissileAerodynamicSurface surf : m_AeroSurfaces)
+		{
+			surf.Init(owner);
+		}
+		
+		m_World = owner.GetWorld();
+		if (m_World) 
+		{
+			m_TimeManager = m_World.GetTimeAndWeatherManager();
+		}
+		
+		Launch();
+	}
+	
+	float bodyDynamicPressure, bodyAttackAngle, bodySideSlipAngle, bodyDrag, bodySideDrag;
+	vector wind;
+	override void UpdateForcesAndMoments(IEntity owner, float curTime = System.GetTickCount())
+	{
+		super.UpdateForcesAndMoments(owner);
+		
+		// gravity
+		//forces += m_fMass * Physics.VGravity;
+		
+		// thrust
+		float timeUntilBurnout = GetTimeUntilBurnout();
+		if (timeUntilBurnout >= 0) {
+			float mass = m_fDryMass + m_fPropellantMass*timeUntilBurnout/m_fBurnTime;
+			float thrust = m_fIsp * m_fMassFlowRate * 9.81; // Isp = T/mdot/g_e,
+			//forces += Q[2]*thrust;
+			//moments += m_vExhaustPosition * "0 0 1" * thrust;
+			m_fMass = mass;			
+		}
+		
+		// Aerodynamics		
+		wind = GetWindVector();
+		wind = "100 50 0";
+		float altitude = GetAltitude(owner);
+		float density = ADM_InternationalStandardAtmosphere.GetValue(altitude, ADM_ISAProperties.Density); // [kg/m^3]
+		
+		// Fuselage
+		vector bodyFlowVelocity = v + wind;
+		vector bodyFlowVelocityLocal = VectorToLocal(bodyFlowVelocity);
+		bodyDynamicPressure = 0.5 * density * bodyFlowVelocity.LengthSq(); 
+		bodyAttackAngle = Math.Atan2(-bodyFlowVelocityLocal[1], bodyFlowVelocityLocal[2]);	
+		bodySideSlipAngle = Math.Atan2(-bodyFlowVelocityLocal[0], bodyFlowVelocityLocal[2]);	
+		
+		// Aerodynamic forces calculated in Wind Axis frame
+		// + X = opposite direction of airflow (opposite direction of drag)
+		// + Y = cross(z,y)
+		// + Z = lift direction, vertical, pointing down relative to aircraft
+		// https://society-of-flight-test-engineers.github.io/handbook-2013/axis-systems-and-transformations-raw.html
+		// reforger:
+		// +X = right (wind +Y)
+		// +Y = up (wind +Z)
+		// +Z = forward (wind +X)
+		
+		//bodyDrag = bodyDynamicPressure*m_fFrontalDragArea * m_fFrontalDragCoefficient;
+		//bodySideDrag = bodyDynamicPressure*m_fSideDragArea * (m_fSideDragCoefficient*bodySideSlipAngle);
+		
+		// Aerodynamic forces are applied in Body Axis frame
+		//forces += dragDir*bodyDrag;
+		//forces += Q[0]*bodySideDrag;
+		//moments += m_vAeroCenter*(Q[0]*bodySideDrag);
+		
+		// Aerodynamic Surfaces
+		foreach (ADM_MissileAerodynamicSurface surf : m_AeroSurfaces)
+		{
+			//vector sectionFlowVelocity = m_Physics.GetVelocityAt(aerocenter) + wind;
+			//vector sectionFlowVelocityLocal = m_Owner.VectorToLocal(sectionFlowVelocity);
+			//float sectionDynamicPressure = 0.5 * density * sectionFlowVelocity.LengthSq(); // [Pa]
+			
+			//vector dragDir = sectionFlowVelocity.Normalized();
+			//vector liftDir = dragDir * vSpan;
+			
+			//float angleOfAttack = Math.Atan2(-sectionFlowVelocityLocal[1], sectionFlowVelocityLocal[2])*Math.RAD2DEG;
+		}
+	} 
+	
+	override void EOnFrame(IEntity owner, float timeSlice)
+	{
+		super.EOnFrame(owner, timeSlice);
+		
+		//float timeUntilBurnout = GetTimeUntilBurnout();
+		//if (timeUntilBurnout <= 0 && m_pParticle.GetIsPlaying())
+		//	m_pParticle.GetParticles().SetParam(-1, EmitterParam.BIRTH_RATE, 0);
+		
+		DbgUI.Begin("Rocket Move Component", 0, 0);
+		
+		DbgUI.Text(string.Format("AoA: %1 deg", Math.Round(bodyAttackAngle*100*Math.RAD2DEG)/100));
+		DbgUI.Text(string.Format("Side: %1 deg", Math.Round(bodySideSlipAngle*100*Math.RAD2DEG)/100));
+		
+		DbgUI.Text(string.Format("m_fMass: %1 kg", Math.Round(m_fMass*100)/100));
+		DbgUI.Text(string.Format("Y: %1 m", Math.Round(COM[1]*100)/100));
+		DbgUI.Text(string.Format("speed: %1 m/s", Math.Round(v.Length()*100)/100));
+		
+		DbgUI.End();
+		
+		// Body Axes
+		//Shape.CreateArrow(COM, COM + Q[0] * 2, 0.1, COLOR_RED, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(COM, COM + Q[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(COM, COM + Q[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(owner.CoordToParent(m_vExhaustPosition), owner.CoordToParent(m_vExhaustPosition) + m_vWorldThrustDirection*-1, 0.1, COLOR_RED, ShapeFlags.ONCE); 
+
+		Shape.CreateArrow(COM, COM + wind * 2, 0.1, COLOR_YELLOW, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(COM, COM + windAx[0] * 2, 0.1, COLOR_RED, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(COM, COM + windAx[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		//Shape.CreateArrow(COM, COM + windAx[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		
+	}
+
+	
+	/*
 	
 	vector CalculateTrajectoryCollision(IEntity object)
 	{
@@ -200,7 +375,7 @@ class R3D_RocketMoveComponent: ScriptComponent
 		
 		// calculate x as cross product
 		vector z = mat[2];
-		vector y = CrossProduct(z, x);
+		vector y = z*x;
 		
 		vector newMat[4];
 		newMat[0] = x;
@@ -208,9 +383,9 @@ class R3D_RocketMoveComponent: ScriptComponent
 		newMat[2] = z;
 		newMat[3] = mat[3];
 		owner.SetTransform(mat);
-	}
+	}*/
 	
-	bool m_ShowDbgUI = true;
+	/*bool m_ShowDbgUI = true;
 	vector previousVelocity = vector.Zero;
 	override void EOnFrame(IEntity owner, float timeSlice)
 	{
@@ -273,36 +448,6 @@ class R3D_RocketMoveComponent: ScriptComponent
 		SetThrustAngleY(angleY);
 		
 		Print(angleX);
-		Print(angleY);*/
-		
-		vector mat2[4];
-		owner.GetTransform(mat2);	
-		
-		vector pos = owner.GetOrigin();
-		Shape.CreateArrow(pos, pos + mat2[0] * 2, 0.1, COLOR_RED, ShapeFlags.ONCE);
-		Shape.CreateArrow(pos, pos + mat2[1] * 2, 0.1, COLOR_GREEN, ShapeFlags.ONCE);
-		Shape.CreateArrow(pos, pos + mat2[2] * 2, 0.1, COLOR_BLUE, ShapeFlags.ONCE);
-		
-		Shape.CreateArrow(worldThrustPosition, m_Owner.CoordToParent(m_ExhaustPosition) + worldThrustDirection*-1, 0.1, COLOR_RED, ShapeFlags.ONCE); 
-		
-#ifdef WORKBENCH		
-		DbgUI.Begin(string.Format("RocketComponent: %1", owner.GetName()));
-		if (m_ShowDbgUI && m_Physics)
-		{
-			Physics ownerPhysics = owner.GetPhysics();
-			
-			vector vel = m_Physics.GetVelocity();
-			vector accVec = (vel - previousVelocity) * 60; // *60 for physics refresh rate
-			
-			float mach = GetMachNumber();
-			float speed = Math.Round(vel.Length() * 100)/100;
-			float acc = Math.Round(accVec.Length() * 100)/100;
-			DbgUI.Text(string.Format("Speed: %1 mph", speed * 2.23694));
-			DbgUI.Text(string.Format("Acc: %1 m/s^2", acc));
-			DbgUI.Text(string.Format("Mach Number: %1", Math.Round(mach*100)/100));
-			DbgUI.Text("");
-		}
-		DbgUI.End();
-#endif
-	}
+		Print(angleY);
+	}*/
 }

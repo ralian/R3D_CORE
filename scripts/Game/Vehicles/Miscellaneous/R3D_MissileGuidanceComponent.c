@@ -1,3 +1,4 @@
+/*
 // High -- gain potential energy while we have thrust to be able to glide towards target
 // Direct -- go straight at target
 // Low -- terrain following 500m target altitude (Avoid SAM)
@@ -161,7 +162,7 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 				
 				Shape.CreateSphere(COLOR_RED, ShapeFlags.ONCE, collision, 1);
 				Shape.CreateArrow(collision, collision + collisionError, 0.1, COLOR_BLUE, ShapeFlags.ONCE);*/				
-			}
+/*			}
 			case EMissileTargetingMode.High:
 			{
 				
@@ -261,4 +262,4 @@ class R3D_MissileGuidanceComponent: ScriptComponent
 		owner.SetFlags(EntityFlags.ACTIVE, false);
 		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.CONTACT);
 	}
-}
+}*/

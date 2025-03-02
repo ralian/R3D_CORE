@@ -42,7 +42,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	protected ChimeraWorld m_World = null;
 	protected SignalsManagerComponent m_SignalsManager;
 	protected RplComponent m_RplComponent;
+	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
 	protected int m_iRPMSignal = -1;
+	protected bool m_bIsDestroyed = false;
 	
 	protected vector m_vAerodynamicCenter = vector.Zero;
 	protected vector m_vAerodynamicCenterOffset = vector.Zero;
@@ -81,6 +83,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		m_World = owner.GetWorld();
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
+		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		
 		if (m_World) 
 		{
@@ -96,6 +99,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (m_SignalsManager) 
 		{
 			m_iRPMSignal = m_SignalsManager.AddOrFindMPSignal("RPM", 1, 30, 0, SignalCompressionFunc.Range01);
+		}
+		
+		if (m_DamageManager)
+		{
+			m_DamageManager.GetOnVehicleDestroyed().Insert(OnDestroyed);
 		}
 		
 		foreach (ADM_LandingGear gear: m_Gear)
@@ -117,6 +125,13 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		//#endif
 		
 		SetEventMask(owner, EntityEvent.INIT | EntityEvent.FRAME | EntityEvent.PHYSICSACTIVE);
+	}
+	
+	void OnDestroyed(int instigatorPlayerId)
+	{
+		m_bIsDestroyed = true;
+		ClearEventMask(GetOwner(), EntityEvent.FRAME);
+		DisconnectFromSystem();
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -176,6 +191,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	void Simulate(float timeSlice)
 	{
 		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
+			return;
+		
+		if (m_bIsDestroyed)
 			return;
 		
 		// if pilot is not rpl owner, make them owner
