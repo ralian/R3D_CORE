@@ -278,8 +278,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				vector vLift = liftDir * sectionDynamicPressure * CL * surfaceArea; // [N]
 				vector vDrag = -dragDir * (sectionDynamicPressure * CD * surfaceArea); // [N]
 				
-				m_Physics.ApplyImpulseAt(aerocenter, vLift * timeSlice);
-				m_Physics.ApplyImpulseAt(aerocenter, vDrag * timeSlice);
+				if (absoluteVelocity.LengthSq() > 1)
+				{
+					m_Physics.ApplyImpulseAt(aerocenter, vLift * timeSlice);
+					m_Physics.ApplyImpulseAt(aerocenter, vDrag * timeSlice);
+				}
 				
 				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(aerocenter);
@@ -305,8 +308,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		float sideSlipAngle = Math.Atan2(-flowVelocityLocal[0], flowVelocityLocal[2])*Math.RAD2DEG;	// [deg]
 		vector vLongitudinalDrag = dynamicPressure * m_fFrontalDragArea * m_fFrontalDragCoefficient * -owner.VectorToParent(vector.Forward);
 		vector vSideslipDrag = dynamicPressure * m_fSideDragArea * m_fSideDragCoefficient * sideSlipAngle * owner.VectorToParent(vector.Right);
-		m_Physics.ApplyImpulseAt(coa, vLongitudinalDrag * timeSlice);
-		m_Physics.ApplyImpulseAt(coa, vSideslipDrag * timeSlice);
+		
+		if (absoluteVelocity.LengthSq() > 1)
+		{
+			m_Physics.ApplyImpulseAt(coa, vLongitudinalDrag * timeSlice);
+			m_Physics.ApplyImpulseAt(coa, vSideslipDrag * timeSlice);
+		}
 		
 		//#ifdef WORKBENCH
 		m_vDebugForcePos.Insert(coa);
@@ -329,7 +336,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				
 				float fDrag = dynamicPressure * gear.m_fDragArea * gear.m_fDragCoefficient * fState;
 				vector vDrag = fDrag * -owner.VectorToParent(vector.Forward);
-				m_Physics.ApplyImpulseAt(gearMat[3], vDrag * timeSlice);
+				
+				if (absoluteVelocity.LengthSq() > 1)
+				{
+					m_Physics.ApplyImpulseAt(gearMat[3], vDrag * timeSlice);
+				}
 				
 				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(gearMat[3]);
