@@ -196,6 +196,19 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (m_bIsDestroyed)
 			return;
 		
+		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
+		{
+			engine.Simulate(m_Owner, timeSlice);
+		}
+		
+		if (m_SignalsManager)
+		{
+			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
+		}	
+		
+		if (m_Physics.GetVelocity().LengthSq() < 1)
+			return;
+		
 		// if pilot is not rpl owner, make them owner
 		
 		//#ifdef WORKBENCH
@@ -362,17 +375,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			}
 			
 			i++;
-		}
-		
-		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
-		{
-			engine.Simulate(owner, timeSlice);
-		}
-		
-		if (m_SignalsManager)
-		{
-			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
-		}		
+		}	
 	}
 	
 	//------------------------------------------------------------------------------------------------
