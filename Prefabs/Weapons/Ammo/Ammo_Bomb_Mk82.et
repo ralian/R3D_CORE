@@ -1,0 +1,81 @@
+EjectableProjectile : "{C0BDA86B5AA5648C}Prefabs/Weapons/Core/Ammo_Rocket_Base.et" {
+ ID "DA5C6308000CDEF2"
+ components {
+  SCR_ShellSoundComponent "{60C2960B45ABE97D}" {
+   Filenames {
+    "{5690822984961E30}Sounds/Weapons/_SharedData/ProjectileTravelling/Weapons_ProjectileTravelling_Mortar_Generic.acp"
+   }
+  }
+  CollisionTriggerComponent "{64C506A53812816B}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{64C506A53812817E}" {
+     EffectPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
+     ParticleEffect "{AD5DE75242B5E4DA}Particles/Weapons/HeavyWeapons/Mk82/Explosion_Mk82.ptc"
+     SoundEvent "SOUND_EXPLOSION"
+    }
+   }
+   SafetyDistance 4
+  }
+  InventoryItemComponent "{526E87778842822F}" {
+   Attributes SCR_ItemAttributeCollection "{526E87778ACB229F}" {
+    ItemDisplayName UIInfo "{526E8777859BAACF}" {
+     Name "Mk82"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{64C506A538128141}" {
+     Weight 240
+     SizeSetupStrategy Manual
+     ItemDimensions 35 35 35
+     ItemVolume 10000
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{52D6F6A5FB82EE10}" {
+      CameraPreset Right
+      CameraOrbitAngles 0 0 0
+      CameraDistanceToItem 2
+      CameraOffset 0 0 0
+      ItemRenderRotation 0 0 -20
+      FOV 22
+      AspectRatio 1
+     }
+    }
+    m_SlotType SLOT_BACKPACK
+    m_bVisible 0
+   }
+  }
+  MagazineComponent "{50F6614BB5D5B0A8}" {
+   UIInfo MagazineUIInfo "{560AE4EBFA0176D4}" {
+    m_eAmmoTypeFlags HE
+   }
+   ItemModel "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+  }
+  MeshObject "{851AA4A2AE0A56BF}" {
+   Object "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+  }
+  MissileMoveComponent "{0EF36690881261EF}" {
+   InitSpeed 2
+   InitSpeedVariation 0
+   DispersionMultiplier 0
+   Mass 240
+   TimeToLive 30
+   ProjectileEffects {
+    HitSoundEffect "{5ADCBBC4B2F96245}" {
+     Filename "{EBD4926A12EF4CBF}Sounds/Weapons/_SharedData/RocketHits/Weapons_HeliRocketHits.acp"
+    }
+   }
+   SonicCracks "{C3A0B35219284289}Sounds/Weapons/_SharedData/BulletSonicCracks/HeliRocket/Weapons_BulletSonicCracks_HeliRocket.acp"
+   ThrustInitTime 0.1
+   ThrustTime 1
+   ThrustForce 0
+   ForwardAirFriction 0.01
+   DistanceEnableGravitation 0
+  }
+  RigidBody "{529E88841E9EDFB4}" {
+   Mass 240
+  }
+ }
+ coords 4.138 2.907 3.456
+ ProjectileModel "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+ CartridgeModel "{4501657F53D0F1DE}Assets/Weapons/HeavyWeapons/Mk82/Mk82.xob"
+ EjectorInterface EjectorInterfaceMk82 "{64C506A5381281A6}" {
+ }
+}

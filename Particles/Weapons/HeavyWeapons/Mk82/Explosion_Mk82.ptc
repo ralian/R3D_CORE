@@ -1,5 +1,5 @@
 EffectDef {
- Version 1
+ Version 2
  Emitters {
   EmitterDef Light {
    ShapeType Sphere
@@ -127,7 +127,7 @@ EffectDef {
    RandomRotDir 1
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 1
    VelocityRND 2
    VelAffect 0.5
@@ -197,7 +197,7 @@ EffectDef {
    RandomRotDir 0
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 20
    VelocityRND 0
    AirResistance 2
@@ -238,7 +238,7 @@ EffectDef {
    SizeRND 5
    RotMultiplier 100
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 80
    AirResistance 1
    WindInfluence 1
@@ -291,7 +291,7 @@ EffectDef {
    RandomRotDir 1
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0.2
    VelocityRND 2
    AirResistance 2
@@ -346,7 +346,7 @@ EffectDef {
    RandomRotDir 0
    VelAngle 1
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0.1
    VelocityRND 0
    AirResistanceRND 0
@@ -398,7 +398,7 @@ EffectDef {
    RandomRotDir 1
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 5
    VelocityRND 20
    AirResistance 3
@@ -449,7 +449,7 @@ EffectDef {
    RandomRotDir 1
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 5
    VelocityRND 20
    AirResistance 3
@@ -500,7 +500,7 @@ EffectDef {
    RandomRotDir 1
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 3
    VelocityRND 20
    AirResistance 4.256
@@ -552,7 +552,7 @@ EffectDef {
    BillboardingType Full
    VelAngle 0
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0

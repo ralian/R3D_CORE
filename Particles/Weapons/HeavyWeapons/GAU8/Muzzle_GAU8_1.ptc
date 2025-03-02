@@ -1,5 +1,5 @@
 EffectDef {
- Version 1
+ Version 2
  Emitters {
   EmitterDef glowcore {
    ShapeType Sphere
@@ -86,7 +86,7 @@ EffectDef {
    RotMultiplier 50
    RandomRotDir 1
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 1
    VelAffect 0.35
@@ -136,7 +136,7 @@ EffectDef {
    BillboardingType None
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0.2
    VelocityRND 0
    VelAffect 0.5
@@ -186,7 +186,7 @@ EffectDef {
    RandomRotDir 1
    BillboardingType None
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0.2
    VelocityRND 0
    VelAffect 0.5
@@ -237,7 +237,7 @@ EffectDef {
    BillboardingType None
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0.2
    VelocityRND 0
    VelAffect 0.5
@@ -284,7 +284,7 @@ EffectDef {
    RotMultiplier 50
    RandomRotDir 1
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0.2
@@ -324,7 +324,7 @@ EffectDef {
    RotMultiplier 200
    RandomRotDir 1
    RandomAngle 1
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0.2
@@ -445,7 +445,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -518,7 +518,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -591,7 +591,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -664,7 +664,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -737,7 +737,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -810,7 +810,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -883,7 +883,7 @@ EffectDef {
    AngularFadeOutStart 0.4
    VelAngle 0
    RandomAngle 0
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
@@ -951,7 +951,7 @@ EffectDef {
    RotMultiplier 0
    RandomRotDir 0
    AngularFadeOutStart 0.4
-   RandomUFlip 1
+   FlipU Random
    Velocity 0
    VelocityRND 0
    VelAffect 0
