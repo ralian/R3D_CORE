@@ -67,6 +67,7 @@ EjectableProjectile : "{C0BDA86B5AA5648C}Prefabs/Weapons/Core/Ammo_Rocket_Base.e
    ThrustTime 1
    ThrustForce 0
    ForwardAirFriction 0.01
+   AlignTorque 1
    DistanceEnableGravitation 0
   }
   RigidBody "{529E88841E9EDFB4}" {
