@@ -325,21 +325,21 @@ class ADM_AirplaneInput : ScriptComponent
 	void UpdateSteering(float timeSlice)
 	{
 		float speed = m_AirplaneController.GetSimulation().GetSpeedKmh(); // [km/h]
-		float dist = Math.Clamp(speed/m_fMaxCenterX, 0, 1);
-		float steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, dist, m_AirplaneController.m_fSteeringCenterStrength)[1]; // [deg/s]
+		//float dist = Math.Clamp(speed/m_fMaxCenterX, 0, 1);
+		float steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, speed, m_AirplaneController.m_fSteeringCenterStrength)[1]; // [deg/s]
 		
 		// if going away from center use m_fSteeringForwardStrength
 		if ( (m_fSteeringInput > 0 && m_fSteeringAngle >= 0) || (m_fSteeringInput < 0 && m_fSteeringAngle <= 0) )
 		{
-			dist = Math.Clamp(speed/m_fMaxForwardX, 0, 1);
-			steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, dist, m_AirplaneController.m_fSteeringForwardStrength)[1]; 
+			//dist = Math.Clamp(speed/m_fMaxForwardX, 0, 1);
+			steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, speed, m_AirplaneController.m_fSteeringForwardStrength)[1]; 
 		}
 		
 		// if going toward center use m_fSteeringBackwardStrength
 		if ( (m_fSteeringInput > 0 && m_fSteeringAngle < 0) || (m_fSteeringInput < 0 && m_fSteeringAngle > 0) )
 		{
-			dist = Math.Clamp(speed/m_fMaxBackwardX, 0, 1);
-			steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, dist, m_AirplaneController.m_fSteeringBackwardStrength)[1]; 
+			//dist = Math.Clamp(speed/m_fMaxBackwardX, 0, 1);
+			steeringStrength = Math3D.Curve(ECurveType.CurveProperty2D, speed, m_AirplaneController.m_fSteeringBackwardStrength)[1]; 
 		}
 		
 		float targetAngle = m_AirplaneController.m_fMaxSteerAngle;

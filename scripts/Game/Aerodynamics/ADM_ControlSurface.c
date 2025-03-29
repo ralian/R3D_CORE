@@ -107,10 +107,10 @@ class ADM_ControlSurfaceDragDevice: ADM_ControlSurface
 	
 	override float GetDeltaCD(ADM_WingSection curSection, float deflectionAngle, float angleOfAttack)
 	{
-		float range = m_fMaxAngle - m_fMinAngle;
-		float posInRange = m_fMinAngle + deflectionAngle;
+		//float range = m_fMaxAngle - m_fMinAngle;
+		//float posInRange = m_fMinAngle + deflectionAngle;
 		
-		return Math3D.Curve(ECurveType.CurveProperty2D, posInRange / range, m_vDragCurve)[1];
+		return Math3D.Curve(ECurveType.CurveProperty2D, deflectionAngle, m_vDragCurve)[1];
 	}
 }
 
@@ -123,9 +123,9 @@ class ADM_ControlSurfaceFlap: ADM_ControlSurfaceDragDevice
 	
 	override float GetDeltaCL(ADM_WingSection curSection, float deflectionAngle, float angleOfAttack)
 	{
-		float range = m_fMaxAngle - m_fMinAngle;
-		float posInRange = m_fMinAngle + deflectionAngle;
+		//float range = m_fMaxAngle - m_fMinAngle;
+		//float posInRange = m_fMinAngle + deflectionAngle;
 		
-		return Math3D.Curve(ECurveType.CurveProperty2D, posInRange / range, m_vLiftCurve)[1];
+		return Math3D.Curve(ECurveType.CurveProperty2D, deflectionAngle, m_vLiftCurve)[1];
 	}
 }

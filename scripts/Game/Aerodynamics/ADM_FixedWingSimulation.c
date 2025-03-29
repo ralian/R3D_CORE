@@ -188,6 +188,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	override event protected bool OnTicksOnRemoteProxy() { return true; };
 	
 	//------------------------------------------------------------------------------------------------
+	ref array<ref Shape> debugShapes = {};
+	ref array<ref DebugTextWorldSpace> debugText = {};
 	void Simulate(float timeSlice)
 	{
 		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
@@ -196,12 +198,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		if (m_bIsDestroyed)
 			return;
 		
-		// if pilot is not rpl owner, make them owner
-		
 		//#ifdef WORKBENCH
 		m_vDebugForcePos.Clear();
 		m_vDebugForces.Clear();
 		m_iDebugForceColor.Clear();
+		debugShapes.Clear();
+		debugText.Clear();
 		//#endif
 		
 		IEntity owner = m_Owner;
@@ -263,9 +265,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					}
 				}
 				
-				float dist = (angleOfAttack + 90) / 180;
-				CL += Math3D.Curve(ECurveType.CurveProperty2D, dist, curSection.m_vLiftCurve)[1] * (aspectRatio / (aspectRatio + 2));
-				CD += Math3D.Curve(ECurveType.CurveProperty2D, dist, curSection.m_vDragCurve)[1];
+				//float dist = (angleOfAttack + 90) / 180;
+				CL += Math3D.Curve(ECurveType.CurveProperty2D, angleOfAttack, curSection.m_vLiftCurve)[1] * (aspectRatio / (aspectRatio + 2));
+				CD += Math3D.Curve(ECurveType.CurveProperty2D, angleOfAttack, curSection.m_vDragCurve)[1];
 				
 				// Prandtl-Glauert compressibility factor
 				float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(), ADM_ISAProperties.SpeedOfSound);
@@ -295,10 +297,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				
 				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPLANEDEBUG))
 				{
-					Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.NOZBUFFER));
+					
+					debugText.Insert(DebugTextWorldSpace.Create(GetGame().GetWorld(), "wing", DebugTextFlags.CENTER | DebugTextFlags.FACE_CAMERA, aerocenter[0], aerocenter[1], aerocenter[2]));
 				}
 				//#endif
 			}
@@ -543,7 +547,7 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 						debugPointsControlSurface[5] = debugPointsControlSurface[0] + vSpan * fSpan - vChord * fChord * controlSurface.m_fChordPercent;
 
 						// Apply rotation using quaternion matrix
-						vector vSpanDir = vSpan.Normalized();
+						vector vSpanDir = -vSpan.Normalized();
 						float angleRad = controlSurface.GetAngle() * Math.DEG2RAD;
 
 						float quat[4];
