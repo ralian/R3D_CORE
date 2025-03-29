@@ -460,33 +460,34 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	vector debugPoints[6];
 	vector debugACLine[2];
 	vector debugPointsControlSurface[6];
+
 	void Draw(IEntity owner)
-	{		
+	{
 		if (!m_Wings || !owner) return;
-		
+
 		vector acTotal = vector.Zero;
 		float acTotalArea = 0;
-		
-		// connect each section sequentially
+
 		for (int i = 0; i < m_Wings.Count(); i++)
 		{
 			vector wingRoot = owner.CoordToParent(m_Wings[i].m_vRootPosition);
 			vector previousSectionLE = vector.Zero;
+
 			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
 			{
 				ADM_WingSection curSection = m_Wings[i].m_Sections[j];
-				
+
 				float surfaceArea = curSection.m_fSurfaceArea;
 				vector vNormal = owner.VectorToParent(curSection.m_vNormal);
 				vector vChord = owner.VectorToParent(curSection.m_vChord);
 				vector vSpan = vNormal * vChord;
-				
+
 				vector acLocal = curSection.m_vAerodynamicCenter;
 				vector ac = owner.CoordToParent(acLocal);
-				
+
 				float fSpan = curSection.m_Span;
 				float fChord = curSection.m_Chord;
-				
+
 				float controlChordPercent = 0;
 				if (curSection.m_ControlSurfaces)
 				{
@@ -494,71 +495,93 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					{
 						float chordPercent = curSection.m_ControlSurfaces[k].m_fChordPercent;
 						if (chordPercent > controlChordPercent)
-						{
 							controlChordPercent = chordPercent;
-						}
 					}
 				}
-					
-				// Skew points for sweep angle
+
 				vector transformMatrix[3];
 				Math3D.MatrixIdentity3(transformMatrix);
 				transformMatrix[0][2] = Math.Tan(curSection.m_SweepAngle * Math.DEG2RAD);
-				
+
 				vSpan = vSpan.Multiply3(transformMatrix);
 				vChord = vChord.Multiply3(transformMatrix);
-				
-				//--- Panel 1
+
 				debugPoints[0] = wingRoot + previousSectionLE;
 				debugPoints[1] = debugPoints[0] + vSpan * fSpan;
-				debugPoints[2] = debugPoints[0] - vChord * fChord * (1-controlChordPercent);
-				
-				//--- Panel 2
+				debugPoints[2] = debugPoints[0] - vChord * fChord * (1 - controlChordPercent);
+
 				debugPoints[3] = debugPoints[1];
 				debugPoints[4] = debugPoints[2];
-				debugPoints[5] = debugPoints[0] + vSpan * fSpan - vChord * fChord * (1-controlChordPercent);
-				
+				debugPoints[5] = debugPoints[0] + vSpan * fSpan - vChord * fChord * (1 - controlChordPercent);
+
 				previousSectionLE = debugPoints[1] - wingRoot;
-				
-				// AC Line
-				debugACLine[0] = ac - vSpan * fSpan/2;
-				debugACLine[1] = ac + vSpan * fSpan/2;
-				
+
+				debugACLine[0] = ac - vSpan * fSpan / 2;
+				debugACLine[1] = ac + vSpan * fSpan / 2;
+
 				acTotal += acLocal * surfaceArea;
 				acTotalArea += surfaceArea;
-				
-				Shape.CreateTris(ARGB(100,255,0,0), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPoints, 2);
+
+				Shape.CreateTris(ARGB(100, 255, 0, 0), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPoints, 2);
 				Shape.CreateLines(Color.CYAN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, debugACLine, 2);
-				
+
 				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWNORMALSDEBUG))
-					Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER); 
-				
+					Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+
 				if (curSection.m_ControlSurfaces)
 				{
 					for (int k = 0; k < curSection.m_ControlSurfaces.Count(); k++)
 					{
-						//--- Panel 1
+						ADM_ControlSurface controlSurface = curSection.m_ControlSurfaces[k];
+
 						debugPointsControlSurface[0] = debugPoints[4];
 						debugPointsControlSurface[1] = debugPoints[5];
-						debugPointsControlSurface[2] = debugPointsControlSurface[0] - vChord * fChord * curSection.m_ControlSurfaces[k].m_fChordPercent;
-						
-						//--- Panel 2
+						debugPointsControlSurface[2] = debugPointsControlSurface[0] - vChord * fChord * controlSurface.m_fChordPercent;
+
 						debugPointsControlSurface[3] = debugPointsControlSurface[1];
 						debugPointsControlSurface[4] = debugPointsControlSurface[2];
-						debugPointsControlSurface[5] = debugPointsControlSurface[0] + vSpan * fSpan - vChord * fChord * curSection.m_ControlSurfaces[k].m_fChordPercent;
-						
-						Shape.CreateTris(ARGB(100,0,0,100), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPointsControlSurface, 2);
+						debugPointsControlSurface[5] = debugPointsControlSurface[0] + vSpan * fSpan - vChord * fChord * controlSurface.m_fChordPercent;
+
+						// Apply rotation using quaternion matrix
+						vector vSpanDir = vSpan.Normalized();
+						float angleRad = controlSurface.GetAngle() * Math.DEG2RAD;
+
+						float quat[4];
+						vector axis = vSpanDir.Normalized();
+						float sinHalf = Math.Sin(angleRad / 2);
+						float cosHalf = Math.Cos(angleRad / 2);
+						quat[0] = axis[0] * sinHalf;
+						quat[1] = axis[1] * sinHalf;
+						quat[2] = axis[2] * sinHalf;
+						quat[3] = cosHalf;
+
+						vector rotMat[3];
+						Math3D.QuatToMatrix(quat, rotMat);
+
+						vector pivot = debugPointsControlSurface[0];
+						for (int p = 0; p < 6; p++)
+						{
+							vector localOffset = debugPointsControlSurface[p] - pivot;
+							vector rotatedOffset =
+								rotMat[0] * localOffset[0] +
+								rotMat[1] * localOffset[1] +
+								rotMat[2] * localOffset[2];
+
+							debugPointsControlSurface[p] = pivot + rotatedOffset;
+						}
+
+						Shape.CreateTris(ARGB(100, 0, 0, 100), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPointsControlSurface, 2);
 					}
 				}
 			}
 		}
-		
+
 		if (acTotalArea > 0) acTotal /= acTotalArea;
 		vector coa = owner.CoordToParent(acTotal + m_vAerodynamicCenterOffset);
-		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);	
+		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);
 		if (m_Physics) Shape.CreateSphere(Color.YELLOW, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, GetCenterOfMass(), 0.1);
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	protected void DebugMenu(IEntity owner, float timeSlice)
 	{
