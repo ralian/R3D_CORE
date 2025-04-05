@@ -106,8 +106,6 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 	protected float m_fDryMass;
 	protected vector m_vExhaustPosition;
 	protected vector m_vWorldThrustDirection;
-	protected ChimeraWorld m_World;
-	protected TimeAndWeatherManagerEntity m_TimeManager = null;
 	
 	protected float m_fThrustAngleX; // Thrust angle about body x axis [radians]
 	protected float m_fThrustAngleY; // Thrust angle about body y axis [radians]
@@ -147,7 +145,11 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 	
 	float GetTimeUntilBurnout()
 	{
-		float timeSinceLaunch = m_World.GetTimestamp().DiffMilliseconds(m_fLaunchTime)/1000; // [s]
+		auto owner = GetOwner();
+		if (!owner) return -1;
+		auto world = owner.GetWorld();
+		if (!world) return -1;
+		float timeSinceLaunch = world.GetTimestamp().DiffMilliseconds(m_fLaunchTime)/1000; // [s]
 		return m_fBurnTime - timeSinceLaunch;
 	}
 	
@@ -161,15 +163,20 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 	
 	void Launch()
 	{
-		if (!m_Physics)
-			return;
-		
-		m_fLaunchTime = m_World.GetTimestamp();
-		m_Physics.SetActive(true);
+		auto owner = GetOwner();
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		if (!physics) return;
+		auto world = owner.GetWorld();
+		m_fLaunchTime = world.GetTimestamp();
+		physics.SetActive(true);
 	}
 	
 	void Setup(IEntity owner)
 	{
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		
 		m_fMassFlowRate = m_fPropellantMass / m_fBurnTime;
 		m_fDryMass = m_fStructuralMass + m_fPayloadMass;
 		m_fMaxConeAngle = m_fMaxConeAngle * Math.DEG2RAD;
@@ -181,20 +188,24 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 			m_vExhaustPosition = exhaustTransform[3];
 		}
 			
-		if (!m_Physics)
+		if (!physics)
 			return;
 		
-		m_Physics.SetMass(m_fDryMass + m_fPropellantMass);
+		physics.SetMass(m_fDryMass + m_fPropellantMass);
 	}
 	
 	vector GetWindVector()
-	{		
-		if (!m_TimeManager) 
-			return vector.Zero;
+	{
+		auto owner = GetOwner();
+		if (!owner) return vector.Zero;
+		auto world = ChimeraWorld.CastFrom(owner.GetWorld());
+		if (!world) return vector.Zero;
+		auto timemgr = world.GetTimeAndWeatherManager();
+		if (!timemgr) return vector.Zero;
 		
 		vector windAngles = vector.Zero;
-		float speed = m_TimeManager.GetWindSpeed();
-		windAngles[0] = m_TimeManager.GetWindDirection();
+		float speed = timemgr.GetWindSpeed();
+		windAngles[0] = timemgr.GetWindDirection();
 		
 		vector mat[3];
 		Math3D.AnglesToMatrix(windAngles, mat);
@@ -211,12 +222,6 @@ class R3D_RocketMoveComponent: ADM_RigidbodyComponent
 		foreach(ADM_MissileAerodynamicSurface surf : m_AeroSurfaces)
 		{
 			surf.Init(owner);
-		}
-		
-		m_World = owner.GetWorld();
-		if (m_World) 
-		{
-			m_TimeManager = m_World.GetTimeAndWeatherManager();
 		}
 		
 		Launch();

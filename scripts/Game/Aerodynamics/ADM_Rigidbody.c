@@ -26,10 +26,9 @@ class ADM_RigidbodyComponent: ScriptComponent
 	{
 		super.EOnInit(owner);
 		
-		if (owner.GetPhysics())
+		if (owner && owner.GetPhysics())
 		{
-			m_Physics = owner.GetPhysics();
-			m_fMass = m_Physics.GetMass();
+			m_fMass = owner.GetPhysics().GetMass();
 		}
 		
 		Math3D.MatrixIdentity3(m_vInertia);
@@ -47,7 +46,10 @@ class ADM_RigidbodyComponent: ScriptComponent
 	
 	void UpdateStoredTransform(IEntity owner)
 	{
-		COM = owner.CoordToParent(m_Physics.GetCenterOfMass());
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		if (!physics) return;
+		COM = owner.CoordToParent(physics.GetCenterOfMass());
 		owner.GetTransform(transform);
 		Q[0] = transform[0];
 		Q[1] = transform[1];
@@ -68,15 +70,19 @@ class ADM_RigidbodyComponent: ScriptComponent
 	
 	void UpdateTransformFromStored(IEntity owner)
 	{
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		if (!physics) return;
+		
 		// update state from substepping
 		transform[0] = Q[0];
 		transform[1] = Q[1];
 		transform[2] = Q[2];
 		transform[3] = COM;
 		owner.SetTransform(transform);
-		m_Physics.SetVelocity(v);
-		m_Physics.SetAngularVelocity(w);
-		m_Physics.SetMass(m_fMass);
+		physics.SetVelocity(v);
+		physics.SetAngularVelocity(w);
+		physics.SetMass(m_fMass);
 	}
 	
 	vector CoordToLocal(vector worldCoord)
@@ -113,11 +119,12 @@ class ADM_RigidbodyComponent: ScriptComponent
 	
 	override void EOnSimulate(IEntity owner, float timeSlice)
 	{
-		if (!m_Physics)
-			return;
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		if (!physics) return;
 		
-		v = m_Physics.GetVelocity();
-		w = m_Physics.GetAngularVelocity();
+		v = physics.GetVelocity();
+		w = physics.GetAngularVelocity();
 		
 		// TODO: replace GetTickCount with proper world time to include pausing/fast forward/etc.
 		float substepStartTime = System.GetTickCount();

@@ -1,76 +1,60 @@
-GenericEntity {
+EjectableProjectile {
  ID "0000000000000001"
  components {
-  ADM_SubstepSpringComponent "{629A43E9DAC9E1A2}" {
-   Enabled 0
-   m_iSubsteps 100
-   m_vInertiaDiag 10 10 10
-   m_fStiffness 1000000
-   m_fRotationalStiffness 1000000
+  SignalsManagerComponent "{650B3135C552DB40}" {
+  }
+  SCR_ShellSoundComponent "{650B31341C6A694D}" {
+   Filenames {
+    "{5690822984961E30}Sounds/Weapons/_SharedData/ProjectileTravelling/Weapons_ProjectileTravelling_Mortar_Generic.acp"
+   }
+  }
+  BaseMissileGuidanceComponent "{650B3137CCF5C1E1}" {
+   useAimingType None
   }
   CollisionTriggerComponent "{61F6456A6C902888}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{650B313533335792}" {
+     TriggerOnce 1
+     EffectPrefab "{FD0373A03383F850}Prefabs/Weapons/Warheads/Warhead_Bomb_Mk82.et"
+     ParticleEffect "{AD5DE75242B5E4DA}Particles/Weapons/HeavyWeapons/Mk82/Explosion_Mk82.ptc"
+     SoundEvent "SOUND_EXPLOSION"
+    }
+   }
+   SafetyDistance 4
+  }
+  InventoryItemComponent "{650B31345DA837C3}" {
+   Attributes SCR_ItemAttributeCollection "{650B31345BB77C3D}" {
+    ItemDisplayName UIInfo "{650B313441A4EC81}" {
+     Name "AGM-65D"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{650B3137B43AAE03}" {
+     Weight 100
+    }
+   }
+  }
+  MagazineComponent "{650B3137A973A50D}" {
+   UIInfo MagazineUIInfo "{650B31379601A26C}" {
+    m_eAmmoTypeFlags 17
+   }
+   ItemModel "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
   }
   MeshObject "{61F6456A749A4C9C}" {
    Object "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
   }
-  R3D_PylonTriggerComponent "{61F6456A462EF7B7}" {
+  MissileMoveComponent "{650B3137C2B69392}" {
+   InitSpeed 1
+   InitSpeedVariation 1
+   Mass 100
+   TimeToLive 120
+   ThrustInitTime 0.2
+   ThrustTime 10
+   ThrustForce 500
   }
-  R3D_RocketMoveComponent "{629A43E96BE89BA2}" {
-   Enabled 0
-   m_iSubsteps 10
-   m_vInertiaDiag 100 100 10
-   m_fBurnTime 10
-   m_vExhaustLocation PointInfo "{629A43EBF7509442}" {
-    Offset 0 0 -1.2056
-   }
-
-   m_AeroSurfaces {
-    ADM_MissileAerodynamicSurface "{629AF6FC50BA8612}" {
-     m_vCoordinateSystem PointInfo "{629AF6FC5FD22126}" {
-      Offset -0.25 0 -0.7
-      Angles 0 -75 0
-     }
-     m_fSurfaceArea 0.214
-    }
-    ADM_MissileAerodynamicSurface "{629AF6FC4D8F7C4C}" {
-     m_vCoordinateSystem PointInfo "{629AF6FC766A0A66}" {
-      Offset 0.25 0 -0.7
-      Angles 0 75 0
-     }
-     m_fSurfaceArea 0.214
-    }
-    ADM_MissileAerodynamicSurface "{629AF6FC7B3BDEA5}" {
-     m_vCoordinateSystem PointInfo "{629AF6FC79D557B8}" {
-      Offset 0 -0.25 -0.7
-      Angles -75 0 90
-     }
-     m_fSurfaceArea 0.214
-    }
-    ADM_MissileAerodynamicSurface "{629AF6FC7866F9FB}" {
-     m_vCoordinateSystem PointInfo "{629AF6FC08ACCCAA}" {
-      Offset 0 0.25 -0.7
-      Angles 75 0 90
-     }
-     m_fSurfaceArea 0.214
-    }
-   }
-   m_vAeroCenter 0 0 -0.5
-   m_fFrontalDragArea 0.1
-   m_fFrontalDragCoefficient 0.05
-   m_fSideDragArea 0.75
-   m_fSideDragCoefficient 0.1
+  R3D_ThermalReceiverComponent "{629AFB982FD1EA3A}" {
+   origin 0 0 1.187
   }
   RigidBody "{61F6456A4A288892}" {
-   Layers 16908288
-   Active AlwaysActive
    Mass 100
-   Gravity 0
-   LinearDamping 0
-   AngularDamping 0
-   SimState None
-   ResponseIndex "NoCollision"
-   ModelGeometry 1
-   Kinematic 0
   }
   ActionsManagerComponent "{61F6456A4E2AE9F2}" {
    ActionContexts {
@@ -81,12 +65,17 @@ GenericEntity {
     }
    }
   }
+  NwkMovementComponent "{650B31354601E39B}" {
+   HierarchySync 1
+  }
   RplComponent "{61F6456A5204CAC6}" {
+   "Rpl State Override" Runtime
   }
   Hierarchy "{61F6456A569D1D05}" {
   }
-  R3D_ThermalReceiverComponent "{629AFB982FD1EA3A}" {
-   origin 0 0 1.187
-  }
+ }
+ ProjectileModel "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
+ CartridgeModel "{4952BA80B5DFF5C1}Assets/Weapons/HeavyWeapons/AGM65/AGM65.xob"
+ EjectorInterface EjectorInterfaceAGM65 "{650B3137DCF4CF8D}" {
  }
 }
