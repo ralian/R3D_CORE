@@ -130,7 +130,7 @@ class R3D_ThermalReceiverComponent: ScriptComponent
 	override void EOnDiag(IEntity owner, float timeSlice) {
 		if (owner && owner.GetParent() && owner.GetParent().FindComponent(ADM_AirplaneInput)) {
 			ADM_AirplaneInput input = ADM_AirplaneInput.Cast(owner.GetParent().FindComponent(ADM_AirplaneInput));
-			if (input && input.activeSlot && input.activeSlot.GetAttachedEntity() == GetOwner())
+			if (input)
 				_DbgVisualize(owner, timeSlice);
 		}
 	}

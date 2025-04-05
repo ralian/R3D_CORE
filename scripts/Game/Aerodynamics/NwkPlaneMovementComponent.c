@@ -2,7 +2,6 @@ class NwkPlaneMovementComponentClass: ScriptGameComponentClass {}
 class NwkPlaneMovementComponent : ScriptGameComponent
 {
 	protected IEntity m_Owner;
-	protected Physics m_Physics;
 	protected RplComponent m_RplComponent;
 	
 	// interpolation
@@ -22,7 +21,6 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 	override void OnPostInit(IEntity owner)
 	{
 		m_Owner = owner;
-		m_Physics = owner.GetPhysics();
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 		
 		m_Owner.GetTransform(prevState);
@@ -40,6 +38,7 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 	override event protected void EOnPostFrame(IEntity owner, float timeSlice)
 	{
 		super.EOnPostFrame(owner, timeSlice);
+		auto physics = owner.GetPhysics();
 		
 		float curTime = System.GetTickCount();
 		if (m_RplComponent.IsOwner())
@@ -49,7 +48,7 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 			{
 				vector mat[4];
 				owner.GetTransform(mat);
-				Rpc(Rpc_Server_ReceiveNewStates, mat, m_Physics.GetVelocity(), m_Physics.GetAngularVelocity());
+				Rpc(Rpc_Server_ReceiveNewStates, mat, physics.GetVelocity(), physics.GetAngularVelocity());
 				m_fLastSendTime = curTime;
 			}
 		} else {
@@ -84,8 +83,8 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 				interpolatedMat[3] = prevState[3] + ds*percentReplay;
 				
 				m_Owner.SetTransform(interpolatedMat);
-				m_Physics.SetVelocity(prevVelocity + dv*percentReplay);
-				m_Physics.SetAngularVelocity(prevAngularVelocity + dw*percentReplay);
+				physics.SetVelocity(prevVelocity + dv*percentReplay);
+				physics.SetAngularVelocity(prevAngularVelocity + dw*percentReplay);
 			}
 		}
 	}
@@ -95,8 +94,10 @@ class NwkPlaneMovementComponent : ScriptGameComponent
 		if (m_RplComponent.IsOwner())
 			return;
 		
-		m_Physics.SetVelocity(velocity);
-		m_Physics.SetAngularVelocity(angularVelocity);
+		auto physics = GetOwner().GetPhysics();
+		
+		physics.SetVelocity(velocity);
+		physics.SetAngularVelocity(angularVelocity);
 		
 		if (!m_bInterpolate)
 		{
