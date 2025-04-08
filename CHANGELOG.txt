@@ -1,3 +1,18 @@
+v1.3.0
+Fixed: Converted audio samples from 24 bit PCM to 16 bit PCM due to engine limitations
+Fixed: Disabled engine audio on vehicle death
+Updated: Curve lookup values updated to match Math3d.Curve changes (fixes control input)
+Updated: Mk82 moved from full physics object to an optimized ballistics projectile.  Should allow for better fuze triggering and reloading
+Updated: no longer applying aero forces if aircraft speed is less than 1km/h (allow vehicles to sleep)
+Updated: Draw control input on panel preview
+Updated: Groundwork for rocket move component improved
+Removed: Stored physics reference in fixed wing sim class
+Removed: Old pylon system
+Added: Aircraft now utilize vanilla pylon system
+Added: R3DEjectorInterfaces.  Used for ejector racks for bombs.  (Think muzzle types)
+Added: Plane section to Entity Catalog
+ 
+
 v1.2.6
 Hotfix: Fix Minigun audio encoding
 
