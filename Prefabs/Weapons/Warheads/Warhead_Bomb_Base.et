@@ -8,7 +8,7 @@ GenericEntity : "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et" {
   }
   BaseTriggerComponent "{55129E81CBAA1390}" {
    PROJECTILE_EFFECTS {
-    ExplosionDamageContainer "{5E3E3536F71D4036}" {
+    ExplosionDamageContainer "{5E3E3536F71D4036}" : "{8A81F4702F919838}Prefabs/Weapons/Core/Damage/ExplosionContainer_HE.conf" {
     }
     SpawnDistanceParticleEffect "{5E3E353673DF0347}" {
      AttachToParent 1
@@ -43,6 +43,11 @@ GenericEntity : "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et" {
        MinDist 14
       }
      }
+    }
+    SpawnDecalEffect "{64C506B4AE561EEF}" {
+     Scale 6
+     Lifetime 60
+     Material "{039FA43299C7980D}Assets/Decals/Miscellaneous/Mortar/Decal_Impact_Mortar_01.emat"
     }
    }
    TriggerOffset -0.05

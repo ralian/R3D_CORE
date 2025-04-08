@@ -89,7 +89,8 @@ class ADM_EngineComponent : ScriptComponent
 			return;
 		
 		vector thrust = -owner.VectorToParent(m_vExhaustDirection) * m_fMaxThrust * m_fThrottle;
-		m_Physics.ApplyImpulseAt(owner.CoordToParent(m_vNozzleExit), thrust * timeSlice);
+		if (thrust.LengthSq() > 100)
+			m_Physics.ApplyImpulseAt(owner.CoordToParent(m_vNozzleExit), thrust * timeSlice);
 	}
 	
 	override void EOnFrame(IEntity owner, float timeSlice)

@@ -36,10 +36,6 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	//------------------------------------------------------------------------------------------------
 	protected ADM_FixedWingSimulationSystem m_UpdateSystem = null;
 	protected ADM_AirplaneControllerComponent m_AirplaneController = null;
-	protected IEntity m_Owner = null;
-	protected Physics m_Physics = null;
-	protected TimeAndWeatherManagerEntity m_TimeManager = null;
-	protected ChimeraWorld m_World = null;
 	protected SignalsManagerComponent m_SignalsManager;
 	protected RplComponent m_RplComponent;
 	private SCR_VehicleDamageManagerComponent m_DamageManager = null;
@@ -78,17 +74,14 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
 	{
-		m_Owner = owner;
-		m_Physics = owner.GetPhysics();
-		m_World = owner.GetWorld();
+		auto world = ChimeraWorld.CastFrom(owner.GetWorld());
 		m_SignalsManager = SignalsManagerComponent.Cast(owner.FindComponent(SignalsManagerComponent));	
 		m_RplComponent = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_DamageManager = SCR_VehicleDamageManagerComponent.Cast(owner.FindComponent(SCR_VehicleDamageManagerComponent));
 		
-		if (m_World) 
+		if (world) 
 		{
-			m_UpdateSystem = ADM_FixedWingSimulationSystem.Cast(m_World.FindSystem(ADM_FixedWingSimulationSystem));
-			m_TimeManager = m_World.GetTimeAndWeatherManager();
+			m_UpdateSystem = ADM_FixedWingSimulationSystem.Cast(world.FindSystem(ADM_FixedWingSimulationSystem));
 		}
 		
 		if (m_pAerodynamicCenterOffset) 
@@ -188,41 +181,34 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	override event protected bool OnTicksOnRemoteProxy() { return true; };
 	
 	//------------------------------------------------------------------------------------------------
+	ref array<ref Shape> debugShapes = {};
+	ref array<ref DebugTextWorldSpace> debugText = {};
 	void Simulate(float timeSlice)
 	{
-		if (!m_Physics || !m_Physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
+		auto owner = GetOwner();
+		if (!owner) return;
+		auto physics = owner.GetPhysics();
+		if (!physics) return;
+
+		if (!physics || !physics.IsActive() || !m_AirplaneController || !m_AirplaneController.GetAirplaneInput())
 			return;
 		
 		if (m_bIsDestroyed)
 			return;
 		
-		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
-		{
-			engine.Simulate(m_Owner, timeSlice);
-		}
-		
-		if (m_SignalsManager)
-		{
-			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
-		}	
-		
-		if (m_Physics.GetVelocity().LengthSq() < 1)
-			return;
-		
-		// if pilot is not rpl owner, make them owner
-		
 		//#ifdef WORKBENCH
 		m_vDebugForcePos.Clear();
 		m_vDebugForces.Clear();
 		m_iDebugForceColor.Clear();
+		debugShapes.Clear();
+		debugText.Clear();
 		//#endif
 		
-		IEntity owner = m_Owner;
-		vector com = owner.CoordToParent(m_Physics.GetCenterOfMass());
+		vector com = owner.CoordToParent(physics.GetCenterOfMass());
 		vector coa = owner.CoordToParent(m_vAerodynamicCenter + m_vAerodynamicCenterOffset);
 		
 		vector wind = GetWindVector();
-		vector absoluteVelocity = m_Physics.GetVelocity();
+		vector absoluteVelocity = physics.GetVelocity();
 		vector flowVelocity = absoluteVelocity + wind;
 		vector flowVelocityLocal = owner.VectorToLocal(flowVelocity);
 		
@@ -241,8 +227,8 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				vector vSpan = owner.VectorToParent(curSection.m_vSpan);
 				vector aerocenter = owner.CoordToParent(curSection.m_vAerodynamicCenter);
 											
-				vector sectionFlowVelocity = m_Physics.GetVelocityAt(aerocenter) + wind;
-				vector sectionFlowVelocityLocal = m_Owner.VectorToLocal(sectionFlowVelocity);
+				vector sectionFlowVelocity = physics.GetVelocityAt(aerocenter) + wind;
+				vector sectionFlowVelocityLocal = owner.VectorToLocal(sectionFlowVelocity);
 				float sectionDynamicPressure = 1/2 * density * sectionFlowVelocity.LengthSq(); // [Pa]
 				
 				vector dragDir = sectionFlowVelocity.Normalized();
@@ -276,9 +262,9 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					}
 				}
 				
-				float dist = (angleOfAttack + 90) / 180;
-				CL += Math3D.Curve(ECurveType.CurveProperty2D, dist, curSection.m_vLiftCurve)[1] * (aspectRatio / (aspectRatio + 2));
-				CD += Math3D.Curve(ECurveType.CurveProperty2D, dist, curSection.m_vDragCurve)[1];
+				//float dist = (angleOfAttack + 90) / 180;
+				CL += Math3D.Curve(ECurveType.CurveProperty2D, angleOfAttack, curSection.m_vLiftCurve)[1] * (aspectRatio / (aspectRatio + 2));
+				CD += Math3D.Curve(ECurveType.CurveProperty2D, angleOfAttack, curSection.m_vDragCurve)[1];
 				
 				// Prandtl-Glauert compressibility factor
 				float speedOfSound = ADM_InternationalStandardAtmosphere.GetValue(GetAltitude(), ADM_ISAProperties.SpeedOfSound);
@@ -291,8 +277,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				vector vLift = liftDir * sectionDynamicPressure * CL * surfaceArea; // [N]
 				vector vDrag = -dragDir * (sectionDynamicPressure * CD * surfaceArea); // [N]
 				
-				m_Physics.ApplyImpulseAt(aerocenter, vLift * timeSlice);
-				m_Physics.ApplyImpulseAt(aerocenter, vDrag * timeSlice);
+				if (absoluteVelocity.LengthSq() > 1)
+				{
+					physics.ApplyImpulseAt(aerocenter, vLift * timeSlice);
+					physics.ApplyImpulseAt(aerocenter, vDrag * timeSlice);
+				}
 				
 				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(aerocenter);
@@ -305,10 +294,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				
 				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWPLANEDEBUG))
 				{
-					Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
-					Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter + vSpan*3, 0.1, Color.BLACK, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter - dragDir*3, 0.1, Color.RED, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter + liftDir*3, 0.1, Color.GREEN, ShapeFlags.NOZBUFFER));
+					debugShapes.Insert(Shape.CreateArrow(aerocenter, aerocenter - sectionFlowVelocity, 0.1, Color.BLUE, ShapeFlags.NOZBUFFER));
+					
+					debugText.Insert(DebugTextWorldSpace.Create(GetGame().GetWorld(), "wing", DebugTextFlags.CENTER | DebugTextFlags.FACE_CAMERA, aerocenter[0], aerocenter[1], aerocenter[2]));
 				}
 				//#endif
 			}
@@ -318,8 +309,12 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 		float sideSlipAngle = Math.Atan2(-flowVelocityLocal[0], flowVelocityLocal[2])*Math.RAD2DEG;	// [deg]
 		vector vLongitudinalDrag = dynamicPressure * m_fFrontalDragArea * m_fFrontalDragCoefficient * -owner.VectorToParent(vector.Forward);
 		vector vSideslipDrag = dynamicPressure * m_fSideDragArea * m_fSideDragCoefficient * sideSlipAngle * owner.VectorToParent(vector.Right);
-		m_Physics.ApplyImpulseAt(coa, vLongitudinalDrag * timeSlice);
-		m_Physics.ApplyImpulseAt(coa, vSideslipDrag * timeSlice);
+		
+		if (absoluteVelocity.LengthSq() > 1)
+		{
+			physics.ApplyImpulseAt(coa, vLongitudinalDrag * timeSlice);
+			physics.ApplyImpulseAt(coa, vSideslipDrag * timeSlice);
+		}
 		
 		//#ifdef WORKBENCH
 		m_vDebugForcePos.Insert(coa);
@@ -342,7 +337,11 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 				
 				float fDrag = dynamicPressure * gear.m_fDragArea * gear.m_fDragCoefficient * fState;
 				vector vDrag = fDrag * -owner.VectorToParent(vector.Forward);
-				m_Physics.ApplyImpulseAt(gearMat[3], vDrag * timeSlice);
+				
+				if (absoluteVelocity.LengthSq() > 1)
+				{
+					physics.ApplyImpulseAt(gearMat[3], vDrag * timeSlice);
+				}
 				
 				//#ifdef WORKBENCH
 				m_vDebugForcePos.Insert(gearMat[3]);
@@ -375,7 +374,17 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 			}
 			
 			i++;
-		}	
+		}
+		
+		foreach (ADM_EngineComponent engine : m_AirplaneController.GetEngines())
+		{
+			engine.Simulate(owner, timeSlice);
+		}
+		
+		if (m_SignalsManager)
+		{
+			m_SignalsManager.SetSignalValue(m_iRPMSignal, m_AirplaneController.GetAirplaneInput().GetInput(ADM_InputType.Thrust));
+		}		
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -397,13 +406,15 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	
 	//------------------------------------------------------------------------------------------------
 	vector GetWindVector()
-	{		
-		if (!m_TimeManager) 
-			return vector.Zero;
+	{
+		ChimeraWorld world = ChimeraWorld.CastFrom(GetGame().GetWorld());
+		if (!world) return vector.Zero;
+		TimeAndWeatherManagerEntity timemgr = world.GetTimeAndWeatherManager();
+		if (!timemgr) return vector.Zero;
 		
 		vector angles = vector.Zero;
-		float speed = m_TimeManager.GetWindSpeed();
-		angles[0] = m_TimeManager.GetWindDirection();
+		float speed = timemgr.GetWindSpeed();
+		angles[0] = timemgr.GetWindDirection();
 		
 		vector mat[3];
 		Math3D.AnglesToMatrix(angles, mat);
@@ -414,25 +425,31 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	//------------------------------------------------------------------------------------------------
 	float GetAltitude()
 	{
-		return m_Owner.GetOrigin()[1];
+		auto owner = GetOwner();
+		if (!owner) return 0;
+		return owner.GetOrigin()[1];
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	vector GetCenterOfMass()
 	{
-		if (!m_Physics || !m_Owner)
-			return vector.Zero;
+		auto owner = GetOwner();
+		if (!owner) return vector.Zero;
+		auto physics = owner.GetPhysics();
+		if (!physics) return vector.Zero;
 		
-		return m_Owner.CoordToParent(m_Physics.GetCenterOfMass()); // world coordinates
+		return owner.CoordToParent(physics.GetCenterOfMass()); // world coordinates
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	vector GetWorldVelocity(vector pos = vector.Zero)
 	{		
-		if (!m_Physics || !m_Owner)
-			return vector.Zero;
+		auto owner = GetOwner();
+		if (!owner) return vector.Zero;
+		auto physics = owner.GetPhysics();
+		if (!physics) return vector.Zero;
 		
-		return m_Physics.GetVelocityAt(pos); 
+		return physics.GetVelocityAt(pos); 
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -452,33 +469,36 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 	vector debugPoints[6];
 	vector debugACLine[2];
 	vector debugPointsControlSurface[6];
+
 	void Draw(IEntity owner)
-	{		
+	{
+		auto physics = owner.GetPhysics();
+
 		if (!m_Wings || !owner) return;
-		
+
 		vector acTotal = vector.Zero;
 		float acTotalArea = 0;
-		
-		// connect each section sequentially
+
 		for (int i = 0; i < m_Wings.Count(); i++)
 		{
 			vector wingRoot = owner.CoordToParent(m_Wings[i].m_vRootPosition);
 			vector previousSectionLE = vector.Zero;
+
 			for (int j = 0; j < m_Wings[i].m_Sections.Count(); j++)
 			{
 				ADM_WingSection curSection = m_Wings[i].m_Sections[j];
-				
+
 				float surfaceArea = curSection.m_fSurfaceArea;
 				vector vNormal = owner.VectorToParent(curSection.m_vNormal);
 				vector vChord = owner.VectorToParent(curSection.m_vChord);
 				vector vSpan = vNormal * vChord;
-				
+
 				vector acLocal = curSection.m_vAerodynamicCenter;
 				vector ac = owner.CoordToParent(acLocal);
-				
+
 				float fSpan = curSection.m_Span;
 				float fChord = curSection.m_Chord;
-				
+
 				float controlChordPercent = 0;
 				if (curSection.m_ControlSurfaces)
 				{
@@ -486,71 +506,93 @@ class ADM_FixedWingSimulation : ScriptGameComponent
 					{
 						float chordPercent = curSection.m_ControlSurfaces[k].m_fChordPercent;
 						if (chordPercent > controlChordPercent)
-						{
 							controlChordPercent = chordPercent;
-						}
 					}
 				}
-					
-				// Skew points for sweep angle
+
 				vector transformMatrix[3];
 				Math3D.MatrixIdentity3(transformMatrix);
 				transformMatrix[0][2] = Math.Tan(curSection.m_SweepAngle * Math.DEG2RAD);
-				
+
 				vSpan = vSpan.Multiply3(transformMatrix);
 				vChord = vChord.Multiply3(transformMatrix);
-				
-				//--- Panel 1
+
 				debugPoints[0] = wingRoot + previousSectionLE;
 				debugPoints[1] = debugPoints[0] + vSpan * fSpan;
-				debugPoints[2] = debugPoints[0] - vChord * fChord * (1-controlChordPercent);
-				
-				//--- Panel 2
+				debugPoints[2] = debugPoints[0] - vChord * fChord * (1 - controlChordPercent);
+
 				debugPoints[3] = debugPoints[1];
 				debugPoints[4] = debugPoints[2];
-				debugPoints[5] = debugPoints[0] + vSpan * fSpan - vChord * fChord * (1-controlChordPercent);
-				
+				debugPoints[5] = debugPoints[0] + vSpan * fSpan - vChord * fChord * (1 - controlChordPercent);
+
 				previousSectionLE = debugPoints[1] - wingRoot;
-				
-				// AC Line
-				debugACLine[0] = ac - vSpan * fSpan/2;
-				debugACLine[1] = ac + vSpan * fSpan/2;
-				
+
+				debugACLine[0] = ac - vSpan * fSpan / 2;
+				debugACLine[1] = ac + vSpan * fSpan / 2;
+
 				acTotal += acLocal * surfaceArea;
 				acTotalArea += surfaceArea;
-				
-				Shape.CreateTris(ARGB(100,255,0,0), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPoints, 2);
+
+				Shape.CreateTris(ARGB(100, 255, 0, 0), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPoints, 2);
 				Shape.CreateLines(Color.CYAN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, debugACLine, 2);
-				
+
 				if (DiagMenu.GetBool(SCR_DebugMenuID.DEBUGUI_R3DCORE_AIRPLANES_SHOWNORMALSDEBUG))
-					Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER); 
-				
+					Shape.CreateArrow(ac, ac + vNormal, 0.1, Color.GREEN, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER);
+
 				if (curSection.m_ControlSurfaces)
 				{
 					for (int k = 0; k < curSection.m_ControlSurfaces.Count(); k++)
 					{
-						//--- Panel 1
+						ADM_ControlSurface controlSurface = curSection.m_ControlSurfaces[k];
+
 						debugPointsControlSurface[0] = debugPoints[4];
 						debugPointsControlSurface[1] = debugPoints[5];
-						debugPointsControlSurface[2] = debugPointsControlSurface[0] - vChord * fChord * curSection.m_ControlSurfaces[k].m_fChordPercent;
-						
-						//--- Panel 2
+						debugPointsControlSurface[2] = debugPointsControlSurface[0] - vChord * fChord * controlSurface.m_fChordPercent;
+
 						debugPointsControlSurface[3] = debugPointsControlSurface[1];
 						debugPointsControlSurface[4] = debugPointsControlSurface[2];
-						debugPointsControlSurface[5] = debugPointsControlSurface[0] + vSpan * fSpan - vChord * fChord * curSection.m_ControlSurfaces[k].m_fChordPercent;
-						
-						Shape.CreateTris(ARGB(100,0,0,100), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPointsControlSurface, 2);
+						debugPointsControlSurface[5] = debugPointsControlSurface[0] + vSpan * fSpan - vChord * fChord * controlSurface.m_fChordPercent;
+
+						// Apply rotation using quaternion matrix
+						vector vSpanDir = -vSpan.Normalized();
+						float angleRad = controlSurface.GetAngle() * Math.DEG2RAD;
+
+						float quat[4];
+						vector axis = vSpanDir.Normalized();
+						float sinHalf = Math.Sin(angleRad / 2);
+						float cosHalf = Math.Cos(angleRad / 2);
+						quat[0] = axis[0] * sinHalf;
+						quat[1] = axis[1] * sinHalf;
+						quat[2] = axis[2] * sinHalf;
+						quat[3] = cosHalf;
+
+						vector rotMat[3];
+						Math3D.QuatToMatrix(quat, rotMat);
+
+						vector pivot = debugPointsControlSurface[0];
+						for (int p = 0; p < 6; p++)
+						{
+							vector localOffset = debugPointsControlSurface[p] - pivot;
+							vector rotatedOffset =
+								rotMat[0] * localOffset[0] +
+								rotMat[1] * localOffset[1] +
+								rotMat[2] * localOffset[2];
+
+							debugPointsControlSurface[p] = pivot + rotatedOffset;
+						}
+
+						Shape.CreateTris(ARGB(100, 0, 0, 100), ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.DOUBLESIDE | ShapeFlags.NOZBUFFER, debugPointsControlSurface, 2);
 					}
 				}
 			}
 		}
-		
+
 		if (acTotalArea > 0) acTotal /= acTotalArea;
 		vector coa = owner.CoordToParent(acTotal + m_vAerodynamicCenterOffset);
-		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);	
-		if (m_Physics) Shape.CreateSphere(Color.YELLOW, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, GetCenterOfMass(), 0.1);
+		Shape.CreateSphere(Color.BLUE, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, coa, 0.1);
+		if (physics) Shape.CreateSphere(Color.YELLOW, ShapeFlags.ONCE | ShapeFlags.NOZBUFFER, GetCenterOfMass(), 0.1);
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	protected void DebugMenu(IEntity owner, float timeSlice)
 	{
